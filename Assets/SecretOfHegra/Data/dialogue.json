@@ -1,0 +1,186 @@
+{
+  "speakers": [
+    { "id": "shuayd", "nameKey": "spk.shuayd", "color": "#D99673" },
+    { "id": "kamkam", "nameKey": "spk.kamkam", "color": "#B58BE0" },
+    { "id": "wahballahi", "nameKey": "spk.wahballahi", "color": "#EBB34E" },
+    { "id": "maliku", "nameKey": "spk.maliku", "color": "#9FB7E8" }
+  ],
+  "sequences": [
+    { "id": "camp_welcome", "lines": [
+      { "key": "camp_welcome_01", "speaker": "shuayd", "duration": 0 },
+      { "key": "camp_welcome_02", "speaker": "shuayd", "duration": 0 },
+      { "key": "camp_welcome_03", "speaker": "shuayd", "duration": 0 } ] },
+    { "id": "camp_grab", "lines": [ { "key": "camp_grab_01", "speaker": "shuayd", "duration": 0 } ] },
+    { "id": "camp_teleport", "lines": [ { "key": "camp_teleport_01", "speaker": "shuayd", "duration": 0 } ] },
+    { "id": "camp_turn", "lines": [ { "key": "camp_turn_01", "speaker": "shuayd", "duration": 0 } ] },
+    { "id": "camp_store", "lines": [ { "key": "camp_store_01", "speaker": "shuayd", "duration": 0 } ] },
+    { "id": "camp_farewell", "lines": [
+      { "key": "camp_farewell_01", "speaker": "shuayd", "duration": 0 },
+      { "key": "camp_farewell_02", "speaker": "shuayd", "duration": 0 },
+      { "key": "camp_farewell_03", "speaker": "shuayd", "duration": 0 } ] },
+    { "id": "camp_farewell_short", "lines": [
+      { "key": "camp_farewell_01", "speaker": "shuayd", "duration": 0 },
+      { "key": "camp_farewell_03", "speaker": "shuayd", "duration": 0 } ] },
+
+    { "id": "market_greet", "lines": [ { "key": "market_greet_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "market_legend", "lines": [
+      { "key": "market_legend_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "market_legend_02", "speaker": "kamkam", "duration": 0 },
+      { "key": "market_legend_03", "speaker": "kamkam", "duration": 0 },
+      { "key": "market_legend_04", "speaker": "kamkam", "duration": 0 },
+      { "key": "market_legend_05", "speaker": "kamkam", "duration": 0 },
+      { "key": "market_legend_06", "speaker": "kamkam", "duration": 0 },
+      { "key": "market_legend_07", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "market_buy", "lines": [ { "key": "market_buy_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "market_bought", "lines": [ { "key": "market_bought_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "market_kohl_done", "lines": [
+      { "key": "market_kohl_done_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "market_kohl_done_02", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "market_lesson", "lines": [
+      { "key": "market_lesson_01", "speaker": "wahballahi", "duration": 0 },
+      { "key": "market_lesson_02", "speaker": "wahballahi", "duration": 0 },
+      { "key": "market_lesson_03", "speaker": "wahballahi", "duration": 0 },
+      { "key": "market_lesson_04", "speaker": "wahballahi", "duration": 0 } ] },
+    { "id": "market_engrave_start", "lines": [ { "key": "market_engrave_start_01", "speaker": "wahballahi", "duration": 0 } ] },
+    { "id": "market_engrave_done", "lines": [
+      { "key": "market_engrave_done_01", "speaker": "wahballahi", "duration": 0 },
+      { "key": "market_engrave_done_02", "speaker": "wahballahi", "duration": 0 },
+      { "key": "market_engrave_done_03", "speaker": "kamkam", "duration": 0 } ] },
+
+    { "id": "theater_intro", "lines": [
+      { "key": "theater_intro_01", "speaker": "maliku", "duration": 0 },
+      { "key": "theater_intro_02", "speaker": "maliku", "duration": 0 } ] },
+    { "id": "theater_play", "lines": [
+      { "key": "theater_play_01", "speaker": "maliku", "duration": 10 },
+      { "key": "theater_play_02", "speaker": "maliku", "duration": 10 },
+      { "key": "theater_play_03", "speaker": "maliku", "duration": 10 },
+      { "key": "theater_play_04", "speaker": "maliku", "duration": 10 },
+      { "key": "theater_play_05", "speaker": "maliku", "duration": 10 },
+      { "key": "theater_play_06", "speaker": "maliku", "duration": 11 },
+      { "key": "theater_play_07", "speaker": "maliku", "duration": 10 },
+      { "key": "theater_play_08", "speaker": "maliku", "duration": 10 },
+      { "key": "theater_play_09", "speaker": "maliku", "duration": 11 },
+      { "key": "theater_play_10", "speaker": "maliku", "duration": 12 },
+      { "key": "theater_play_11", "speaker": "maliku", "duration": 9 } ] },
+    { "id": "theater_after", "lines": [ { "key": "theater_after_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "rock_revealed", "lines": [ { "key": "rock_revealed_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "theater_sign", "lines": [ { "key": "theater_sign_01", "speaker": "kamkam", "duration": 0 } ] },
+
+    { "id": "ithlib_intro", "lines": [
+      { "key": "ithlib_intro_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "ithlib_intro_02", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "ithlib_done", "lines": [
+      { "key": "ithlib_done_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "ithlib_done_02", "speaker": "kamkam", "duration": 0 } ] },
+
+    { "id": "bint_intro", "lines": [
+      { "key": "bint_intro_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "bint_intro_02", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "bint_eagle", "lines": [ { "key": "bint_eagle_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "bint_done", "lines": [
+      { "key": "bint_done_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "bint_done_02", "speaker": "kamkam", "duration": 0 } ] },
+
+    { "id": "farid_intro", "lines": [
+      { "key": "farid_intro_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "farid_intro_02", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "farid_missing", "lines": [
+      { "key": "farid_missing_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "farid_door", "lines": [ { "key": "farid_door_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "farid_chest", "lines": [
+      { "key": "farid_chest_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "farid_chest_02", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "farid_finale", "lines": [
+      { "key": "farid_finale_01", "speaker": "kamkam", "duration": 0 },
+      { "key": "farid_finale_02", "speaker": "kamkam", "duration": 0 },
+      { "key": "farid_finale_03", "speaker": "kamkam", "duration": 0 },
+      { "key": "farid_finale_final", "speaker": "kamkam", "duration": 7 } ] },
+    { "id": "farid_finale_short", "lines": [
+      { "key": "farid_finale_03", "speaker": "kamkam", "duration": 0 },
+      { "key": "farid_finale_final", "speaker": "kamkam", "duration": 7 } ] },
+
+    { "id": "assist_offer", "lines": [
+      { "key": "assist_offer_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "assist_declined", "lines": [ { "key": "assist_declined_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "assist_arrive", "lines": [
+      { "key": "assist_arrive_01", "speaker": "kamkam", "duration": 0 } ] },
+    { "id": "assist_name", "lines": [ { "key": "assist_name_01", "speaker": "kamkam", "duration": 0 } ] }
+  ],
+  "entries": [
+    { "key": "camp_welcome_01", "ar": "أهلاً بك أيها المسافر! وصلت قافلة اللبان إلى الحِجر، والقمر ما زال عالياً.", "en": "Welcome, traveler! The frankincense caravan has reached Hegra, and the moon is still high." },
+    { "key": "camp_welcome_02", "ar": "أنا شُعيد، حارس القافلة. قبل أن تدخل المدينة، دعني أعلّمك كيف تتحرك في الليل.", "en": "I am Shuʿayd, guard of the caravan. Before you enter the city, let me teach you how to move in the night." },
+    { "key": "camp_welcome_03", "ar": "لا تتعجل؛ يمكنك تخطي أي درس إن كنت تعرفه.", "en": "No hurry; you can skip any lesson you already know." },
+    { "key": "camp_grab_01", "ar": "خذ هذا السراج الفخاري. نوره صغير، لكنه يكشف ما تخفيه الظلال.", "en": "Take this clay lamp. Its light is small, but it reveals what the shadows hide." },
+    { "key": "camp_teleport_01", "ar": "أحسنت. الآن انتقل إلى البساط المضيء قرب النار.", "en": "Well done. Now move to the glowing rug near the fire." },
+    { "key": "camp_turn_01", "ar": "جيد! استدر الآن نحوي دون أن تتحرك من مكانك.", "en": "Good! Now turn toward me without moving from your spot." },
+    { "key": "camp_store_01", "ar": "علّق السراج في حزامك، فتبقى يداك حرتين. وإن سقط منك، فسيعود إليك.", "en": "Hang the lamp on your belt to keep your hands free. If you ever drop it, it will find its way back." },
+    { "key": "camp_farewell_01", "ar": "هذه ثلاث قطع نقد لرحلتك في السوق.", "en": "Here are three coins for your visit to the market." },
+    { "key": "camp_farewell_02", "ar": "اسمع الطبول والمزامير؟ السوق هناك، خلف الفوانيس.", "en": "Hear the drums and pipes? The market is there, beyond the lanterns." },
+    { "key": "camp_farewell_03", "ar": "ابحث عن كمكم بائعة الكحل. تقول إنها تعرف سراً قديماً... اتبع ميل لهب سراجك.", "en": "Look for Kamkam, the kohl seller. She says she knows an old secret... follow the lean of your lamp's flame." },
+
+    { "key": "market_greet_01", "ar": "مسافر جديد بسراج مضيء! تعال، اقترب من دكاني.", "en": "A new traveler with a bright lamp! Come, step closer to my stall." },
+    { "key": "market_legend_01", "ar": "أنا كمكم. أبيع الكحل وأحفظ الحكايات. هل تريد سماع أسطورة الليلة؟", "en": "I am Kamkam. I sell kohl and keep stories. Would you like tonight's legend?" },
+    { "key": "market_legend_02", "ar": "يُحكى أن بنّاءً بدأ نحت واجهة قصر الفريد، الصخرة الوحيدة خارج المدينة.", "en": "They say a mason began carving the facade of Qasr al-Farid, the lonely rock outside the city." },
+    { "key": "market_legend_03", "ar": "لكنه توقف قبل أن يكملها... ويقال إنه خبّأ خلفها صندوقاً لقافلة كاملة.", "en": "But he stopped before finishing it... and some say he hid a whole caravan's chest behind it." },
+    { "key": "market_legend_04", "ar": "ليس في قبر، بل في غرفة سرية صغيرة، غرفة البنّاء وحده.", "en": "Not in a tomb, but in a small secret chamber—the mason's own room." },
+    { "key": "market_legend_05", "ar": "ولا يفتحها إلا من يحمل اسمه منقوشاً على شقفة من الفخار...", "en": "And only someone carrying their name carved on a clay shard can open it..." },
+    { "key": "market_legend_06", "ar": "ومن يجد ثلاث علامات: النقش، والماء، والنسر.", "en": "...and who finds three signs: the Inscription, the Water, and the Eagle." },
+    { "key": "market_legend_07", "ar": "إنها حكاية فقط، طبعاً. لكن الحكايات تحب من يصدّقها. ابدأ بعينيك: جرّب كحلي.", "en": "It's only a story, of course. But stories love those who believe them. Start with your eyes: try my kohl." },
+    { "key": "market_buy_01", "ar": "قطعة نقد واحدة. ضعها على الصينية النحاسية.", "en": "One coin. Place it on the brass tray." },
+    { "key": "market_bought_01", "ar": "شكراً. خذ الوعاء وقرّبه من وجهك، كأنك تنظر في المرآة.", "en": "Thank you. Take the jar and bring it close to your face, as if looking into a mirror." },
+    { "key": "market_kohl_done_01", "ar": "انظر في المرآة البرونزية. صارت عيناك عيني مسافر الليل.", "en": "Look into the bronze mirror. Now you have the eyes of a night traveler." },
+    { "key": "market_kohl_done_02", "ar": "والآن اذهب إلى وهب اللهي النحّات. اسمك يحتاج إلى حجر.", "en": "Now go to Wahballahi the stonemason. Your name needs stone." },
+    { "key": "market_lesson_01", "ar": "تريد اسماً منقوشاً؟ أنا وهب اللهي، والحجر صديقي منذ صغري.", "en": "You want a name carved? I am Wahballahi, and stone has been my friend since I was small." },
+    { "key": "market_lesson_02", "ar": "النحّات يبدأ من الأعلى إلى الأسفل، ويضرب ضربات صغيرة كثيرة، لا ضربة واحدة قوية.", "en": "A carver works from the top down, with many small strokes, never one big blow." },
+    { "key": "market_lesson_03", "ar": "سأحوّل اسمك إلى حروف تشبه حروف أجدادنا النبطيين. إنها تقريب للزينة، لا ترجمة دقيقة.", "en": "I will turn your name into letters inspired by our Nabataean ancestors. It's a decorative approximation, not an exact transcription." },
+    { "key": "market_lesson_04", "ar": "اكتب اسمك على اللوح أولاً.", "en": "First, write your name on the board." },
+    { "key": "market_engrave_start_01", "ar": "خذ الإزميل، والمس النقاط المضيئة واحدة تلو الأخرى. لا تقلق من الدقة.", "en": "Take the chisel and touch the glowing points one after another. Don't worry about precision." },
+    { "key": "market_engrave_done_01", "ar": "انظر! اسمك صار حجراً صغيراً. احفظه جيداً.", "en": "Look! Your name has become a little stone. Keep it safe." },
+    { "key": "market_engrave_done_02", "ar": "ضعه في حقيبتك؛ هذه الشقفة لك وحدك.", "en": "Put it in your satchel; this shard belongs to you alone." },
+    { "key": "market_engrave_done_03", "ar": "الآن إلى ساحة المسرح. مالكو سيروي حكاية البنّاء والقمر. أصغِ جيداً.", "en": "Now, to the theater square. Maliku will perform the tale of the Mason and the Moon. Listen closely." },
+
+    { "key": "theater_intro_01", "ar": "مرحباً بالمسافرين! أنا مالكو، وهذه قيثارتي.", "en": "Welcome, travelers! I am Maliku, and this is my lyre." },
+    { "key": "theater_intro_02", "ar": "الليلة نروي «البنّاء والقمر». اجلسوا، وانظروا حيث شئتم.", "en": "Tonight we perform \"The Mason and the Moon.\" Sit, and look wherever you like." },
+    { "key": "theater_play_01", "ar": "منذ زمن بعيد، صعد بنّاء إلى صخرة وحيدة ليحفر فيها بيتاً للأبد.", "en": "Long ago, a mason climbed a lonely rock to carve a house for eternity." },
+    { "key": "theater_play_02", "ar": "بدأ من الأعلى: درجات تصعد نحو السماء، ثم تاج الواجهة.", "en": "He began at the top: steps climbing toward the sky, then the crown of the facade." },
+    { "key": "theater_play_03", "ar": "وكل ليلة كان القمر يأتي ليراه يعمل، فيحدّثه البنّاء كما يحدّث صديقاً.", "en": "Each night the Moon came to watch him work, and the mason spoke to her like a friend." },
+    { "key": "theater_play_04", "ar": "قال: «احفظ سري يا قمر، سأخبئ صندوق قافلة حيث لا ينظر أحد».", "en": "He said, \"Keep my secret, Moon. I will hide a caravan's chest where no one looks.\"" },
+    { "key": "theater_play_05", "ar": "فقال القمر: «سأحفظه، بشرط أن تترك ثلاث علامات لمسافر صادق».", "en": "The Moon replied, \"I will keep it, if you leave three signs for an honest traveler.\"" },
+    { "key": "theater_play_06", "ar": "العلامة الأولى نقشها في الحجر خفيفةً جداً، لا يراها إلا من يحمل سراجاً.", "en": "The first sign he carved so faintly in stone that only someone with a lamp could see it." },
+    { "key": "theater_play_07", "ar": "والثانية أعطاها للماء، فالماء يعرف طريقه دائماً.", "en": "The second he gave to the water, for water always knows its way." },
+    { "key": "theater_play_08", "ar": "والثالثة ائتمن عليها النسر، الذي لا ينظر إلا إلى نجم واحد.", "en": "The third he trusted to the eagle, who gazes at only one star." },
+    { "key": "theater_play_09", "ar": "ثم في صباحٍ ما، وضع البنّاء إزميله ولم يعد. وبقيت واجهته ناقصة.", "en": "Then one morning, the mason set down his chisel and never returned. His facade stayed unfinished." },
+    { "key": "theater_play_10", "ar": "ويقال إن القمر ما زال يشير إلى العلامة الأولى... هناك، على وجه الفيل الحجري خلف المسرح.", "en": "They say the Moon still points to the first sign... there, on the face of the stone elephant beyond the stage." },
+    { "key": "theater_play_11", "ar": "إنها حكاية يا أصدقاء. لكن الحكايات، مثل الحجر، تتذكّر.", "en": "It's only a tale, friends. But tales, like stone, remember." },
+    { "key": "theater_after_01", "ar": "رأيت أين أشار القمر؟ إلى الفيل الحجري. خذ سراجك إلى وجهه.", "en": "Did you see where the Moon pointed? The stone elephant. Take your lamp to its face." },
+    { "key": "rock_revealed_01", "ar": "حروف! راقب أيّها يضيء، ثم أشر إليها بالترتيب نفسه.", "en": "Letters! Watch which ones glow, then point at them in the same order." },
+    { "key": "theater_sign_01", "ar": "نقش صخرة الفيل! هذه العلامة الأولى. والماء ينتظرك في جبل إثلب.", "en": "The Elephant Rock inscription! That's the first sign. The water awaits you at Jabal Ithlib." },
+
+    { "key": "ithlib_intro_01", "ar": "هنا في جبل إثلب يجمع الناس ماء المطر في قنوات وصهاريج.", "en": "Here at Jabal Ithlib, people gather rainwater in channels and cisterns." },
+    { "key": "ithlib_intro_02", "ar": "الماء لا يصل إلى الصهريج. أدِر البوابات الحجرية حتى يجد طريقه.", "en": "The water isn't reaching the cistern. Turn the stone gates until it finds its way." },
+    { "key": "ithlib_done_01", "ar": "اسمع! الصهريج يمتلئ، والممر ينفتح. هذه العلامة الثانية: الماء.", "en": "Listen! The cistern is filling and the passage opens. That's the second sign: the Water." },
+    { "key": "ithlib_done_02", "ar": "بقي النسر. اذهب إلى قصر البنت.", "en": "Only the eagle remains. Go to Qasr al-Bint." },
+
+    { "key": "bint_intro_01", "ar": "انظر إلى هذه الواجهة العظيمة، والنسر المنحوت فوق بابها.", "en": "Look at this great facade, and the eagle carved above its door." },
+    { "key": "bint_intro_02", "ar": "قف على حجر المراقبة. انظر إلى النسر، ثم إلى النجم الذي ينظر إليه.", "en": "Stand on the watching stone. Look at the eagle, then at the star it gazes at." },
+    { "key": "bint_eagle_01", "ar": "استيقظ النسر! اتبع خيط الضوء من منقاره.", "en": "The eagle has woken! Follow the thread of light from its beak." },
+    { "key": "bint_done_01", "ar": "النسر والنجم على خط واحد. هذه العلامة الثالثة!", "en": "The eagle and the star align. That's the third sign!" },
+    { "key": "bint_done_02", "ar": "الآن، قصر الفريد. الفوانيس ستدلك على الطريق.", "en": "Now, Qasr al-Farid. The lanterns will show you the way." },
+
+    { "key": "farid_intro_01", "ar": "قصر الفريد... صخرة وحيدة، وواجهة لم تكتمل. انظر كيف بقي أسفلها خشناً.", "en": "Qasr al-Farid... a lonely rock with an unfinished facade. See how its lower part stayed rough." },
+    { "key": "farid_intro_02", "ar": "هناك كوة صغيرة في الحجر. ضع فيها شقفة اسمك.", "en": "There is a small niche in the stone. Place your name shard in it." },
+    { "key": "farid_missing_01", "ar": "الحجر لا يتحرك بعد؛ تنقصه علامة أو أكثر. يمكنني أن أساعدك، أو تعود لتبحث.", "en": "The stone won't move yet; a sign or more is missing. I can help you, or you can go back and search." },
+    { "key": "farid_door_01", "ar": "اسمع صوت الحجر... الباب ينفتح على غرفة البنّاء السرية.", "en": "Hear the stone... the door opens onto the mason's secret chamber." },
+    { "key": "farid_chest_01", "ar": "صندوق القافلة! نقود مستوحاة من زمن الملك الحارثة الرابع، ولبان عطِر...", "en": "The caravan chest! Coins inspired by King Aretas IV's time, and fragrant frankincense..." },
+    { "key": "farid_chest_02", "ar": "وختم القافلة. لكن انظر إلى الجدار... هناك ما هو أثمن.", "en": "...and the caravan's seal. But look at the wall... there is something more precious." },
+    { "key": "farid_finale_01", "ar": "البنّاء ترك الجدار أملس، ينتظر اسماً.", "en": "The mason left this wall smooth, waiting for a name." },
+    { "key": "farid_finale_02", "ar": "والآن ظهر عليه اسمك، بالحروف القديمة والحديثة معاً.", "en": "And now your name has appeared on it, in old letters and new together." },
+    { "key": "farid_finale_03", "ar": "الكنز الحقيقي ليس النقود ولا اللبان، بل أن تبقى ذكراك.", "en": "The true treasure isn't coins or incense—it's that you are remembered." },
+    { "key": "farid_finale_final", "ar": "اسمك مكتوب في الحجر، والحجر لا ينسى.", "en": "Your name is written in stone, and stone never forgets." },
+
+    { "key": "assist_offer_01", "ar": "انظر، القمر يقترب من الجبال! تعال معي، أعرف طريقاً مختصراً.", "en": "Look, the moon is nearing the mountains! Come with me—I know a short way." },
+    { "key": "assist_declined_01", "ar": "كما تشاء. سأكون قريبة إن احتجتني؛ اطلبني من قائمة الاستراحة.", "en": "As you wish. I'll be near if you need me—call me from the pause menu." },
+    { "key": "assist_arrive_01", "ar": "وصلنا. سأكشف لك ما فاتك من العلامات، فالحكاية لا تريد أن تتركك خارج الباب.", "en": "Here we are. I'll reveal any signs you missed—the story doesn't want to leave you outside the door." },
+    { "key": "assist_name_01", "ar": "لكن الباب يحتاج اسمك. اكتبه، وسأنقشه على الشقفة بنفسي.", "en": "But the door needs your name. Write it, and I'll carve it on the shard myself." }
+  ]
+}

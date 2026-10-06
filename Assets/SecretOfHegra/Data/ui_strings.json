@@ -1,0 +1,1209 @@
+{
+  "entries": [
+    {
+      "key": "game.title",
+      "ar": "سر الحِجر",
+      "en": "Secret of Hegra"
+    },
+    {
+      "key": "game.subtitle",
+      "ar": "ليلة في الحِجر، في عهد الملك الحارثة الرابع",
+      "en": "A night in Hegra, in the reign of King Aretas IV"
+    },
+    {
+      "key": "game.fiction_note",
+      "ar": "قصة الكنز خيالية مستوحاة من المكان، وليست حقيقة تاريخية.",
+      "en": "The treasure story is fiction inspired by the place, not historical fact."
+    },
+    {
+      "key": "lang.name",
+      "ar": "العربية",
+      "en": "English"
+    },
+    {
+      "key": "menu.new",
+      "ar": "رحلة جديدة",
+      "en": "New journey"
+    },
+    {
+      "key": "menu.continue",
+      "ar": "متابعة الرحلة",
+      "en": "Continue"
+    },
+    {
+      "key": "menu.settings",
+      "ar": "الإعدادات",
+      "en": "Settings"
+    },
+    {
+      "key": "menu.quit",
+      "ar": "خروج",
+      "en": "Quit"
+    },
+    {
+      "key": "menu.paused",
+      "ar": "استراحة",
+      "en": "Paused"
+    },
+    {
+      "key": "menu.resume",
+      "ar": "متابعة",
+      "en": "Resume"
+    },
+    {
+      "key": "menu.hint",
+      "ar": "تلميح",
+      "en": "Hint"
+    },
+    {
+      "key": "menu.reset_puzzle",
+      "ar": "إعادة اللغز",
+      "en": "Reset puzzle"
+    },
+    {
+      "key": "menu.assist",
+      "ar": "اطلب مساعدة كمكم (طريق مختصر)",
+      "en": "Ask Kamkam for help (short route)"
+    },
+    {
+      "key": "menu.inventory",
+      "ar": "الحقيبة",
+      "en": "Satchel"
+    },
+    {
+      "key": "menu.restart",
+      "ar": "البدء من جديد",
+      "en": "Restart"
+    },
+    {
+      "key": "menu.restart_confirm",
+      "ar": "هل تريد بدء الرحلة من البداية؟",
+      "en": "Start the journey from the beginning?"
+    },
+    {
+      "key": "menu.main",
+      "ar": "القائمة الرئيسية",
+      "en": "Main menu"
+    },
+    {
+      "key": "ui.yes",
+      "ar": "نعم",
+      "en": "Yes"
+    },
+    {
+      "key": "ui.no",
+      "ar": "لا",
+      "en": "No"
+    },
+    {
+      "key": "ui.on",
+      "ar": "مفعّل",
+      "en": "On"
+    },
+    {
+      "key": "ui.off",
+      "ar": "مطفأ",
+      "en": "Off"
+    },
+    {
+      "key": "ui.minus",
+      "ar": "−",
+      "en": "−"
+    },
+    {
+      "key": "ui.plus",
+      "ar": "+",
+      "en": "+"
+    },
+    {
+      "key": "ui.empty",
+      "ar": " ",
+      "en": " "
+    },
+    {
+      "key": "ui.back",
+      "ar": "رجوع",
+      "en": "Back"
+    },
+    {
+      "key": "ui.close",
+      "ar": "إغلاق",
+      "en": "Close"
+    },
+    {
+      "key": "ui.skip_tutorial",
+      "ar": "تخطَّ الدرس",
+      "en": "Skip lesson"
+    },
+    {
+      "key": "ui.store_for_me",
+      "ar": "علّقه عني",
+      "en": "Hang it for me"
+    },
+    {
+      "key": "ui.skip",
+      "ar": "تخطٍّ",
+      "en": "Skip"
+    },
+    {
+      "key": "ui.replay",
+      "ar": "إعادة العرض",
+      "en": "Replay"
+    },
+    {
+      "key": "ui.replay_glyphs",
+      "ar": "أعد الحروف",
+      "en": "Replay letters"
+    },
+    {
+      "key": "ui.do_for_me",
+      "ar": "ساعدني",
+      "en": "Do it for me"
+    },
+    {
+      "key": "ui.apply_kohl",
+      "ar": "ضع الكحل",
+      "en": "Apply kohl"
+    },
+    {
+      "key": "ui.pay_coin",
+      "ar": "ادفع قطعة نقد",
+      "en": "Pay one coin"
+    },
+    {
+      "key": "ui.carve_for_me",
+      "ar": "انقش عني",
+      "en": "Carve for me"
+    },
+    {
+      "key": "ui.insert_for_me",
+      "ar": "ضعها في الكوة",
+      "en": "Place it in the niche"
+    },
+    {
+      "key": "ui.open_chest",
+      "ar": "افتح الصندوق",
+      "en": "Open the chest"
+    },
+    {
+      "key": "ui.select_star",
+      "ar": "اختر بالمؤشر",
+      "en": "Select with pointer"
+    },
+    {
+      "key": "set.language",
+      "ar": "اللغة",
+      "en": "Language"
+    },
+    {
+      "key": "set.subtitles",
+      "ar": "حجم الترجمة",
+      "en": "Subtitle size"
+    },
+    {
+      "key": "set.posture",
+      "ar": "وضعية اللعب",
+      "en": "Play posture"
+    },
+    {
+      "key": "set.seated",
+      "ar": "جالس",
+      "en": "Seated"
+    },
+    {
+      "key": "set.standing",
+      "ar": "واقف",
+      "en": "Standing"
+    },
+    {
+      "key": "set.height",
+      "ar": "ارتفاع التفاعل",
+      "en": "Interaction height"
+    },
+    {
+      "key": "set.hand",
+      "ar": "اليد المفضلة",
+      "en": "Dominant hand"
+    },
+    {
+      "key": "set.right",
+      "ar": "اليمنى",
+      "en": "Right"
+    },
+    {
+      "key": "set.left",
+      "ar": "اليسرى",
+      "en": "Left"
+    },
+    {
+      "key": "set.movement",
+      "ar": "المشي بالعصا",
+      "en": "Stick walking"
+    },
+    {
+      "key": "set.smooth",
+      "ar": "مشي + انتقال",
+      "en": "Walk + teleport"
+    },
+    {
+      "key": "set.teleport",
+      "ar": "انتقال فقط",
+      "en": "Teleport only"
+    },
+    {
+      "key": "set.vignette",
+      "ar": "حاجب الراحة",
+      "en": "Comfort vignette"
+    },
+    {
+      "key": "set.snap",
+      "ar": "زاوية الدوران",
+      "en": "Snap turn angle"
+    },
+    {
+      "key": "set.appearance",
+      "ar": "هيئة المسافر",
+      "en": "Traveler"
+    },
+    {
+      "key": "set.female",
+      "ar": "مسافرة",
+      "en": "Female"
+    },
+    {
+      "key": "set.male",
+      "ar": "مسافر",
+      "en": "Male"
+    },
+    {
+      "key": "set.museum",
+      "ar": "وضع المتحف/المدرسة (بلا وقت)",
+      "en": "Museum/school mode (untimed)"
+    },
+    {
+      "key": "set.cards",
+      "ar": "بطاقات تعليمية",
+      "en": "Educational cards"
+    },
+    {
+      "key": "set.music",
+      "ar": "الموسيقى",
+      "en": "Music"
+    },
+    {
+      "key": "set.ambience",
+      "ar": "الأجواء",
+      "en": "Ambience"
+    },
+    {
+      "key": "set.sfx",
+      "ar": "المؤثرات",
+      "en": "Effects"
+    },
+    {
+      "key": "set.dialogue",
+      "ar": "الحوار",
+      "en": "Dialogue"
+    },
+    {
+      "key": "inv.title",
+      "ar": "حقيبة المسافر",
+      "en": "Traveler's satchel"
+    },
+    {
+      "key": "inv.have",
+      "ar": "معك",
+      "en": "Have"
+    },
+    {
+      "key": "inv.missing",
+      "ar": "لم تجده بعد",
+      "en": "Not yet"
+    },
+    {
+      "key": "inv.applied",
+      "ar": "وُضع",
+      "en": "Applied"
+    },
+    {
+      "key": "inv.lamp",
+      "ar": "السراج الفخاري",
+      "en": "Clay lamp"
+    },
+    {
+      "key": "inv.coins",
+      "ar": "قطع النقد",
+      "en": "Coins"
+    },
+    {
+      "key": "inv.kohl",
+      "ar": "الكحل",
+      "en": "Kohl"
+    },
+    {
+      "key": "inv.shard",
+      "ar": "شقفة الاسم",
+      "en": "Name shard"
+    },
+    {
+      "key": "inv.sign1",
+      "ar": "العلامة الأولى: نقش صخرة الفيل",
+      "en": "Sign 1: The Elephant Rock Inscription"
+    },
+    {
+      "key": "inv.sign2",
+      "ar": "العلامة الثانية: الماء",
+      "en": "Sign 2: The Water"
+    },
+    {
+      "key": "inv.sign3",
+      "ar": "العلامة الثالثة: النسر",
+      "en": "Sign 3: The Eagle"
+    },
+    {
+      "key": "inv.help",
+      "ar": "اضغط على السراج أو الشقفة لاستعادتها إلى حزامك أو حقيبتك.",
+      "en": "Press the lamp or shard row to bring it back to your belt or satchel."
+    },
+    {
+      "key": "sign.granted.inscription",
+      "ar": "وجدت العلامة الأولى: نقش صخرة الفيل",
+      "en": "You found Sign 1: The Elephant Rock Inscription"
+    },
+    {
+      "key": "sign.granted.water",
+      "ar": "وجدت العلامة الثانية: الماء",
+      "en": "You found Sign 2: The Water"
+    },
+    {
+      "key": "sign.granted.eagle",
+      "ar": "وجدت العلامة الثالثة: النسر",
+      "en": "You found Sign 3: The Eagle"
+    },
+    {
+      "key": "toast.coins_received",
+      "ar": "حصلت على ثلاث قطع نقد",
+      "en": "You received three coins"
+    },
+    {
+      "key": "toast.kohl_bought",
+      "ar": "اشتريت الكحل بقطعة نقد",
+      "en": "You bought kohl for one coin"
+    },
+    {
+      "key": "toast.kohl_gift",
+      "ar": "أهدتك كمكم الكحل",
+      "en": "Kamkam gave you the kohl as a gift"
+    },
+    {
+      "key": "toast.kohl_applied",
+      "ar": "صارت عيناك ترى الظلال بوضوح أكبر",
+      "en": "Your eyes now read the shadows more clearly"
+    },
+    {
+      "key": "toast.shard_received",
+      "ar": "شقفة اسمك في حقيبتك",
+      "en": "Your name shard is in your satchel"
+    },
+    {
+      "key": "toast.wrong_star",
+      "ar": "ليس هذا النجم... انظر حيث ينظر النسر",
+      "en": "Not this star... look where the eagle looks"
+    },
+    {
+      "key": "toast.missing_signs",
+      "ar": "الحجر ينتظر العلامات الثلاث",
+      "en": "The stone waits for the three signs"
+    },
+    {
+      "key": "toast.not_your_shard",
+      "ar": "هذه الكوة لا تقبل إلا شقفة باسمك",
+      "en": "This niche only accepts the shard with your name"
+    },
+    {
+      "key": "toast.souvenir_saved",
+      "ar": "حُفظت صورة التذكار: {0}",
+      "en": "Souvenir saved: {0}"
+    },
+    {
+      "key": "toast.souvenir_failed",
+      "ar": "تعذّر حفظ صورة التذكار",
+      "en": "Could not save the souvenir"
+    },
+    {
+      "key": "toast.puzzle_reset",
+      "ar": "أُعيد اللغز إلى بدايته",
+      "en": "The puzzle was reset"
+    },
+    {
+      "key": "toast.rock_approach",
+      "ar": "على وجه الفيل حروف نائمة. ارفع سراجك.",
+      "en": "Letters sleep on the elephant's face. Raise your lamp."
+    },
+    {
+      "key": "toast.rock_wrong",
+      "ar": "ليس هذا. راقب الحروف مرة أخرى.",
+      "en": "Not that one. Watch the letters again."
+    },
+    {
+      "key": "toast.rock_hint",
+      "ar": "على مهلك: الأول، ثم الثاني، ثم الثالث. الحرف التالي سينبض بخفة.",
+      "en": "Take your time: first, second, third. The next letter will pulse softly."
+    },
+    {
+      "key": "assist.title",
+      "ar": "كمكم تعرض المساعدة",
+      "en": "Kamkam offers help"
+    },
+    {
+      "key": "assist.body",
+      "ar": "القمر يقترب من الجبال. هل تتبع كمكم في طريق مختصر إلى قصر الفريد؟ ستكشف لك العلامات الناقصة.",
+      "en": "The moon nears the mountains. Follow Kamkam on a short route to Qasr al-Farid? She will reveal any missing signs."
+    },
+    {
+      "key": "assist.accept",
+      "ar": "اتبع كمكم",
+      "en": "Follow Kamkam"
+    },
+    {
+      "key": "assist.decline",
+      "ar": "سأكمل بنفسي",
+      "en": "I'll continue alone"
+    },
+    {
+      "key": "end.title",
+      "ar": "اسمك في الحجر",
+      "en": "Your name in stone"
+    },
+    {
+      "key": "end.body",
+      "ar": "انتهت رحلتك في الحِجر. يمكنك حفظ صورة شقفتك تذكاراً، أو بدء رحلة جديدة.",
+      "en": "Your journey in Hegra is complete. Save a picture of your shard as a souvenir, or start a new journey."
+    },
+    {
+      "key": "end.replay",
+      "ar": "رحلة جديدة",
+      "en": "Play again"
+    },
+    {
+      "key": "end.save_souvenir",
+      "ar": "احفظ صورة التذكار",
+      "en": "Save souvenir picture"
+    },
+    {
+      "key": "shard.note",
+      "ar": "حروف مستوحاة من الخط النبطي (تقريب وليس نسخاً تاريخياً)",
+      "en": "Nabataean-inspired letters (approximation, not a historical transcription)"
+    },
+    {
+      "key": "spk.shuayd",
+      "ar": "شُعيد، حارس القافلة",
+      "en": "Shuʿayd, caravan guard"
+    },
+    {
+      "key": "spk.kamkam",
+      "ar": "كمكم، بائعة الكحل",
+      "en": "Kamkam, kohl seller"
+    },
+    {
+      "key": "spk.wahballahi",
+      "ar": "وهب اللهي، النحّات",
+      "en": "Wahballahi, stonemason"
+    },
+    {
+      "key": "spk.maliku",
+      "ar": "مالكو، الموسيقي والراوي",
+      "en": "Maliku, musician and narrator"
+    },
+    {
+      "key": "spk.traveler",
+      "ar": "أنت",
+      "en": "You"
+    },
+    {
+      "key": "hint.generic",
+      "ar": "اتبع ميل لهب سراجك؛ فهو يميل نحو هدفك.",
+      "en": "Follow the lean of your lamp's flame; it bends toward your goal."
+    },
+    {
+      "key": "obj.CampWelcome",
+      "ar": "استمع إلى شُعيد حارس القافلة",
+      "en": "Listen to Shuʿayd, the caravan guard"
+    },
+    {
+      "key": "ctl.CampWelcome",
+      "ar": "زر A أو X لتسريع الكلام • زر القائمة للاستراحة",
+      "en": "A or X to advance speech • Menu button to pause"
+    },
+    {
+      "key": "obj.CampGrabLamp",
+      "ar": "أمسك السراج الفخاري الموضوع على الصندوق",
+      "en": "Grab the clay lamp on the crate"
+    },
+    {
+      "key": "ctl.CampGrabLamp",
+      "ar": "قرّب يدك واضغط زر القبضة (الجانبي)، أو صوّب الشعاع واضغط القبضة",
+      "en": "Reach and press the grip (side) button, or aim the ray and press grip"
+    },
+    {
+      "key": "hint.CampGrabLamp.1",
+      "ar": "السراج أمامك على الصندوق الخشبي، ولهبه برتقالي.",
+      "en": "The lamp is in front of you on the wooden crate, with an orange flame."
+    },
+    {
+      "key": "hint.CampGrabLamp.2",
+      "ar": "اضغط زر القبضة الجانبي وأبقه مضغوطاً لتحمل السراج.",
+      "en": "Hold the side grip button to keep holding the lamp."
+    },
+    {
+      "key": "hint.CampGrabLamp.3",
+      "ar": "يمكنك أيضاً اختيار «تخطَّ الدرس».",
+      "en": "You can also choose \"Skip lesson\"."
+    },
+    {
+      "key": "obj.CampTeleport",
+      "ar": "انتقل إلى البساط المضيء",
+      "en": "Teleport to the glowing rug"
+    },
+    {
+      "key": "ctl.CampTeleport",
+      "ar": "العصا اليمنى للأمام: صوّب القوس على البساط ثم اتركها • العصا اليسرى للمشي، واضغطها للجري",
+      "en": "Right stick forward: aim the arc at the rug, then release • Left stick walks; click it to sprint"
+    },
+    {
+      "key": "hint.CampTeleport.1",
+      "ar": "البساط المضيء على يمين النار.",
+      "en": "The glowing rug is beside the fire."
+    },
+    {
+      "key": "hint.CampTeleport.2",
+      "ar": "عندما يصير القوس أزرق فالمكان صالح للانتقال.",
+      "en": "When the arc turns blue, the spot is valid."
+    },
+    {
+      "key": "obj.CampSnapTurn",
+      "ar": "استدر لتواجه شُعيد",
+      "en": "Turn to face Shuʿayd"
+    },
+    {
+      "key": "ctl.CampSnapTurn",
+      "ar": "حرّك عصا التحكم يميناً أو يساراً للدوران خطوة",
+      "en": "Flick the thumbstick left or right to snap turn"
+    },
+    {
+      "key": "hint.CampSnapTurn.1",
+      "ar": "حركة سريعة جانبية للعصا تكفي.",
+      "en": "A quick sideways flick is enough."
+    },
+    {
+      "key": "obj.CampStoreLamp",
+      "ar": "علّق السراج في خطاف حزامك",
+      "en": "Hang the lamp on your belt hook"
+    },
+    {
+      "key": "ctl.CampStoreLamp",
+      "ar": "قرّب السراج من خصرك وأفلت زر القبضة",
+      "en": "Bring the lamp to your waist and release the grip"
+    },
+    {
+      "key": "hint.CampStoreLamp.1",
+      "ar": "الخطاف عند خصرك، في جهة يدك الأخرى.",
+      "en": "The hook is at your waist, on your off-hand side."
+    },
+    {
+      "key": "hint.CampStoreLamp.2",
+      "ar": "اختر «علّقه عني» إن أردت.",
+      "en": "Choose \"Hang it for me\" if you prefer."
+    },
+    {
+      "key": "obj.CampFarewell",
+      "ar": "استمع إلى وداع شُعيد",
+      "en": "Listen to Shuʿayd's farewell"
+    },
+    {
+      "key": "obj.MarketMeetKamkam",
+      "ar": "اذهب إلى السوق وابحث عن كمكم بائعة الكحل",
+      "en": "Go to the market and find Kamkam the kohl seller"
+    },
+    {
+      "key": "ctl.MarketMeetKamkam",
+      "ar": "اتبع الفوانيس نحو السوق",
+      "en": "Follow the lanterns to the market"
+    },
+    {
+      "key": "hint.MarketMeetKamkam.1",
+      "ar": "كمكم ترتدي ثوباً بنفسجياً قرب مرآة برونزية.",
+      "en": "Kamkam wears a violet dress, near a bronze mirror."
+    },
+    {
+      "key": "obj.MarketLegend",
+      "ar": "استمع إلى أسطورة كمكم",
+      "en": "Listen to Kamkam's legend"
+    },
+    {
+      "key": "obj.MarketBuyKohl",
+      "ar": "ضع قطعة نقد على صينية كمكم لتشتري الكحل",
+      "en": "Place a coin on Kamkam's tray to buy kohl"
+    },
+    {
+      "key": "ctl.MarketBuyKohl",
+      "ar": "أمسك قطعة النقد من الصحن أمامك وضعها على الصينية",
+      "en": "Grab the coin from the dish in front of you and put it on the tray"
+    },
+    {
+      "key": "hint.MarketBuyKohl.1",
+      "ar": "الصحن الصغير أمامك على الطاولة، والصينية النحاسية أمام كمكم.",
+      "en": "The small dish is on the counter; the brass tray is in front of Kamkam."
+    },
+    {
+      "key": "obj.MarketApplyKohl",
+      "ar": "ضع الكحل: قرّب الوعاء من وجهك",
+      "en": "Apply kohl: bring the jar close to your face"
+    },
+    {
+      "key": "ctl.MarketApplyKohl",
+      "ar": "أمسك الوعاء وأبقه أمام وجهك لحظة (لا حاجة للمس العينين)",
+      "en": "Hold the jar in front of your face for a moment (no need to touch your eyes)"
+    },
+    {
+      "key": "hint.MarketApplyKohl.1",
+      "ar": "أبقِ الوعاء أمام وجهك حتى تمتلئ الدائرة.",
+      "en": "Keep the jar in front of your face until the circle fills."
+    },
+    {
+      "key": "hint.MarketApplyKohl.2",
+      "ar": "اختر «ضع الكحل» إن أردت.",
+      "en": "Choose \"Apply kohl\" if you prefer."
+    },
+    {
+      "key": "obj.MarketMeetWahballahi",
+      "ar": "اذهب إلى دكان وهب اللهي النحّات",
+      "en": "Visit Wahballahi the stonemason"
+    },
+    {
+      "key": "hint.MarketMeetWahballahi.1",
+      "ar": "صوت الإزميل يدلك عليه، في طرف السوق.",
+      "en": "Follow the sound of the chisel, at the edge of the market."
+    },
+    {
+      "key": "obj.MarketEnterName",
+      "ar": "اكتب اسمك ليُنقش على الشقفة",
+      "en": "Type your name to engrave on the shard"
+    },
+    {
+      "key": "ctl.MarketEnterName",
+      "ar": "صوّب الشعاع على الحروف واضغط الزناد",
+      "en": "Point the ray at the letters and pull the trigger"
+    },
+    {
+      "key": "obj.MarketEngrave",
+      "ar": "انقش اسمك: المس النقاط المضيئة بالإزميل بالترتيب",
+      "en": "Engrave your name: touch the glowing points with the chisel, in order"
+    },
+    {
+      "key": "ctl.MarketEngrave",
+      "ar": "أمسك الإزميل بزر القبضة والمس كل نقطة برأسه",
+      "en": "Hold the chisel with grip and touch each point with its tip"
+    },
+    {
+      "key": "hint.MarketEngrave.1",
+      "ar": "النقطة التالية هي الأكثر إضاءة.",
+      "en": "The next point is the brightest one."
+    },
+    {
+      "key": "hint.MarketEngrave.2",
+      "ar": "يكفي أن تقترب من النقطة، لا يلزم الدقة.",
+      "en": "Getting close to a point is enough; no precision needed."
+    },
+    {
+      "key": "hint.MarketEngrave.3",
+      "ar": "اختر «انقش عني» إن أردت.",
+      "en": "Choose \"Carve for me\" if you prefer."
+    },
+    {
+      "key": "obj.MarketReceiveShard",
+      "ar": "خذ شقفة اسمك من وهب اللهي",
+      "en": "Take your name shard from Wahballahi"
+    },
+    {
+      "key": "obj.TheaterIntro",
+      "ar": "اتجه إلى ساحة المسرح",
+      "en": "Head to the theater square"
+    },
+    {
+      "key": "hint.TheaterIntro.1",
+      "ar": "صوت القيثارة يأتي من الساحة.",
+      "en": "The lyre's sound comes from the square."
+    },
+    {
+      "key": "obj.TheaterPerformance",
+      "ar": "شاهد عرض «البنّاء والقمر»",
+      "en": "Watch \"The Mason and the Moon\""
+    },
+    {
+      "key": "obj.TheaterFindInscription",
+      "ar": "ابحث عن الفيل الحجري خلف المسرح وقرّب سراجك من وجهه",
+      "en": "Find the stone elephant beyond the stage and hold your lamp to its face"
+    },
+    {
+      "key": "ctl.TheaterFindInscription",
+      "ar": "أمسك السراج قرب الوجه الأملس للصخرة حتى تظهر الحروف",
+      "en": "Hold the lamp close to the smooth stone face until letters appear"
+    },
+    {
+      "key": "hint.TheaterFindInscription.1",
+      "ar": "الفيل الحجري يقف يمين المسرح، وخرطومه ينزل حتى الرمل.",
+      "en": "The stone elephant stands to the right of the stage. Its trunk reaches down to the sand."
+    },
+    {
+      "key": "hint.TheaterFindInscription.2",
+      "ar": "قف على الرمل المضيء أمام وجهه، وأبقِ السراج قرب الحجر بضع ثوانٍ.",
+      "en": "Stand on the glowing sand in front of its face and keep the lamp near the stone for a few seconds."
+    },
+    {
+      "key": "hint.TheaterFindInscription.3",
+      "ar": "راقب الحروف الثلاثة التي تضيء، ثم أشر إليها بالترتيب نفسه. نبضة خفيفة تدلّك الآن على الحرف التالي.",
+      "en": "Watch the three glyphs that glow, then point at them in the same order. A soft pulse now marks the next one."
+    },
+    {
+      "key": "obj.rock_repeat",
+      "ar": "أشر إلى الحروف المضيئة بالترتيب نفسه",
+      "en": "Point at the glowing letters in the same order"
+    },
+    {
+      "key": "ctl.rock_repeat",
+      "ar": "وجّه الشعاع إلى الحرف واضغط الزناد. اضغط «أعد الحروف» لتشاهدها مرة أخرى.",
+      "en": "Aim the ray at a letter and pull the trigger. Press \"Replay letters\" to watch again."
+    },
+    {
+      "key": "obj.IthlibIntro",
+      "ar": "اذهب إلى جبل إثلب",
+      "en": "Go to Jabal Ithlib"
+    },
+    {
+      "key": "obj.IthlibPuzzle",
+      "ar": "أدِر البوابات الحجرية لتوجيه الماء إلى الصهريج",
+      "en": "Turn the stone gates to guide the water into the cistern"
+    },
+    {
+      "key": "ctl.IthlibPuzzle",
+      "ar": "أمسك مقبض البوابة وأدِره، أو صوّب عليها واضغط الزناد لتدور ربع دورة",
+      "en": "Grab a gate handle and turn it, or point at it and pull the trigger to turn a quarter"
+    },
+    {
+      "key": "hint.IthlibPuzzle.1",
+      "ar": "تابع الماء: أين يتوقف؟ أدِر البوابة التي عندها.",
+      "en": "Follow the water: where does it stop? Turn the gate there."
+    },
+    {
+      "key": "hint.IthlibPuzzle.2",
+      "ar": "البوابة الأولى يجب أن ترسل الماء نحو الدرج القديم غرباً.",
+      "en": "The first gate should send the water west, toward the old steps."
+    },
+    {
+      "key": "hint.IthlibPuzzle.3",
+      "ar": "البوابات المتوهجة بالأزرق في وضعها الصحيح.",
+      "en": "Gates glowing blue are in the right position."
+    },
+    {
+      "key": "obj.BintIntro",
+      "ar": "اذهب إلى قصر البنت",
+      "en": "Go to Qasr al-Bint"
+    },
+    {
+      "key": "obj.BintAlign",
+      "ar": "قف على حجر المراقبة وانظر إلى النسر ثم إلى النجم الذي ينظر إليه",
+      "en": "Stand on the watching stone, look at the eagle, then at the star it gazes at"
+    },
+    {
+      "key": "ctl.BintAlign",
+      "ar": "أبقِ نظرك ثابتاً حتى تمتلئ الدائرة، أو صوّب الشعاع واضغط الزناد",
+      "en": "Hold your gaze until the circle fills, or point the ray and pull the trigger"
+    },
+    {
+      "key": "hint.BintAlign.1",
+      "ar": "النسر منحوت فوق باب الواجهة.",
+      "en": "The eagle is carved above the doorway."
+    },
+    {
+      "key": "hint.BintAlign.2",
+      "ar": "بعد أن يستيقظ النسر، يظهر خيط من الضوء من منقاره.",
+      "en": "Once the eagle wakes, a thread of light comes from its beak."
+    },
+    {
+      "key": "hint.BintAlign.3",
+      "ar": "النجم الصحيح في نهاية خيط الضوء.",
+      "en": "The right star is at the end of the thread of light."
+    },
+    {
+      "key": "obj.FaridIntro",
+      "ar": "اذهب إلى قصر الفريد، الصخرة الوحيدة",
+      "en": "Go to Qasr al-Farid, the lonely rock"
+    },
+    {
+      "key": "obj.FaridInsertShard",
+      "ar": "ضع شقفة اسمك في الكوة أسفل الواجهة",
+      "en": "Place your name shard in the niche below the facade"
+    },
+    {
+      "key": "ctl.FaridInsertShard",
+      "ar": "أمسك الشقفة من حقيبتك وضعها في الكوة",
+      "en": "Take the shard from your satchel and place it in the niche"
+    },
+    {
+      "key": "hint.FaridInsertShard.1",
+      "ar": "الكوة في الجزء الخشن غير المكتمل من الواجهة.",
+      "en": "The niche is in the rough, unfinished part of the facade."
+    },
+    {
+      "key": "obj.FaridDoorOpening",
+      "ar": "الباب الحجري يتحرك...",
+      "en": "The stone door is moving..."
+    },
+    {
+      "key": "obj.FaridOpenChest",
+      "ar": "افتح صندوق القافلة",
+      "en": "Open the caravan chest"
+    },
+    {
+      "key": "ctl.FaridOpenChest",
+      "ar": "أمسك مقبض الغطاء وارفعه",
+      "en": "Grab the lid handle and lift it"
+    },
+    {
+      "key": "obj.FaridFinale",
+      "ar": "انظر إلى الجدار",
+      "en": "Look at the wall"
+    },
+    {
+      "key": "edu.camp.title",
+      "ar": "الحِجر والقوافل",
+      "en": "Hegra and the caravans"
+    },
+    {
+      "key": "edu.camp.body",
+      "ar": "الحِجر (مدائن صالح) في محافظة العُلا كانت من أهم مدن الأنباط في الجنوب، وأول موقع سعودي يُدرج في قائمة التراث العالمي لليونسكو عام 2008. مرّت بها قوافل تحمل اللبان والمرّ من جنوب الجزيرة العربية.",
+      "en": "Hegra (Mada'in Salih) in AlUla was a major southern city of the Nabataean kingdom, and in 2008 became Saudi Arabia's first UNESCO World Heritage Site. Caravans carrying frankincense and myrrh from southern Arabia passed through it."
+    },
+    {
+      "key": "edu.market.title",
+      "ar": "الكتابة النبطية والكحل",
+      "en": "Nabataean writing and kohl"
+    },
+    {
+      "key": "edu.market.body",
+      "ar": "كتب الأنباط بخط مشتق من الآرامية، ويرى الباحثون أن الخط العربي تطوّر منه. أما الكحل فاستُخدم للعين في المنطقة منذ القدم. تحويل اسمك في اللعبة تقريب زخرفي فقط.",
+      "en": "The Nabataeans wrote in a script derived from Aramaic, from which scholars trace the development of Arabic script. Kohl has been used as an eye cosmetic in the region since antiquity. The name conversion in this game is only a decorative approximation."
+    },
+    {
+      "key": "edu.theater.title",
+      "ar": "ساحة متخيَّلة",
+      "en": "An imagined square"
+    },
+    {
+      "key": "edu.theater.body",
+      "ar": "لا يُعرف مسرح في الحِجر؛ هذه الساحة من خيال القصة. لكن واجهات المقابر هناك تحمل نقوشاً نبطية تذكر أسماء وتواريخ، كثير منها من عهد الحارثة الرابع.",
+      "en": "No theater is known at Hegra; this square is imagined for the story. However, tomb facades there carry Nabataean inscriptions naming people and dates, many from the reign of Aretas IV."
+    },
+    {
+      "key": "edu.elephant.title",
+      "ar": "صخرة الفيل (جبل الفيل)",
+      "en": "Elephant Rock (Jabal AlFil)"
+    },
+    {
+      "key": "edu.elephant.body",
+      "ar": "هذه الصخرة مستوحاة من صخرة الفيل، وهي تكوين طبيعي من الحجر الرملي في صحراء العُلا، وليست داخل الحِجر؛ استعارت الرحلة شكلها فقط. والحروف تصميم متخيَّل مستوحى من الخط النبطي، وليست نقشاً تاريخياً.",
+      "en": "This rock is inspired by Elephant Rock, a natural sandstone formation in the AlUla desert. It is not inside Hegra; the journey borrows its shape. The letters are an invented, Nabataean-inspired design, not a historical inscription."
+    },
+    {
+      "key": "edu.ithlib.title",
+      "ar": "جبل إثلب والماء",
+      "en": "Jabal Ithlib and water"
+    },
+    {
+      "key": "edu.ithlib.body",
+      "ar": "جبل إثلب كتلة صخرية في الحِجر فيها ممر ضيق (سيق) وقاعة منحوتة تُعرف بالديوان. وقد عُرف الأنباط بمهارتهم في جمع مياه الأمطار وحفظها بالقنوات والآبار والصهاريج.",
+      "en": "Jabal Ithlib is a rocky massif at Hegra with a narrow passage (siq) and a rock-cut hall known as the Diwan. The Nabataeans were known for skill in collecting and storing rainwater with channels, wells and cisterns."
+    },
+    {
+      "key": "edu.bint.title",
+      "ar": "قصر البنت والنسر",
+      "en": "Qasr al-Bint and the eagle"
+    },
+    {
+      "key": "edu.bint.body",
+      "ar": "قصر البنت مجموعة من المقابر الضخمة المنحوتة في الصخر. تزيّن واجهات كثيرة في الحِجر درجاتٌ متدرجة في أعلاها، ويظهر على بعضها نسر فوق الباب. ربط النسر بنجم في اللعبة خيال.",
+      "en": "Qasr al-Bint is a group of monumental rock-cut tombs. Many facades at Hegra are crowned with stepped decorations, and some show an eagle above the doorway. Linking the eagle to a star is fiction in this game."
+    },
+    {
+      "key": "edu.farid.title",
+      "ar": "قصر الفريد",
+      "en": "Qasr al-Farid"
+    },
+    {
+      "key": "edu.farid.body",
+      "ar": "قصر الفريد مقبرة منحوتة في صخرة منفردة، وواجهتها لم تكتمل: بقي جزؤها السفلي خشناً، ما يدل على أن النحّاتين عملوا من الأعلى إلى الأسفل. أما الغرفة السرية والكنز فهما من خيال القصة.",
+      "en": "Qasr al-Farid is a tomb carved into an isolated rock. Its facade was never finished: the lower part remains rough, showing that carvers worked from the top down. The secret chamber and treasure are fiction."
+    },
+    {
+      "key": "edu.coins.title",
+      "ar": "الحارثة الرابع",
+      "en": "Aretas IV"
+    },
+    {
+      "key": "edu.coins.body",
+      "ar": "حكم الحارثة الرابع مملكة الأنباط من نحو 9 ق.م إلى 40 م، وتحمل نقود عهده غالباً صورته. النقود في الصندوق مستوحاة منها وليست نسخاً لقطع حقيقية.",
+      "en": "Aretas IV ruled the Nabataean kingdom from about 9 BCE to 40 CE; coins from his reign often bear his portrait. The coins in the chest are inspired by them, not copies of real pieces."
+    },
+    {
+      "key": "edu.note",
+      "ar": "ملخص تعليمي مبسّط؛ للتفاصيل راجع مصادر رسمية مثل الهيئة الملكية لمحافظة العُلا واليونسكو.",
+      "en": "A simplified educational summary; see official sources such as the Royal Commission for AlUla and UNESCO."
+    },
+    {
+      "key": "stop.camp",
+      "ar": "مخيم القافلة",
+      "en": "Caravan Camp"
+    },
+    {
+      "key": "stop.market",
+      "ar": "السوق",
+      "en": "Market"
+    },
+    {
+      "key": "stop.theater",
+      "ar": "ساحة المسرح",
+      "en": "Theater Square"
+    },
+    {
+      "key": "stop.ithlib",
+      "ar": "جبل إثلب",
+      "en": "Jabal Ithlib"
+    },
+    {
+      "key": "stop.bint",
+      "ar": "قصر البنت",
+      "en": "Qasr al-Bint"
+    },
+    {
+      "key": "stop.farid",
+      "ar": "قصر الفريد",
+      "en": "Qasr al-Farid"
+    },
+    {
+      "key": "kb.title",
+      "ar": "اكتب اسمك ليُنقش على الشقفة",
+      "en": "Type your name for the shard"
+    },
+    {
+      "key": "kb.layout",
+      "ar": "عربي / EN",
+      "en": "EN / عربي"
+    },
+    {
+      "key": "kb.space",
+      "ar": "مسافة",
+      "en": "Space"
+    },
+    {
+      "key": "kb.delete",
+      "ar": "حذف",
+      "en": "Delete"
+    },
+    {
+      "key": "kb.clear",
+      "ar": "مسح",
+      "en": "Clear"
+    },
+    {
+      "key": "kb.confirm",
+      "ar": "انقش",
+      "en": "Carve"
+    },
+    {
+      "key": "kb.placeholder",
+      "ar": "اسمك هنا...",
+      "en": "Your name..."
+    },
+    {
+      "key": "set.speed",
+      "ar": "سرعة المشي",
+      "en": "Walking speed"
+    },
+    {
+      "key": "set.speed_slow",
+      "ar": "بطيئة",
+      "en": "Slow"
+    },
+    {
+      "key": "set.speed_normal",
+      "ar": "عادية",
+      "en": "Normal"
+    },
+    {
+      "key": "set.speed_fast",
+      "ar": "سريعة",
+      "en": "Fast"
+    },
+    {
+      "key": "set.turn",
+      "ar": "طريقة الدوران",
+      "en": "Turning"
+    },
+    {
+      "key": "set.turn_snap",
+      "ar": "متقطع",
+      "en": "Snap"
+    },
+    {
+      "key": "set.turn_smooth",
+      "ar": "مستمر",
+      "en": "Smooth"
+    },
+    {
+      "key": "toast.bint_wrong_star",
+      "ar": "ليس هذا النجم. اتبع خيط الضوء من منقار النسر.",
+      "en": "Not that star. Follow the thread of light from the eagle's beak."
+    },
+    {
+      "key": "toast.bint_stand_on_stone",
+      "ar": "قف على حجر المراقبة لتنظر كما ينظر النسر.",
+      "en": "Stand on the watching stone to look as the eagle looks."
+    },
+    {
+      "key": "ui.place_shard",
+      "ar": "ضع الشقفة في الكوة",
+      "en": "Place the shard in the niche"
+    },
+    {
+      "key": "hint.FaridInsertShard.2",
+      "ar": "الشقفة في حقيبتك. خذها وقرّبها من الكوة المضيئة.",
+      "en": "The shard is in your satchel. Take it and bring it close to the glowing niche."
+    },
+    {
+      "key": "hint.FaridInsertShard.3",
+      "ar": "إن صعب الإمساك بها، استخدم زر «ضع الشقفة في الكوة» في لوحة الهدف.",
+      "en": "If grabbing is hard, use the \"Place the shard in the niche\" button on the objective panel."
+    },
+    {
+      "key": "hint.FaridOpenChest.1",
+      "ar": "الصندوق في وسط الغرفة السرية.",
+      "en": "The chest is in the middle of the secret chamber."
+    },
+    {
+      "key": "hint.FaridOpenChest.2",
+      "ar": "أمسك مقبض الغطاء وارفعه، أو استخدم زر «افتح الصندوق».",
+      "en": "Grab the lid handle and lift it, or use the \"Open the chest\" button."
+    },
+    {
+      "key": "hint.FaridFinale.1",
+      "ar": "انظر إلى الجدار الأملس خلف الصندوق.",
+      "en": "Look at the smooth wall behind the chest."
+    },
+    {
+      "key": "hint.BintIntro.1",
+      "ar": "اتبع الفوانيس إلى الواجهة الكبيرة ذات النسر.",
+      "en": "Follow the lanterns to the great facade with the eagle."
+    },
+    {
+      "key": "hint.FaridIntro.1",
+      "ar": "اتبع الفوانيس إلى الصخرة الوحيدة.",
+      "en": "Follow the lanterns to the lonely rock."
+    },
+    {
+      "key": "chatter.greet.1",
+      "ar": "أهلاً بالمسافر! الحِجر ترحب بك.",
+      "en": "Welcome, traveler! Hegra greets you."
+    },
+    {
+      "key": "chatter.greet.2",
+      "ar": "قافلة الليلة كبيرة، أليس كذلك؟",
+      "en": "Big caravan tonight, isn't it?"
+    },
+    {
+      "key": "chatter.greet.3",
+      "ar": "السلام عليك! من أين أتيت؟",
+      "en": "Peace be upon you! Where have you come from?"
+    },
+    {
+      "key": "chatter.greet.4",
+      "ar": "القمر جميل الليلة... لا تتأخر.",
+      "en": "Lovely moon tonight... don't be late."
+    },
+    {
+      "key": "chatter.goods.1",
+      "ar": "لبان من الجنوب! رائحته تملأ الطريق.",
+      "en": "Frankincense from the south! Its scent fills the road."
+    },
+    {
+      "key": "chatter.goods.2",
+      "ar": "جرار ماء باردة، صُنعت من طين الوادي.",
+      "en": "Cool water jars, made from valley clay."
+    },
+    {
+      "key": "chatter.goods.3",
+      "ar": "قماش نيلي، مصبوغ كسماء الليل.",
+      "en": "Indigo cloth, dyed like the night sky."
+    },
+    {
+      "key": "chatter.goods.4",
+      "ar": "تمر حلو للرحلة الطويلة!",
+      "en": "Sweet dates for the long journey!"
+    },
+    {
+      "key": "chatter.goods.5",
+      "ar": "خواتم برونزية، اختر واحداً!",
+      "en": "Bronze rings, pick one!"
+    },
+    {
+      "key": "chatter.goods.6",
+      "ar": "توابل من بعيد، قرفة وفلفل.",
+      "en": "Spices from afar, cinnamon and pepper."
+    },
+    {
+      "key": "chatter.lore.1",
+      "ar": "يقولون إن البنّاء خبّأ شيئاً خلف قصر الفريد.",
+      "en": "They say the mason hid something behind Qasr al-Farid."
+    },
+    {
+      "key": "chatter.lore.2",
+      "ar": "النحّات وهب اللهي يكتب الأسماء بالحروف القديمة.",
+      "en": "Wahballahi the engraver writes names in the old letters."
+    },
+    {
+      "key": "chatter.lore.3",
+      "ar": "الماء في جبل إثلب أغلى من الذهب.",
+      "en": "Water at Jabal Ithlib is worth more than gold."
+    },
+    {
+      "key": "chatter.hint.MarketMeetKamkam",
+      "ar": "كمكم تنتظرك عند الخيمة البنفسجية على اليمين.",
+      "en": "Kamkam is waiting at the violet stall on the right."
+    },
+    {
+      "key": "chatter.hint.MarketMeetWahballahi",
+      "ar": "ورشة النحّات وهب اللهي على اليسار، تحت المظلة الصفراء.",
+      "en": "Wahballahi's workshop is on the left, under the saffron awning."
+    },
+    {
+      "key": "chatter.hint.MarketEnterName",
+      "ar": "اكتب اسمك على اللوح، وسينقشه النحّات.",
+      "en": "Write your name on the board, and the engraver will carve it."
+    },
+    {
+      "key": "chatter.hint.MarketEngrave",
+      "ar": "انقش الحروف واحداً واحداً على الشقفة.",
+      "en": "Carve the letters one by one onto the shard."
+    },
+    {
+      "key": "chatter.hint.MarketReceiveShard",
+      "ar": "احفظ شقفتك جيداً، ستحتاجها في النهاية.",
+      "en": "Keep your shard safe, you'll need it at the end."
+    },
+    {
+      "key": "chatter.hint.TheaterIntro",
+      "ar": "ساحة المسرح بعد السوق، اتبع الفوانيس.",
+      "en": "The theater square is past the market. Follow the lanterns."
+    }
+  ]
+}
