@@ -202,7 +202,7 @@ namespace SecretOfHegra.EditorTools
             stops.Add(BuildFarid(world, audio));
             BuildStopPlaceholders(world, audio, stops);
 
-            var lamp = BuildLamp(camp.transform.Find("LampCrate/LampSpot"), belt);
+            var lamp = BuildLamp(camp.transform.Find("LampTable/LampSpot"), belt);
 
             var gmGo = new GameObject("GameManager");
             gmGo.transform.SetParent(systems, false);
@@ -229,6 +229,7 @@ namespace SecretOfHegra.EditorTools
             moon.skyMaterial = M.sky;
 
             var kamkam = BuildKamkam(world);
+            camp.kamkamBubble = KamkamLampBubble(kamkam);
 
             gm.ConfigureData(
                 AssetDatabase.LoadAssetAtPath<TextAsset>(HegraKit.Root + "/Data/ui_strings.json"),
@@ -453,8 +454,8 @@ namespace SecretOfHegra.EditorTools
             var light = lightGo.AddComponent<Light>();
             light.type = LightType.Point;
             light.color = new Color(1f, 0.68f, 0.35f);
-            light.range = 3.5f;
-            light.intensity = 1.1f;
+            light.range = 4f;
+            light.intensity = 1.4f;
             light.shadows = LightShadows.None;
             light.renderMode = LightRenderMode.ForcePixel;
 

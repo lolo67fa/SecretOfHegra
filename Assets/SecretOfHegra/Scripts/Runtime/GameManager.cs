@@ -136,6 +136,7 @@ namespace SecretOfHegra
                 if (m_Dialogue.VoiceSource) m_Dialogue.VoiceSource.outputAudioMixerGroup = m_Audio.DialogueGroup;
             }
 
+            if (m_Lamp) m_Lamp.isOwned = () => LampOwned;
             foreach (var s in m_Stops) if (s) s.Initialize();
             if (m_Menus) m_Menus.Initialize(this);
 
@@ -246,12 +247,15 @@ namespace SecretOfHegra
             EnterStep(State.step);
         }
 
+        bool LampOwned => State != null && (State.lampAcquired || State.step > QuestStep.CampGrabLamp);
+
         void RestoreInventory()
         {
             if (m_Lamp)
             {
-                bool owned = State.lampAcquired || State.step > QuestStep.CampGrabLamp;
-                if (owned && m_BeltSocket) m_BeltSocket.ForceInsert(m_Lamp);
+                // the lamp waits on its table until the first lesson; once owned it lives on the belt
+                if (LampOwned && m_BeltSocket) m_BeltSocket.ForceInsert(m_Lamp);
+                else m_Lamp.ReturnToSpawn();
             }
             KohlEffect.SetApplied(State.kohlApplied, true);
         }

@@ -536,9 +536,14 @@
       "en": "A or X to advance speech • Menu button to pause"
     },
     {
+      "key": "camp.kamkam_lamp",
+      "ar": "خذي السراج، بتحتاجينه في الطريق",
+      "en": "Take the lamp, you'll need it on the way"
+    },
+    {
       "key": "obj.CampGrabLamp",
-      "ar": "أمسك السراج الفخاري الموضوع على الصندوق",
-      "en": "Grab the clay lamp on the crate"
+      "ar": "أمسك السراج الفخاري الموضوع على الطاولة أمامك",
+      "en": "Grab the clay lamp on the table in front of you"
     },
     {
       "key": "ctl.CampGrabLamp",
@@ -547,8 +552,8 @@
     },
     {
       "key": "hint.CampGrabLamp.1",
-      "ar": "السراج أمامك على الصندوق الخشبي، ولهبه برتقالي.",
-      "en": "The lamp is in front of you on the wooden crate, with an orange flame."
+      "ar": "السراج أمامك مباشرة على الطاولة، تحت السهم الذهبي.",
+      "en": "The lamp is right in front of you on the table, under the golden arrow."
     },
     {
       "key": "hint.CampGrabLamp.2",

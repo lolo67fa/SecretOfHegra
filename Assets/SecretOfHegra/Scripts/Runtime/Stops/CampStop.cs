@@ -14,7 +14,13 @@ namespace SecretOfHegra
         public Transform camel;
         public GameObject markerVisual;
 
+        [Header("Clay lamp lesson")]
+        public Transform lampCard;          // the objective card is pinned here, right beside the lamp
+        public GameObject kamkamBubble;     // "Take the lamp…" speech bubble above Kamkam
+
         float m_CamelTimer = 12f;
+        float m_PointTimer;
+        bool m_LampHint;
 
         public override void Initialize()
         {
@@ -37,6 +43,9 @@ namespace SecretOfHegra
         public override void OnStepEntered(QuestStep step)
         {
             if (markerVisual) markerVisual.SetActive(step == QuestStep.CampTeleport);
+            bool grabLesson = step == QuestStep.CampGrabLamp && !State.lampAcquired;
+            Game.Objective.SetWorldAnchor(grabLesson ? lampCard : null);
+            SetLampHint(grabLesson);
             switch (step)
             {
                 case QuestStep.CampWelcome:
@@ -87,10 +96,22 @@ namespace SecretOfHegra
         public override void OnStepExited(QuestStep step)
         {
             if (markerVisual) markerVisual.SetActive(false);
+            Game.Objective.SetWorldAnchor(null);
+            SetLampHint(false);
+        }
+
+        /// <summary>Kamkam stands by the table, points at the lamp and says "Take the lamp…" until it is picked up.</summary>
+        void SetLampHint(bool on)
+        {
+            m_LampHint = on;
+            m_PointTimer = 0f;
+            if (kamkamBubble) kamkamBubble.SetActive(on);
+            if (!on && KamkamGuide.Instance && KamkamGuide.Instance.figure) KamkamGuide.Instance.figure.Play(NpcGesture.Idle, 0.1f);
         }
 
         void OnLampGrabbed(HegraItem _)
         {
+            if (m_LampHint) SetLampHint(false);
             if (Game.State == null || Game.State.lampAcquired) return;
             Game.State.lampAcquired = true;
             Game.NotifyStateChanged();
@@ -136,6 +157,23 @@ namespace SecretOfHegra
 
         void Update()
         {
+            if (m_LampHint)
+            {
+                var kam = KamkamGuide.Instance ? KamkamGuide.Instance.figure : null;
+                m_PointTimer -= Time.deltaTime;
+                if (kam && Game.Lamp && m_PointTimer <= 0f)
+                {
+                    m_PointTimer = 4f;
+                    kam.Play(NpcGesture.Point, 4.2f, Game.Lamp.transform);
+                }
+                var cam = Camera.main;
+                if (kamkamBubble && cam)
+                {
+                    var d = kamkamBubble.transform.position - cam.transform.position; d.y = 0f;
+                    if (d.sqrMagnitude > 0.0001f) kamkamBubble.transform.rotation = Quaternion.LookRotation(d);
+                }
+            }
+
             if (!camel) return;
             m_CamelTimer -= Time.deltaTime;
             if (m_CamelTimer <= 0f)

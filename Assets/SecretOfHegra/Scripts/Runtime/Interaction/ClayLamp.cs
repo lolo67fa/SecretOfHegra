@@ -13,7 +13,7 @@ namespace SecretOfHegra
         [SerializeField] Transform m_Flame;
         [SerializeField] Transform m_RevealOrigin;
         [SerializeField] float m_RevealRadius = 1.6f;
-        [SerializeField] float m_BaseIntensity = 1.1f;
+        [SerializeField] float m_BaseIntensity = 1.4f;
         [SerializeField] float m_LeanDegrees = 22f;
 
         public static ClayLamp Instance { get; private set; }

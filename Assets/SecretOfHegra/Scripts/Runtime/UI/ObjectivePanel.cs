@@ -22,6 +22,11 @@ namespace SecretOfHegra
         readonly List<GameObject> m_Buttons = new List<GameObject>();
         string m_ControlsKey;
         Func<string> m_ControlsResolver;
+        LazyFollow m_Follow;
+        Transform m_Canvas;
+        Vector3 m_CanvasPos;
+        Quaternion m_CanvasRot;
+        Transform m_WorldAnchor;
 
         public static ObjectivePanel Create(Transform head, Camera cam)
         {
@@ -44,6 +49,10 @@ namespace SecretOfHegra
             UIFactory.VerticalLayout(content, 6, 0);
 
             var p = root.AddComponent<ObjectivePanel>();
+            p.m_Follow = follow;
+            p.m_Canvas = canvas.transform;
+            p.m_CanvasPos = canvas.transform.localPosition;
+            p.m_CanvasRot = canvas.transform.localRotation;
             var obj = UIFactory.LayoutText(content, "Objective", 612, 96, 30, TextAlignmentOptions.Center);
             p.m_Objective = obj.gameObject.AddComponent<LocalizedText>();
             p.m_Controls = UIFactory.LayoutText(content, "Controls", 612, 60, 22, TextAlignmentOptions.Center);
@@ -70,6 +79,27 @@ namespace SecretOfHegra
             m_ControlsResolver = controlsResolver;
             RefreshControls();
             ClearHint();
+        }
+
+        /// <summary>
+        /// Pins the card to a world point (e.g. right beside the clay lamp in the first lesson) instead of following
+        /// the head; null returns it to the usual lazy head-follow on the left.
+        /// </summary>
+        public void SetWorldAnchor(Transform anchor)
+        {
+            if (anchor == m_WorldAnchor) return;
+            m_WorldAnchor = anchor;
+            if (m_Follow) m_Follow.enabled = !anchor;
+            if (anchor)
+            {
+                transform.SetPositionAndRotation(anchor.position, anchor.rotation);
+                if (m_Canvas) { m_Canvas.localPosition = Vector3.zero; m_Canvas.localRotation = Quaternion.identity; }
+            }
+            else
+            {
+                if (m_Canvas) { m_Canvas.localPosition = m_CanvasPos; m_Canvas.localRotation = m_CanvasRot; }
+                if (m_Follow) m_Follow.SnapNow();
+            }
         }
 
         public void Hide()

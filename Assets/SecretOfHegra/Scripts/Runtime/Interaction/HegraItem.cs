@@ -25,6 +25,12 @@ namespace SecretOfHegra
         public float leftBehindDistance = 7f;
         public float killY = -4f;
 
+        /// <summary>
+        /// Optional: whether the player owns the item yet. Until then "returning home" puts it back where the scene
+        /// placed it (the lamp on its table) instead of into the home socket on the player's belt.
+        /// </summary>
+        [NonSerialized] public Func<bool> isOwned;
+
         XRGrabInteractable m_Grab;
         Rigidbody m_Body;
         Pose m_SpawnPose;
@@ -92,6 +98,22 @@ namespace SecretOfHegra
 
         public void SetSpawnPose(Vector3 pos, Quaternion rot) => m_SpawnPose = new Pose(pos, rot);
 
+        /// <summary>Puts the item back where the scene placed it, leaving any socket (not while a hand holds it).</summary>
+        public void ReturnToSpawn()
+        {
+            m_FarTimer = 0f;
+            if (IsHeldByHand) return;
+            if (Grab.isSelected && Grab.interactionManager)
+                Grab.interactionManager.CancelInteractableSelection((IXRSelectInteractable)Grab);
+            if (m_Body && !m_Body.isKinematic)
+            {
+                m_Body.linearVelocity = Vector3.zero;
+                m_Body.angularVelocity = Vector3.zero;
+            }
+            transform.SetPositionAndRotation(m_SpawnPose.position, m_SpawnPose.rotation);
+            if (m_Body) { m_Body.position = m_SpawnPose.position; m_Body.rotation = m_SpawnPose.rotation; }
+        }
+
         void Update()
         {
             if (!essential || Grab.isSelected) { m_FarTimer = 0f; return; }
@@ -118,6 +140,7 @@ namespace SecretOfHegra
         {
             m_FarTimer = 0f;
             if (IsHeldByHand) return;
+            if (isOwned != null && !isOwned()) { ReturnToSpawn(); return; }
             if (m_Body)
             {
                 if (!m_Body.isKinematic)

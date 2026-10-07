@@ -253,7 +253,7 @@ MonoBehaviour:
   m_Flame: {fileID: 2234251929654642835}
   m_RevealOrigin: {fileID: 2234251929654642835}
   m_RevealRadius: 1.6
-  m_BaseIntensity: 1.1
+  m_BaseIntensity: 1.4
   m_LeanDegrees: 22
 --- !u!1 &648772787681187646
 GameObject:
@@ -298,8 +298,8 @@ Light:
   serializedVersion: 13
   m_Type: 2
   m_Color: {r: 1, g: 0.68, b: 0.35, a: 1}
-  m_Intensity: 1.1
-  m_Range: 3.5
+  m_Intensity: 1.4
+  m_Range: 4
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}

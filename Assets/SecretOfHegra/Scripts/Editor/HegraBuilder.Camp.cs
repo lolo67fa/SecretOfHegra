@@ -151,7 +151,8 @@ namespace SecretOfHegra.EditorTools
 
             var spawnLocal = new Vector3(0, 0, -1.5f);
             stop.spawnPoint = Point(root, "SpawnPoint", spawnLocal, new Vector3(0, 0, 5));
-            stop.guidePoint = Point(root, "GuidePoint", new Vector3(-2.5f, 0, -0.5f), spawnLocal);
+            // Kamkam waits right beside the lamp table (left of it) and points at the lamp in the first lesson
+            stop.guidePoint = Point(root, "GuidePoint", new Vector3(-0.85f, 0, -0.45f), spawnLocal);
 
             var decor = HegraKit.Group("Decor", root, Vector3.zero).transform;
             Tent(decor, new Vector3(-5.5f, 0, 3f), 20f);
@@ -169,12 +170,32 @@ namespace SecretOfHegra.EditorTools
                 HegraKit.Prim(PrimitiveType.Sphere, decor, "Resin" + i, new Vector3(2.0f + (i % 3) * 0.3f, 0.06f, -2.4f + (i / 3) * 0.35f), Vector3.one * 0.12f, M.resin);
             HegraKit.MarkStatic(decor.gameObject);
 
-            // lamp on its crate, within seated reach in front of the spawn point
-            var lampCrate = HegraKit.Group("LampCrate", root, new Vector3(0, 0, -0.85f)).transform;
-            HegraKit.Prim(PrimitiveType.Cube, lampCrate, "Crate", new Vector3(0, 0.4f, 0), new Vector3(0.55f, 0.8f, 0.45f), M.wood, null, true);
+            // lamp on a table straight ahead of the spawn point (~0.9 m), at chest height (~1.15-1.2 m) so it is in
+            // view from the first second without looking down; a pale cloth makes it stand out against the night
+            const float tableTop = 1.12f;
+            var lampTable = HegraKit.Group("LampTable", root, new Vector3(0, 0, -0.6f)).transform;
+            HegraKit.Prim(PrimitiveType.Cube, lampTable, "Top", new Vector3(0, tableTop - 0.03f, 0), new Vector3(0.9f, 0.06f, 0.6f), M.wood, null, true);
+            HegraKit.Prim(PrimitiveType.Cube, lampTable, "Cloth", new Vector3(0, tableTop + 0.003f, 0), new Vector3(0.7f, 0.006f, 0.5f), M.linen);
+            foreach (var lx in new[] { -0.38f, 0.38f })
+                foreach (var lz in new[] { -0.24f, 0.24f })
+                    HegraKit.Prim(PrimitiveType.Cube, lampTable, "Leg", new Vector3(lx, (tableTop - 0.06f) * 0.5f, lz), new Vector3(0.06f, tableTop - 0.06f, 0.06f), M.wood);
             var spot = new GameObject("LampSpot").transform;
-            spot.SetParent(lampCrate, false);
-            spot.localPosition = new Vector3(0, 0.86f, 0);
+            spot.SetParent(lampTable, false);
+            spot.localPosition = new Vector3(0, tableTop + 0.03f, 0);
+
+            // until the lamp is first picked up: pulsing golden halo + bobbing golden arrow above it (LampBeacon)
+            var beacon = lampTable.gameObject.AddComponent<LampBeacon>();
+            beacon.halo = HegraKit.Prim(PrimitiveType.Quad, lampTable, "LampHalo", new Vector3(0, tableTop + 0.08f, 0), Vector3.one * 0.42f, M.glowWarm).GetComponent<Renderer>();
+            var gold = HegraKit.Unlit("M_BeaconGold", new Color(1f, 0.78f, 0.3f));
+            var arrow = HegraKit.Group("LampArrow", lampTable, new Vector3(0, tableTop + 0.42f, 0)).transform;
+            HegraKit.MeshObject("Head", arrow, HegraKit.Prism("BeaconArrowHead", 0.14f, 0.12f, 0.03f), gold, Vector3.zero, new Vector3(0, 0, 180f));
+            HegraKit.Prim(PrimitiveType.Cube, arrow, "Shaft", new Vector3(0, 0.08f, 0), new Vector3(0.045f, 0.11f, 0.02f), gold);
+            HegraKit.Prim(PrimitiveType.Quad, arrow, "Glow", new Vector3(0, 0.03f, 0.02f), Vector3.one * 0.3f, M.glowWarm);
+            beacon.arrow = arrow;
+
+            // the objective card ("reach out and press grip…") is pinned here, just right of the lamp, during the lesson
+            var cardPos = new Vector3(0.5f, 1.38f, -0.62f);
+            stop.lampCard = Point(root, "LampCard", cardPos, cardPos + (cardPos - (spawnLocal + Vector3.up * 1.4f)));
 
             // glowing rug used by the teleport lesson
             var rug = HegraKit.Group("TeleportRug", root, new Vector3(-1.4f, 0, 4.6f)).transform;
@@ -290,6 +311,19 @@ namespace SecretOfHegra.EditorTools
             var guide = f.root.AddComponent<KamkamGuide>();
             guide.figure = f.npc;
             return guide;
+        }
+
+        /// <summary>Speech bubble above Kamkam for the lamp lesson ("Take the lamp, you'll need it on the way").</summary>
+        static GameObject KamkamLampBubble(KamkamGuide kamkam)
+        {
+            var root = kamkam.transform;
+            var headY = kamkam.figure && kamkam.figure.head ? kamkam.figure.head.position.y - root.position.y : 1.6f;
+            var bubble = HegraKit.Group("LampBubble", root, new Vector3(0, headY + 0.32f, 0)).transform;
+            var text = WorldText(bubble, "Text", Vector3.zero, 0.75f, "camp.kamkam_lamp", HegraPalette.Linen, 0.8f);
+            text.rectTransform.sizeDelta = new Vector2(0.8f, 0.24f);
+            HegraKit.Prim(PrimitiveType.Quad, bubble, "Back", new Vector3(0, 0, 0.01f), new Vector3(0.66f, 0.18f, 1f), HegraKit.Unlit("M_BubbleBack", new Color(0.07f, 0.08f, 0.15f)));
+            bubble.gameObject.SetActive(false);
+            return bubble.gameObject;
         }
     }
 }
