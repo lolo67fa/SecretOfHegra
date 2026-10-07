@@ -141,6 +141,11 @@
       "en": "Hang it for me"
     },
     {
+      "key": "ui.take_coins",
+      "ar": "خذ العملات",
+      "en": "Take the coins"
+    },
+    {
       "key": "ui.skip",
       "ar": "تخطٍّ",
       "en": "Skip"
@@ -536,34 +541,29 @@
       "en": "A or X to advance speech • Menu button to pause"
     },
     {
-      "key": "camp.kamkam_lamp",
-      "ar": "خذي السراج، بتحتاجينه في الطريق",
-      "en": "Take the lamp, you'll need it on the way"
+      "key": "obj.CampTakeCoins",
+      "ar": "خذ العملات الثلاث من شُعيد",
+      "en": "Take the three coins from Shuʿayd"
     },
     {
-      "key": "obj.CampGrabLamp",
-      "ar": "أمسك السراج الفخاري الموضوع على الطاولة أمامك",
-      "en": "Grab the clay lamp on the table in front of you"
+      "key": "ctl.CampTakeCoins",
+      "ar": "أشر إلى طبق العملات أمامه واضغط الزناد أو زر القبضة، أو اختر «خذ العملات»",
+      "en": "Point at the coin plate in front of him and press trigger or grip, or choose \"Take the coins\""
     },
     {
-      "key": "ctl.CampGrabLamp",
-      "ar": "قرّب يدك واضغط زر القبضة (الجانبي)، أو صوّب الشعاع واضغط القبضة",
-      "en": "Reach and press the grip (side) button, or aim the ray and press grip"
+      "key": "hint.CampTakeCoins.1",
+      "ar": "طبق العملات على الطاولة أمام شُعيد، تحت السهم الذهبي.",
+      "en": "The coin plate is on the table in front of Shuʿayd, under the golden arrow."
     },
     {
-      "key": "hint.CampGrabLamp.1",
-      "ar": "السراج أمامك مباشرة على الطاولة، تحت السهم الذهبي.",
-      "en": "The lamp is right in front of you on the table, under the golden arrow."
+      "key": "hint.CampTakeCoins.2",
+      "ar": "يمكنك الإشارة إليه من مكانك، لا حاجة للمشي. السراج في يدك ويبقى معك.",
+      "en": "You can point at it from where you stand; no need to walk. The lamp stays in your hand."
     },
     {
-      "key": "hint.CampGrabLamp.2",
-      "ar": "اضغط زر القبضة الجانبي وأبقه مضغوطاً لتحمل السراج.",
-      "en": "Hold the side grip button to keep holding the lamp."
-    },
-    {
-      "key": "hint.CampGrabLamp.3",
-      "ar": "يمكنك أيضاً اختيار «تخطَّ الدرس».",
-      "en": "You can also choose \"Skip lesson\"."
+      "key": "hint.CampTakeCoins.3",
+      "ar": "يمكنك أيضاً اختيار «خذ العملات» أو «تخطَّ الدرس».",
+      "en": "You can also choose \"Take the coins\" or \"Skip lesson\"."
     },
     {
       "key": "obj.CampTeleport",
@@ -607,8 +607,8 @@
     },
     {
       "key": "ctl.CampStoreLamp",
-      "ar": "قرّب السراج من خصرك وأفلت زر القبضة",
-      "en": "Bring the lamp to your waist and release the grip"
+      "ar": "قرّب يدك التي تحمل السراج من خصرك، فيتعلّق بالحزام",
+      "en": "Bring the hand holding the lamp to your waist and it hangs on the belt"
     },
     {
       "key": "hint.CampStoreLamp.1",

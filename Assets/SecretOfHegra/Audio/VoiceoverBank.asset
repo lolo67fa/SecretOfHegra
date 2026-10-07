@@ -220,3 +220,6 @@ MonoBehaviour:
   - key: rock_revealed_01
     arabic: {fileID: 0}
     english: {fileID: 0}
+  - key: camp_coins_01
+    arabic: {fileID: 0}
+    english: {fileID: 0}

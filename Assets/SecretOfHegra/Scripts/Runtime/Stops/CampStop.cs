@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace SecretOfHegra
 {
     /// <summary>
-    /// Stop 1 — Caravan Camp. Shuʿayd teaches grabbing the clay lamp, teleporting, snap turning and the belt
-    /// hook. Each lesson completes when the player actually does it; every lesson has a skip.
+    /// Stop 1 — Caravan Camp. The player starts with the clay lamp already in the dominant hand. Shuʿayd hands over
+    /// the three coins (from the plate on the table in front of him), then teaches teleporting, snap turning and
+    /// hanging the lamp on the belt hook. Each lesson completes when the player actually does it; every lesson has
+    /// a skip.
     /// </summary>
     public class CampStop : StopBase
     {
@@ -14,20 +17,21 @@ namespace SecretOfHegra
         public Transform camel;
         public GameObject markerVisual;
 
-        [Header("Clay lamp lesson")]
-        public Transform lampCard;          // the objective card is pinned here, right beside the lamp
-        public GameObject kamkamBubble;     // "Take the lamp…" speech bubble above Kamkam
+        [Header("Coins lesson")]
+        public XRSimpleInteractable coinPlate;  // point + trigger/grip (or reach and grip) takes the coins
+        public GameObject coinPile;             // the three coins on the plate, hidden once taken
+        public Transform coinCard;              // the objective card is pinned here, beside the coins
 
         float m_CamelTimer = 12f;
         float m_PointTimer;
-        bool m_LampHint;
+        bool m_CoinsHint;
 
         public override void Initialize()
         {
             Game.Rig.Teleported += OnTeleported;
             Game.Rig.SnapTurned += OnSnapTurned;
-            if (Game.Lamp) Game.Lamp.Grabbed += OnLampGrabbed;
             if (Game.BeltSocket) Game.BeltSocket.ItemInserted += OnBeltInserted;
+            if (coinPlate) coinPlate.selectEntered.AddListener(_ => TakeCoins());
             if (markerVisual) markerVisual.SetActive(false);
         }
 
@@ -36,31 +40,35 @@ namespace SecretOfHegra
             var gm = GameManager.Instance;
             if (!gm) return;
             if (gm.Rig) { gm.Rig.Teleported -= OnTeleported; gm.Rig.SnapTurned -= OnSnapTurned; }
-            if (gm.Lamp) gm.Lamp.Grabbed -= OnLampGrabbed;
             if (gm.BeltSocket) gm.BeltSocket.ItemInserted -= OnBeltInserted;
+        }
+
+        public override void RestoreState(GameState s)
+        {
+            if (coinPile) coinPile.SetActive(!s.coinsReceived);
         }
 
         public override void OnStepEntered(QuestStep step)
         {
             if (markerVisual) markerVisual.SetActive(step == QuestStep.CampTeleport);
-            // from the very start of the journey (welcome speech included) until the lamp is picked up, the card
-            // beside the lamp says how to grab it and Kamkam points at it; the lamp may be grabbed during the speech
-            bool grabLesson = (step == QuestStep.CampWelcome || step == QuestStep.CampGrabLamp) && !State.lampAcquired;
-            Game.Objective.SetWorldAnchor(grabLesson ? lampCard : null);
-            SetLampHint(grabLesson);
-            if (grabLesson && step == QuestStep.CampWelcome) Game.Objective.Show("obj.CampGrabLamp", "ctl.CampGrabLamp");
+            // from the very start of the journey (welcome speech included) until the coins are taken, the card
+            // beside the coin plate says how to take them and Shuʿayd points at the plate; they may be taken early
+            bool coinsLesson = (step == QuestStep.CampWelcome || step == QuestStep.CampTakeCoins) && !State.coinsReceived;
+            Game.Objective.SetWorldAnchor(coinsLesson ? coinCard : null);
+            SetCoinsHint(coinsLesson);
+            if (coinsLesson && step == QuestStep.CampWelcome) Game.Objective.Show("obj.CampTakeCoins", "ctl.CampTakeCoins");
             switch (step)
             {
                 case QuestStep.CampWelcome:
-                    Game.Objective.SetActions(("ui.skip_tutorial", SkipTutorial));
+                    Game.Objective.SetActions(("ui.take_coins", TakeCoins), ("ui.skip_tutorial", SkipTutorial));
                     if (shuayd) shuayd.Play(NpcGesture.Wave, 3f);
                     Game.Dialogue.Play("camp_welcome", () => Complete(QuestStep.CampWelcome));
                     break;
 
-                case QuestStep.CampGrabLamp:
-                    ObjectiveBeacon.Current = Game.Lamp ? Game.Lamp.transform : null;
-                    Game.Objective.SetActions(("ui.skip_tutorial", SkipTutorial));
-                    Game.Dialogue.Play("camp_grab");
+                case QuestStep.CampTakeCoins:
+                    ObjectiveBeacon.Current = coinPlate ? coinPlate.transform : null;
+                    Game.Objective.SetActions(("ui.take_coins", TakeCoins), ("ui.skip_tutorial", SkipTutorial));
+                    Game.Dialogue.Play("camp_coins");
                     break;
 
                 case QuestStep.CampTeleport:
@@ -84,12 +92,7 @@ namespace SecretOfHegra
                 case QuestStep.CampFarewell:
                     ObjectiveBeacon.Current = marketDirection;
                     Game.Objective.ClearButtons();
-                    if (State.ReceiveStartingCoins())
-                    {
-                        HegraAudio.Play2D(Sfx.Coin);
-                        Game.Menus.ShowToast("toast.coins_received");
-                        Game.SaveNow();
-                    }
+                    GiveCoins(); // only if the coins lesson was skipped
                     if (shuayd) shuayd.Play(NpcGesture.Point, 4f, marketDirection);
                     Game.Dialogue.Play(State.tutorialSkipped ? "camp_farewell_short" : "camp_farewell", () => Complete(QuestStep.CampFarewell));
                     break;
@@ -100,24 +103,33 @@ namespace SecretOfHegra
         {
             if (markerVisual) markerVisual.SetActive(false);
             Game.Objective.SetWorldAnchor(null);
-            SetLampHint(false);
+            SetCoinsHint(false);
         }
 
-        /// <summary>Kamkam stands by the table, points at the lamp and says "Take the lamp…" until it is picked up.</summary>
-        void SetLampHint(bool on)
+        /// <summary>Shuʿayd points at the coin plate until the coins are taken.</summary>
+        void SetCoinsHint(bool on)
         {
-            m_LampHint = on;
-            m_PointTimer = 0f;
-            if (kamkamBubble) kamkamBubble.SetActive(on);
-            if (!on && KamkamGuide.Instance && KamkamGuide.Instance.figure) KamkamGuide.Instance.figure.Play(NpcGesture.Idle, 0.1f);
+            m_CoinsHint = on;
+            m_PointTimer = 3f;   // let the welcome wave finish first
+            if (!on && shuayd) shuayd.Play(NpcGesture.Idle, 0.1f);
         }
 
-        void OnLampGrabbed(HegraItem _)
+        void TakeCoins()
         {
-            if (m_LampHint) SetLampHint(false);
-            if (Game.State == null || Game.State.lampAcquired) return;
-            Game.State.lampAcquired = true;
-            Game.NotifyStateChanged();
+            if (Game.State == null || !Game.InGame || Game.State.coinsReceived) return;
+            if (!GiveCoins()) return;
+            SetCoinsHint(false);
+            Game.NotifyStateChanged();   // advances "take the coins" (also when taken during the welcome)
+        }
+
+        bool GiveCoins()
+        {
+            if (!State.ReceiveStartingCoins()) return false;
+            HegraAudio.PlayAt(Sfx.Coin, coinPlate ? coinPlate.transform.position : transform.position);
+            Game.Menus.ShowToast("toast.coins_received");
+            if (coinPile) coinPile.SetActive(false);
+            Game.SaveNow();
+            return true;
         }
 
         void OnTeleported()
@@ -144,12 +156,13 @@ namespace SecretOfHegra
 
         void StoreLampForMe()
         {
-            if (Game.Lamp && Game.BeltSocket)
+            if (Game.BeltSocket && Game.Lamp && Game.BeltSocket.Holds(Game.Lamp))
             {
-                Game.State.lampAcquired = true;
-                Game.BeltSocket.ForceInsert(Game.Lamp);
+                // already hanging there: just count the lesson
                 if (!Game.State.lampStoredOnce) { Game.State.lampStoredOnce = true; Game.NotifyStateChanged(); }
+                return;
             }
+            Game.PutLampOnBelt();   // the belt insertion completes the lesson (OnBeltInserted)
         }
 
         void SkipTutorial()
@@ -160,20 +173,13 @@ namespace SecretOfHegra
 
         void Update()
         {
-            if (m_LampHint)
+            if (m_CoinsHint && shuayd && coinPlate)
             {
-                var kam = KamkamGuide.Instance ? KamkamGuide.Instance.figure : null;
                 m_PointTimer -= Time.deltaTime;
-                if (kam && Game.Lamp && m_PointTimer <= 0f)
+                if (m_PointTimer <= 0f)
                 {
                     m_PointTimer = 4f;
-                    kam.Play(NpcGesture.Point, 4.2f, Game.Lamp.transform);
-                }
-                var cam = Camera.main;
-                if (kamkamBubble && cam)
-                {
-                    var d = kamkamBubble.transform.position - cam.transform.position; d.y = 0f;
-                    if (d.sqrMagnitude > 0.0001f) kamkamBubble.transform.rotation = Quaternion.LookRotation(d);
+                    shuayd.Play(NpcGesture.Point, 4.2f, coinPlate.transform);
                 }
             }
 

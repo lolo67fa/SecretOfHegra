@@ -93,7 +93,7 @@ namespace SecretOfHegra.EditorTools
                 var step = s.step;
                 switch (step)
                 {
-                    case QuestStep.CampGrabLamp: s.lampAcquired = true; break;
+                    case QuestStep.CampTakeCoins: s.lampAcquired = true; s.ReceiveStartingCoins(); break;
                     case QuestStep.CampTeleport: s.tutorialTeleported = true; break;
                     case QuestStep.CampSnapTurn: s.tutorialTurned = true; break;
                     case QuestStep.CampStoreLamp: s.lampStoredOnce = true; break;
@@ -210,7 +210,12 @@ namespace SecretOfHegra.EditorTools
             var market = Stop<MarketStop>();
             switch (step)
             {
-                case QuestStep.CampGrabLamp: return Grab(g.Lamp);
+                case QuestStep.CampTakeCoins:
+                {
+                    var camp = Stop<CampStop>();
+                    if (camp.coinPlate) { Tap(camp.coinPlate); return "take coins from the plate"; }
+                    return "no coin plate";
+                }
                 case QuestStep.CampTeleport:
                 {
                     var m = Stop<CampStop>().teleportMarker.position; m.y = 0;
@@ -224,7 +229,12 @@ namespace SecretOfHegra.EditorTools
                     s_TurnUntil = Time.time + 0.4f;
                     return "snap turn (right stick)";
                 case QuestStep.CampStoreLamp:
+                {
+                    // bring the carrying hand's lamp to the waist, as a player would
+                    var carry = g.Rig.GetComponent<LampHandCarry>();
+                    if (carry && carry.IsCarrying) { carry.StoreOnBelt(); return "lamp brought to the belt"; }
                     return "belt holds lamp=" + g.BeltSocket.ForceInsert(g.Lamp);
+                }
                 case QuestStep.MarketMeetKamkam:
                     return Near(KamkamGuide.Instance ? KamkamGuide.Instance.transform : market.kamkamStall) ?? "waiting for Kamkam";
                 case QuestStep.MarketBuyKohl:
@@ -262,12 +272,14 @@ namespace SecretOfHegra.EditorTools
                         return "select glyph " + next;
                     }
                     if (!g.Lamp.IsHeldByHand) Grab(g.Lamp);
+                    g.Lamp.looseReturnSeconds = 0f; // automation only: keep it at the face instead of returning to the belt
                     var r = ReleaseAt(g.Lamp, target.position - target.forward * 0.5f);
                     var rb = g.Lamp.GetComponent<Rigidbody>();
                     if (rb) rb.isKinematic = true; // held up to the rock face rather than dropped
                     return r + " (lamp held at rock face)";
                 }
                 case QuestStep.IthlibIntro:
+                    if (g.Lamp.looseReturnSeconds <= 0f) { g.Lamp.looseReturnSeconds = 2f; g.Lamp.Recover(); }
                     return Near(Stop<IthlibStop>().puzzleCenter, 3f) ?? "waiting at puzzle";
                 case QuestStep.IthlibPuzzle:
                 {

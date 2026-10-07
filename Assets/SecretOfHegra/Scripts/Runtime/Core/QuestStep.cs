@@ -10,7 +10,7 @@ namespace SecretOfHegra
 
         // Stop 1 — Caravan Camp
         CampWelcome = 10,
-        CampGrabLamp = 11,
+        CampTakeCoins = 11,      // was CampGrabLamp: the lamp now starts in the player's hand
         CampTeleport = 12,
         CampSnapTurn = 13,
         CampStoreLamp = 14,

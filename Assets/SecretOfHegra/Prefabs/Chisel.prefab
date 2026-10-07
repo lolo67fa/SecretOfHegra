@@ -234,6 +234,7 @@ MonoBehaviour:
   leftBehindSeconds: 6
   leftBehindDistance: 7
   killY: -4
+  looseReturnSeconds: 0
 --- !u!1 &2948868445700758865
 GameObject:
   m_ObjectHideFlags: 0

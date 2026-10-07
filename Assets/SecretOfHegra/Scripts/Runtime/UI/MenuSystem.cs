@@ -283,9 +283,10 @@ namespace SecretOfHegra
             GameState St() => m_Game.State;
             string Have(bool b) => Loc.Get(b ? "inv.have" : "inv.missing");
 
-            AddValueRow(c, "inv.lamp", () => Have(St() != null && (St().lampAcquired || St().step > QuestStep.CampGrabLamp)), null, null, () =>
+            // the lamp is the player's from the first second of a journey (in hand, then on the belt)
+            AddValueRow(c, "inv.lamp", () => Have(St() != null), null, null, () =>
             {
-                if (m_Game.Lamp && St() != null && (St().lampAcquired || St().step > QuestStep.CampGrabLamp)) m_Game.Lamp.Recover();
+                if (m_Game.Lamp && St() != null) m_Game.Lamp.Recover();
             });
             AddValueRow(c, "inv.coins", () => St() == null ? "0" : St().coins.ToString(), null, null, () => { });
             AddValueRow(c, "inv.kohl", () => Loc.Get(St() != null && St().kohlApplied ? "inv.applied" : (St() != null && St().hasKohl ? "inv.have" : "inv.missing")), null, null, () => { });

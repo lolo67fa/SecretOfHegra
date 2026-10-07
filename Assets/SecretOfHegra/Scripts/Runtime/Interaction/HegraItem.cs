@@ -24,17 +24,16 @@ namespace SecretOfHegra
         public float leftBehindSeconds = 6f;
         public float leftBehindDistance = 7f;
         public float killY = -4f;
+        [Tooltip("If > 0: seconds the item may lie loose (not in a hand, not in a socket) before it returns home.")]
+        public float looseReturnSeconds = 0f;
 
-        /// <summary>
-        /// Optional: whether the player owns the item yet. Until then "returning home" puts it back where the scene
-        /// placed it (the lamp on its table) instead of into the home socket on the player's belt.
-        /// </summary>
-        [NonSerialized] public Func<bool> isOwned;
+        /// <summary>Attached to the player's hand by <see cref="LampHandCarry"/>: never "lost", never auto-returned.</summary>
+        [NonSerialized] public bool IsCarried;
 
         XRGrabInteractable m_Grab;
         Rigidbody m_Body;
         Pose m_SpawnPose;
-        float m_FarTimer;
+        float m_FarTimer, m_LooseTimer;
 
         public XRGrabInteractable Grab => m_Grab ? m_Grab : (m_Grab = GetComponent<XRGrabInteractable>());
         public bool IsHeldByHand
@@ -98,30 +97,21 @@ namespace SecretOfHegra
 
         public void SetSpawnPose(Vector3 pos, Quaternion rot) => m_SpawnPose = new Pose(pos, rot);
 
-        /// <summary>Puts the item back where the scene placed it, leaving any socket (not while a hand holds it).</summary>
-        public void ReturnToSpawn()
-        {
-            m_FarTimer = 0f;
-            if (IsHeldByHand) return;
-            if (Grab.isSelected && Grab.interactionManager)
-                Grab.interactionManager.CancelInteractableSelection((IXRSelectInteractable)Grab);
-            if (m_Body && !m_Body.isKinematic)
-            {
-                m_Body.linearVelocity = Vector3.zero;
-                m_Body.angularVelocity = Vector3.zero;
-            }
-            transform.SetPositionAndRotation(m_SpawnPose.position, m_SpawnPose.rotation);
-            if (m_Body) { m_Body.position = m_SpawnPose.position; m_Body.rotation = m_SpawnPose.rotation; }
-        }
-
         void Update()
         {
-            if (!essential || Grab.isSelected) { m_FarTimer = 0f; return; }
+            if (IsCarried || !essential || Grab.isSelected) { m_FarTimer = 0f; m_LooseTimer = 0f; return; }
 
             if (transform.position.y < killY)
             {
                 Recover();
                 return;
+            }
+
+            // dropped and left lying (not held, not on the belt): bring it home quickly
+            if (looseReturnSeconds > 0f)
+            {
+                m_LooseTimer += Time.deltaTime;
+                if (m_LooseTimer > looseReturnSeconds) { Recover(); return; }
             }
 
             var gm = GameManager.Instance;
@@ -139,8 +129,8 @@ namespace SecretOfHegra
         public void Recover()
         {
             m_FarTimer = 0f;
-            if (IsHeldByHand) return;
-            if (isOwned != null && !isOwned()) { ReturnToSpawn(); return; }
+            m_LooseTimer = 0f;
+            if (IsHeldByHand || IsCarried) return;
             if (m_Body)
             {
                 if (!m_Body.isKinematic)

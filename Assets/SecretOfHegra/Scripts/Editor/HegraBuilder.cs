@@ -202,7 +202,14 @@ namespace SecretOfHegra.EditorTools
             stops.Add(BuildFarid(world, audio));
             BuildStopPlaceholders(world, audio, stops);
 
-            var lamp = BuildLamp(camp.transform.Find("LampTable/LampSpot"), belt);
+            var lamp = BuildLamp(camp.transform.Find("LampSpot"), belt);
+
+            // the lamp starts every journey in the player's dominant hand and is hung on the belt in the lesson
+            var carry = rig.gameObject.AddComponent<LampHandCarry>();
+            carry.lamp = lamp;
+            carry.belt = belt;
+            carry.leftHand = rig.LeftController;
+            carry.rightHand = rig.RightController;
 
             var gmGo = new GameObject("GameManager");
             gmGo.transform.SetParent(systems, false);
@@ -229,7 +236,6 @@ namespace SecretOfHegra.EditorTools
             moon.skyMaterial = M.sky;
 
             var kamkam = BuildKamkam(world);
-            camp.kamkamBubble = KamkamLampBubble(kamkam);
 
             gm.ConfigureData(
                 AssetDatabase.LoadAssetAtPath<TextAsset>(HegraKit.Root + "/Data/ui_strings.json"),
@@ -483,6 +489,9 @@ namespace SecretOfHegra.EditorTools
             inst.transform.SetPositionAndRotation(spot.position, spot.rotation);
             var instItem = inst.GetComponent<HegraItem>();
             instItem.homeSocket = belt;
+            // never lost: straight back to the belt if it falls through the ground, or after 2 s lying loose
+            instItem.killY = -0.5f;
+            instItem.looseReturnSeconds = 2f;
             return instItem;
         }
     }

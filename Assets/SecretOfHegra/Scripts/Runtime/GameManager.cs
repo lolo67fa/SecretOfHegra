@@ -136,7 +136,7 @@ namespace SecretOfHegra
                 if (m_Dialogue.VoiceSource) m_Dialogue.VoiceSource.outputAudioMixerGroup = m_Audio.DialogueGroup;
             }
 
-            if (m_Lamp) m_Lamp.isOwned = () => LampOwned;
+            m_LampCarry = m_Rig ? m_Rig.GetComponent<LampHandCarry>() : null;
             foreach (var s in m_Stops) if (s) s.Initialize();
             if (m_Menus) m_Menus.Initialize(this);
 
@@ -175,7 +175,7 @@ namespace SecretOfHegra
             InGame = false;
             var camp = GetStop(StopId.Camp);
             if (camp && camp.spawnPoint) m_Rig.PlaceAt(camp.spawnPoint);
-            m_Lamp?.Recover();
+            CarryLampInHand();
             yield return null;
             m_Menus.ShowMain();
             yield return m_Rig.Fader.FadeTo(0f, 1.2f);
@@ -247,17 +247,33 @@ namespace SecretOfHegra
             EnterStep(State.step);
         }
 
-        bool LampOwned => State != null && (State.lampAcquired || State.step > QuestStep.CampGrabLamp);
-
         void RestoreInventory()
         {
             if (m_Lamp)
             {
-                // the lamp waits on its table until the first lesson; once owned it lives on the belt
-                if (LampOwned && m_BeltSocket) m_BeltSocket.ForceInsert(m_Lamp);
-                else m_Lamp.ReturnToSpawn();
+                // the player always has the lamp: in the dominant hand until it has been hung on the belt once
+                // (old saves included: they never put it back on a table), afterwards on the belt
+                State.lampAcquired = true;
+                if (State.lampStoredOnce) PutLampOnBelt();
+                else CarryLampInHand();
             }
             KohlEffect.SetApplied(State.kohlApplied, true);
+        }
+
+        LampHandCarry m_LampCarry;
+
+        /// <summary>The lamp in the dominant hand (journey start, main menu, saves from before the belt lesson).</summary>
+        public void CarryLampInHand()
+        {
+            if (m_LampCarry) m_LampCarry.Carry(Settings != null ? Settings.handedness : Handedness.Right);
+            else if (m_Lamp && m_BeltSocket) m_BeltSocket.ForceInsert(m_Lamp);
+        }
+
+        /// <summary>The lamp on the belt hook (belt lesson done, "hang it for me", skip tutorial, assisted route).</summary>
+        public void PutLampOnBelt()
+        {
+            if (m_LampCarry) m_LampCarry.StoreOnBelt();
+            else if (m_Lamp && m_BeltSocket) m_BeltSocket.ForceInsert(m_Lamp);
         }
 
         // ───────────────────────── Progression ─────────────────────────
@@ -299,7 +315,7 @@ namespace SecretOfHegra
         public void SkipTutorial()
         {
             if (State == null || !QuestFlow.SkipTutorial(State)) return;
-            if (m_Lamp && m_BeltSocket) m_BeltSocket.ForceInsert(m_Lamp);
+            PutLampOnBelt();
             SaveNow();
             EnterStep(State.step);
         }
@@ -433,6 +449,7 @@ namespace SecretOfHegra
             Loc.SetLanguage(s.language);
             if (m_Rig) m_Rig.ApplySettings(s);
             if (m_Body) m_Body.SetHandedness(s.handedness);
+            if (m_LampCarry && m_LampCarry.IsCarrying) m_LampCarry.Carry(s.handedness);   // follow the new dominant hand
             if (m_Audio) m_Audio.ApplySettings(s);
             if (Subtitles) Subtitles.SetScale(s.subtitleScale);
             EduCard.SetVisible(s.educationalCards && (State != null ? State.museumMode : s.museumMode));
@@ -445,6 +462,8 @@ namespace SecretOfHegra
         void Update()
         {
             PollHeadset();
+            // the carried lamp may be hung on the belt from the belt lesson onwards
+            if (m_LampCarry) m_LampCarry.allowBeltHang = State != null && InGame && State.step >= QuestStep.CampStoreLamp;
             UpdatePresence();
 
             if (Input.menu.WasPressedThisFrame() && m_Menus) m_Menus.TogglePause();

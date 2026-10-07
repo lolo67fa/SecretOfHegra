@@ -450,3 +450,28 @@
   - القائمة: 3 أزرار، والنصوص صحيحة، ولا سهم ولا فقاعة، وصورة القائمة واضحة بلا غطاء.
   - بعد «رحلة جديدة»: السهم والبطاقة والفقاعة ظاهرة، والطاولة يمين.
   - اختبارات EditMode: 39/39.
+
+---
+
+## ✦ 2026-10-07 19:20 — بناء APK (Release) لـQuest 3
+
+- **الإعدادات** (تحقّق، بلا تغيير):
+  - APK وليس AAB، وARM64 وIL2CPP.
+  - المعرّف `com.lulu.secretofhegra`، والتوقيع الافتراضي (Android Debug).
+  - OpenXR مع MetaQuestFeature، والمشهد الوحيد `SecretOfHegra.unity`.
+- **طريقة البناء:** `run-guarded.ps1` ثم `-buildTarget Android -executeMethod …HegraProjectSetup.BuildApkBatch`، وهو بناء Release. Gradle والمؤقتات على D:.
+- **محاولتان أوقفهما الحارس قبل النجاح:**
+  - 18:59: نزلت الذاكرة إلى 191MB بعد 11 ث. Edge كان يأخذ ~1.6GB، ومهمة ويندوز `taskhostw` ~1.5GB.
+  - 19:05: نزلت إلى 189MB بعد 91 ث، عند «Compiling Scripts».
+  - بعدها أُغلق Edge، وأُوقف خادم مترجم (`dotnet csc`) يتيم من المحاولة الأولى.
+- **بموافقة لولو:** حد 150MB لهذا البناء فقط، والافتراضي يبقى 500.
+- **✅ نجح:**
+  - `Build Finished, Result: Success`، من 19:08:33 إلى 19:20:00 (687 ث)، وأقل ذاكرة حرة 468MB.
+  - **الملف:** `D:\DUnityProjects\oilsearch\Builds\Quest\SecretOfHegra.apk`، الحجم 51,757,359 بايت (≈49.4MB)، الوقت 2026-10-07 19:19:44.
+  - **السجل:** `D:\dev-cache\temp\apkbuild_release_20261007_190832.log`
+- **تحقق الـAPK:**
+  - غير قابل للتصحيح (Release)، وarm64-v8a، وتصنيف VR، و`supportedDevices` تشمل eureka (Quest 3).
+  - يحتوي `LampHandCarry` و`CampBeacon` و`CampTakeCoins` و`HegraBootstrap` و`TriggerSelectBridge` و`ElephantRockPuzzle`.
+- **ملاحظة:** `SecretOfHegra_dev.apk` (10:59) نسخة تطوير قديمة، **ليست** هذا البناء.
+- **غير مثبّت وغير مجرَّب على نظارة:** وضع المطوّر غير متاح (حساب المالكة)، وQuest Link لا يعمل على Intel Iris Xe.
+- **الخطوة التالية:** تفعيل وضع المطوّر من حساب مالكة النظارة، ثم `adb install -r "D:\DUnityProjects\oilsearch\Builds\Quest\SecretOfHegra.apk"`.

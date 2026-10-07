@@ -17,7 +17,7 @@ namespace SecretOfHegra.Tests
         {
             switch (step)
             {
-                case QuestStep.CampGrabLamp: s.lampAcquired = true; break;
+                case QuestStep.CampTakeCoins: s.ReceiveStartingCoins(); break;
                 case QuestStep.CampTeleport: s.tutorialTeleported = true; break;
                 case QuestStep.CampSnapTurn: s.tutorialTurned = true; break;
                 case QuestStep.CampStoreLamp: s.lampStoredOnce = true; break;
@@ -58,8 +58,8 @@ namespace SecretOfHegra.Tests
         {
             var s = NewState();
             Assert.IsTrue(QuestFlow.TryComplete(s, QuestStep.CampWelcome));
-            Assert.AreEqual(QuestStep.CampGrabLamp, s.step);
-            Assert.IsFalse(QuestFlow.TryComplete(s, QuestStep.CampGrabLamp));
+            Assert.AreEqual(QuestStep.CampTakeCoins, s.step);
+            Assert.IsFalse(QuestFlow.TryComplete(s, QuestStep.CampTakeCoins));
             Assert.AreEqual(0, QuestFlow.AutoAdvance(s));
         }
 
@@ -117,7 +117,7 @@ namespace SecretOfHegra.Tests
             Assert.AreNotEqual(GameState.BuildShardId("abc", "Lulu"), GameState.BuildShardId("abc", "Lula"));
         }
 
-        [TestCase(QuestStep.CampGrabLamp)]
+        [TestCase(QuestStep.CampTakeCoins)]
         [TestCase(QuestStep.MarketLegend)]
         [TestCase(QuestStep.TheaterPerformance)]
         [TestCase(QuestStep.IthlibPuzzle)]

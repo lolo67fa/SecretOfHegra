@@ -416,6 +416,7 @@ MonoBehaviour:
   leftBehindSeconds: 6
   leftBehindDistance: 7
   killY: -4
+  looseReturnSeconds: 0
 --- !u!114 &9081155030770688166
 MonoBehaviour:
   m_ObjectHideFlags: 0

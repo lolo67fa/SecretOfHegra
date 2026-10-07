@@ -25,7 +25,7 @@ namespace SecretOfHegra
         static QuestFlow()
         {
             Add(QuestStep.CampWelcome, StopId.Camp, StepKind.Event, null, "Shuʿayd's welcome finished");
-            Add(QuestStep.CampGrabLamp, StopId.Camp, StepKind.Condition, s => s.lampAcquired, "Lamp grabbed");
+            Add(QuestStep.CampTakeCoins, StopId.Camp, StepKind.Condition, s => s.coinsReceived, "Coins taken from Shuʿayd");
             Add(QuestStep.CampTeleport, StopId.Camp, StepKind.Condition, s => s.tutorialTeleported, "Player teleported");
             Add(QuestStep.CampSnapTurn, StopId.Camp, StepKind.Condition, s => s.tutorialTurned, "Player snap-turned");
             Add(QuestStep.CampStoreLamp, StopId.Camp, StepKind.Condition, s => s.lampStoredOnce, "Lamp stored on belt");
