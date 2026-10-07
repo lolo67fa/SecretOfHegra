@@ -7,7 +7,7 @@
     },
     {
       "key": "game.subtitle",
-      "ar": "ليلة في الحِجر، في عهد الملك الحارثة الرابع",
+      "ar": "ليلة في الحِجر في عهد الملك الحارثة الرابع",
       "en": "A night in Hegra, in the reign of King Aretas IV"
     },
     {
@@ -28,7 +28,7 @@
     {
       "key": "menu.continue",
       "ar": "متابعة الرحلة",
-      "en": "Continue"
+      "en": "Continue the journey"
     },
     {
       "key": "menu.settings",
@@ -38,7 +38,7 @@
     {
       "key": "menu.quit",
       "ar": "خروج",
-      "en": "Quit"
+      "en": "Exit"
     },
     {
       "key": "menu.paused",

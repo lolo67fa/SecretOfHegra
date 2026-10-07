@@ -149,26 +149,15 @@ namespace SecretOfHegra
 
         void BuildMain()
         {
-            m_Main = NewPanel("MainMenu", new Vector2(640, 820), "game.title", out var c);
+            m_Main = NewPanel("MainMenu", new Vector2(640, 470), "game.title", out var c);
             var sub = UIFactory.LayoutText(c, "Subtitle", 600, 50, 24, TextAlignmentOptions.Center);
             sub.gameObject.AddComponent<LocalizedText>().SetKey("game.subtitle", TextAlignmentOptions.Center);
             AddButton(c, "menu.new", () => m_Game.RequestNewGame());
             m_ContinueButton = AddButton(c, "menu.continue", () => m_Game.RequestContinue());
-            AddButton(c, "menu.settings", () => OpenSettings(m_Main));
-            AddValueRow(c, "set.museum", () => Loc.Get(m_Game.Settings.museumMode ? "ui.on" : "ui.off"), null, null, () =>
-            {
-                var s = m_Game.Settings; s.museumMode = !s.museumMode; m_Game.ApplySettings(s);
-            });
-            AddValueRow(c, "set.language", () => Loc.Get("lang.name"), null, null, () =>
-            {
-                var s = m_Game.Settings;
-                s.language = s.language == Language.Arabic ? Language.English : Language.Arabic;
-                m_Game.ApplySettings(s);
-            });
+            // the main menu is intentionally minimal: title, subtitle, new journey, continue, exit. Language, museum
+            // mode and the other settings keep their saved/default values (Arabic) and stay reachable in-game from
+            // the pause menu's settings.
             AddButton(c, "menu.quit", Application.Quit);
-            var note = UIFactory.LayoutText(c, "Note", 600, 90, 18, TextAlignmentOptions.Center);
-            note.color = HegraPalette.Moonlight;
-            note.gameObject.AddComponent<LocalizedText>().SetKey("game.fiction_note", TextAlignmentOptions.Center);
             m_Refreshers.Add(() => { if (m_ContinueButton) m_ContinueButton.interactable = m_Game.Saves.HasProgress(); });
         }
 

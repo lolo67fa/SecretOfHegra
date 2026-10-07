@@ -151,8 +151,12 @@ namespace SecretOfHegra.EditorTools
 
             var spawnLocal = new Vector3(0, 0, -1.5f);
             stop.spawnPoint = Point(root, "SpawnPoint", spawnLocal, new Vector3(0, 0, 5));
-            // Kamkam waits right beside the lamp table (left of it) and points at the lamp in the first lesson
-            stop.guidePoint = Point(root, "GuidePoint", new Vector3(-0.85f, 0, -0.45f), spawnLocal);
+            // the lamp table stands to the right (toward the right tent), clear of the main menu that opens straight
+            // ahead of the spawn point; Kamkam waits just beside it and points at the lamp in the first lesson
+            var tablePos = new Vector3(1.4f, 0, -0.1f);
+            var toSpawn = (spawnLocal - tablePos); toSpawn.y = 0; toSpawn.Normalize();
+            var tableRight = Vector3.Cross(Vector3.up, -toSpawn);   // the player's right when facing the table
+            stop.guidePoint = Point(root, "GuidePoint", tablePos + tableRight * 0.85f + toSpawn * 0.15f, spawnLocal);
 
             var decor = HegraKit.Group("Decor", root, Vector3.zero).transform;
             Tent(decor, new Vector3(-5.5f, 0, 3f), 20f);
@@ -170,31 +174,33 @@ namespace SecretOfHegra.EditorTools
                 HegraKit.Prim(PrimitiveType.Sphere, decor, "Resin" + i, new Vector3(2.0f + (i % 3) * 0.3f, 0.06f, -2.4f + (i / 3) * 0.35f), Vector3.one * 0.12f, M.resin);
             HegraKit.MarkStatic(decor.gameObject);
 
-            // lamp on a table straight ahead of the spawn point (~0.9 m), at chest height (~1.15-1.2 m) so it is in
-            // view from the first second without looking down; a pale cloth makes it stand out against the night
+            // lamp on a plain wooden table (no bright cloth, no glow under it: the only light is the lamp's flame),
+            // the lamp at chest height (~1.15 m) so it is in view without looking down
             const float tableTop = 1.12f;
-            var lampTable = HegraKit.Group("LampTable", root, new Vector3(0, 0, -0.6f)).transform;
-            HegraKit.Prim(PrimitiveType.Cube, lampTable, "Top", new Vector3(0, tableTop - 0.03f, 0), new Vector3(0.9f, 0.06f, 0.6f), M.wood, null, true);
-            HegraKit.Prim(PrimitiveType.Cube, lampTable, "Cloth", new Vector3(0, tableTop + 0.003f, 0), new Vector3(0.7f, 0.006f, 0.5f), M.linen);
-            foreach (var lx in new[] { -0.38f, 0.38f })
-                foreach (var lz in new[] { -0.24f, 0.24f })
+            var lampTable = HegraKit.Group("LampTable", root, tablePos, YawTo(tablePos, spawnLocal)).transform;
+            // dark, matte wood so the lamp's light does not turn the tabletop into a bright patch
+            var tableWood = HegraKit.Lit("M_LampTableWood", new Color(0.24f, 0.15f, 0.1f), null, 0f);
+            HegraKit.Prim(PrimitiveType.Cube, lampTable, "Top", new Vector3(0, tableTop - 0.03f, 0), new Vector3(0.8f, 0.06f, 0.55f), tableWood, null, true);
+            foreach (var lx in new[] { -0.33f, 0.33f })
+                foreach (var lz in new[] { -0.22f, 0.22f })
                     HegraKit.Prim(PrimitiveType.Cube, lampTable, "Leg", new Vector3(lx, (tableTop - 0.06f) * 0.5f, lz), new Vector3(0.06f, tableTop - 0.06f, 0.06f), M.wood);
             var spot = new GameObject("LampSpot").transform;
             spot.SetParent(lampTable, false);
             spot.localPosition = new Vector3(0, tableTop + 0.03f, 0);
 
-            // until the lamp is first picked up: pulsing golden halo + bobbing golden arrow above it (LampBeacon)
+            // a small bobbing golden arrow above the lamp, only once a journey has started and until it is grabbed
             var beacon = lampTable.gameObject.AddComponent<LampBeacon>();
-            beacon.halo = HegraKit.Prim(PrimitiveType.Quad, lampTable, "LampHalo", new Vector3(0, tableTop + 0.08f, 0), Vector3.one * 0.42f, M.glowWarm).GetComponent<Renderer>();
             var gold = HegraKit.Unlit("M_BeaconGold", new Color(1f, 0.78f, 0.3f));
-            var arrow = HegraKit.Group("LampArrow", lampTable, new Vector3(0, tableTop + 0.42f, 0)).transform;
+            var arrow = HegraKit.Group("LampArrow", lampTable, new Vector3(0, tableTop + 0.32f, 0)).transform;
+            arrow.localScale = Vector3.one * 0.6f;
             HegraKit.MeshObject("Head", arrow, HegraKit.Prism("BeaconArrowHead", 0.14f, 0.12f, 0.03f), gold, Vector3.zero, new Vector3(0, 0, 180f));
             HegraKit.Prim(PrimitiveType.Cube, arrow, "Shaft", new Vector3(0, 0.08f, 0), new Vector3(0.045f, 0.11f, 0.02f), gold);
-            HegraKit.Prim(PrimitiveType.Quad, arrow, "Glow", new Vector3(0, 0.03f, 0.02f), Vector3.one * 0.3f, M.glowWarm);
             beacon.arrow = arrow;
+            arrow.gameObject.SetActive(false);
 
-            // the objective card ("reach out and press grip…") is pinned here, just right of the lamp, during the lesson
-            var cardPos = new Vector3(0.5f, 1.38f, -0.62f);
+            // the objective card ("reach out and press grip…") is pinned just left of the lamp (toward the middle of
+            // the view) while the lamp is waiting to be picked up
+            var cardPos = tablePos - tableRight * 0.45f + toSpawn * 0.25f + Vector3.up * 1.42f;
             stop.lampCard = Point(root, "LampCard", cardPos, cardPos + (cardPos - (spawnLocal + Vector3.up * 1.4f)));
 
             // glowing rug used by the teleport lesson

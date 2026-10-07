@@ -3,9 +3,9 @@ using UnityEngine;
 namespace SecretOfHegra
 {
     /// <summary>
-    /// Makes the clay lamp impossible to miss before it is first picked up: a softly pulsing golden halo around
-    /// it and a bobbing golden arrow above it. Both disappear for good once the player has grabbed the lamp
-    /// (GameState.lampAcquired), and stay visible in the main menu so the lamp reads from the first second.
+    /// Points out the clay lamp once a journey has started: a small bobbing golden arrow above it (and an optional
+    /// soft halo). Hidden in the main menu so nothing covers the menu; shown from the first camp step until the
+    /// player first grabs the lamp (GameState.lampAcquired), then gone for good.
     /// </summary>
     public class LampBeacon : MonoBehaviour
     {
@@ -26,7 +26,8 @@ namespace SecretOfHegra
         void LateUpdate()
         {
             var gm = GameManager.Instance;
-            bool show = !(gm && gm.State != null && gm.State.lampAcquired) && !(gm && gm.Lamp && gm.Lamp.IsHeldByHand);
+            bool show = gm && gm.InGame && gm.State != null && !gm.State.lampAcquired
+                        && gm.State.step <= QuestStep.CampGrabLamp && !(gm.Lamp && gm.Lamp.IsHeldByHand);
             if (halo) halo.enabled = show;
             if (arrow && arrow.gameObject.activeSelf != show) arrow.gameObject.SetActive(show);
             if (!show) return;

@@ -43,9 +43,12 @@ namespace SecretOfHegra
         public override void OnStepEntered(QuestStep step)
         {
             if (markerVisual) markerVisual.SetActive(step == QuestStep.CampTeleport);
-            bool grabLesson = step == QuestStep.CampGrabLamp && !State.lampAcquired;
+            // from the very start of the journey (welcome speech included) until the lamp is picked up, the card
+            // beside the lamp says how to grab it and Kamkam points at it; the lamp may be grabbed during the speech
+            bool grabLesson = (step == QuestStep.CampWelcome || step == QuestStep.CampGrabLamp) && !State.lampAcquired;
             Game.Objective.SetWorldAnchor(grabLesson ? lampCard : null);
             SetLampHint(grabLesson);
+            if (grabLesson && step == QuestStep.CampWelcome) Game.Objective.Show("obj.CampGrabLamp", "ctl.CampGrabLamp");
             switch (step)
             {
                 case QuestStep.CampWelcome:
