@@ -35,7 +35,7 @@ namespace SecretOfHegra
         public const float SmoothTurnSpeed = 90f;
 
         /// <summary>Walking speed in m/s for the chosen preset (sprint multiplies this).</summary>
-        public float WalkSpeed => moveSpeed == MoveSpeed.Slow ? 1.5f : moveSpeed == MoveSpeed.Fast ? 2.8f : 2.2f;
+        public float WalkSpeed => moveSpeed == MoveSpeed.Slow ? 1.0f : moveSpeed == MoveSpeed.Fast ? 1.8f : 1.4f; // Normal = natural walking pace
         public const float MinSubtitleScale = 0.7f;
         public const float MaxSubtitleScale = 1.6f;
         public const float MaxHeightOffset = 0.3f;

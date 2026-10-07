@@ -237,11 +237,11 @@ namespace SecretOfHegra.Tests
             var s = new SettingsData();
             Assert.AreEqual(MoveSpeed.Normal, s.moveSpeed);
             Assert.IsTrue(s.smoothMovement);
-            Assert.That(s.WalkSpeed, Is.InRange(2f, 2.5f));
+            Assert.That(s.WalkSpeed, Is.InRange(1.2f, 1.6f));
             s.moveSpeed = MoveSpeed.Slow;
-            Assert.Less(s.WalkSpeed, 2f);
+            Assert.Less(s.WalkSpeed, 1.2f);
             s.moveSpeed = MoveSpeed.Fast;
-            Assert.Greater(s.WalkSpeed, 2.5f);
+            Assert.Greater(s.WalkSpeed, 1.6f);
             Assert.LessOrEqual(System.Math.Min(4f, s.WalkSpeed * SettingsData.SprintMultiplier), 4f);
         }
 

@@ -159,7 +159,7 @@ namespace SecretOfHegra
 
         // ───────── walking speed + sprint ─────────
 
-        float m_WalkSpeed = 2.2f;
+        float m_WalkSpeed = 1.4f;
         bool m_Sprinting;
         float m_IdleTimer;
 
@@ -215,7 +215,7 @@ namespace SecretOfHegra
                 foreach (var f in new[] { "m_TranslateXSpeed", "m_TranslateYSpeed", "m_TranslateZSpeed" })
                 {
                     var field = t.GetField(f, BindingFlags.Instance | BindingFlags.NonPublic);
-                    if (field != null && field.FieldType == typeof(float)) field.SetValue(sim, 2.2f);   // same as the Normal walking preset
+                    if (field != null && field.FieldType == typeof(float)) field.SetValue(sim, 1.4f);   // same as the Normal walking preset
                 }
         }
 
