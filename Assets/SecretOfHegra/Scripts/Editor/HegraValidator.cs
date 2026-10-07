@@ -24,7 +24,7 @@ namespace SecretOfHegra.EditorTools
             "homeSocket", "m_Voiceover", "music", "ambience", "markerVisual", "camel", "guidePoint", "femaleOnly", "maleOnly",
             "head", "leftArm", "rightArm", "body", "figure", "skyMaterial", "floorReference", "m_Vignette", "m_ContinuousTurn",
             "m_Move", "arabic", "english", "m_Subtitles", "m_Listener", "watchedCoin", "waterN", "waterE", "waterS", "waterW",
-            "ignoreUnder"
+            "ignoreUnder", "voice"
         };
 
         [MenuItem("Tools/Secret of Hegra/Validate", priority = 1)]

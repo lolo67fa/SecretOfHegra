@@ -227,7 +227,7 @@ namespace SecretOfHegra.EditorTools
             var m2 = HegraCharacters.Build("Clapper", root, new Vector3(1.5f, 0, 7.8f), 200f, M.indigo, M.skinB, 1.62f);
             HegraCharacters.Veil(m2, M.clothSaffron);
             m2.npc.idleGesture = NpcGesture.Clap; m2.npc.facePlayer = false;
-            Loop3D(root, "MarketPercussion", audio.Get("amb_market"), audio.ambienceGroup, 0.75f, 18f).transform.localPosition = new Vector3(0, 1.2f, 7.8f);
+            // no percussion loop: in the market only the journey music is heard (musicians still play silently)
 
             // a small stylized crowd
             var robes = new[] { M.earth, M.clothGreen, M.indigo, M.clothRed, M.linen, M.tent, M.violet };
@@ -270,7 +270,7 @@ namespace SecretOfHegra.EditorTools
             return t;
         }
 
-        // ───────── townspeople who speak (text bubble + babble voice) ─────────
+        // ───────── townspeople who speak (silent text bubbles) ─────────
 
         static readonly string[][] s_ChatterLines =
         {
@@ -287,7 +287,8 @@ namespace SecretOfHegra.EditorTools
         static void BuildMarketChatter(Transform root, List<HegraCharacters.Figure> crowd, HegraAudioAssets.Set audio)
         {
             var chatter = root.gameObject.AddComponent<MarketChatter>();
-            chatter.syllables = new[] { audio.Get("vo_syl_0"), audio.Get("vo_syl_1"), audio.Get("vo_syl_2"), audio.Get("vo_syl_3"), audio.Get("vo_syl_4") };
+            // silent chatter: speech bubbles and gestures only, no babble voices (only the journey music is heard)
+            chatter.syllables = new AudioClip[0];
             var back = HegraKit.Unlit("M_BubbleBack", new Color(0.07f, 0.08f, 0.15f));
             for (int i = 0; i < crowd.Count; i++)
             {
@@ -297,13 +298,6 @@ namespace SecretOfHegra.EditorTools
                 var text = WorldText(bubbleRoot, "Text", Vector3.zero, 1.5f, null, HegraPalette.Linen, 1.3f);
                 text.rectTransform.sizeDelta = new Vector2(1.3f, 0.5f);
                 var quad = HegraKit.Prim(PrimitiveType.Quad, bubbleRoot, "Back", new Vector3(0, 0, 0.01f), new Vector3(1f, 0.3f, 1f), back);
-                var voice = f.root.AddComponent<AudioSource>();
-                voice.playOnAwake = false;
-                voice.spatialBlend = 1f;
-                voice.minDistance = 1f;
-                voice.maxDistance = 9f;
-                voice.rolloffMode = AudioRolloffMode.Linear;
-                voice.outputAudioMixerGroup = audio.dialogueGroup;
                 chatter.speakers.Add(new MarketChatter.Speaker
                 {
                     npc = f.npc,
@@ -312,7 +306,7 @@ namespace SecretOfHegra.EditorTools
                     bubble = text,
                     bubbleRoot = bubbleRoot,
                     bubbleBack = quad.GetComponent<Renderer>(),
-                    voice = voice,
+                    voice = null,
                 });
                 bubbleRoot.gameObject.SetActive(false);
             }
@@ -336,8 +330,7 @@ namespace SecretOfHegra.EditorTools
                     });
                 }
 
-            // soft crowd murmur under the percussion
-            Loop3D(root, "CrowdMurmur", audio.Get("amb_murmur"), audio.ambienceGroup, 0.32f, 16f).transform.localPosition = new Vector3(0, 1.4f, 4f);
+            // no crowd murmur loop (silent market apart from the journey music)
         }
     }
 }
