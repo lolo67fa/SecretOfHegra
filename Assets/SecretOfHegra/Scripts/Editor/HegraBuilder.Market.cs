@@ -227,7 +227,7 @@ namespace SecretOfHegra.EditorTools
             var m2 = HegraCharacters.Build("Clapper", root, new Vector3(1.5f, 0, 7.8f), 200f, M.indigo, M.skinB, 1.62f);
             HegraCharacters.Veil(m2, M.clothSaffron);
             m2.npc.idleGesture = NpcGesture.Clap; m2.npc.facePlayer = false;
-            // no percussion loop: in the market only the journey music is heard (musicians still play silently)
+            Loop3D(root, "MarketPercussion", audio.Get("amb_market"), audio.ambienceGroup, 0.75f, 18f).transform.localPosition = new Vector3(0, 1.2f, 7.8f);
 
             // a small stylized crowd
             var robes = new[] { M.earth, M.clothGreen, M.indigo, M.clothRed, M.linen, M.tent, M.violet };
@@ -287,7 +287,7 @@ namespace SecretOfHegra.EditorTools
         static void BuildMarketChatter(Transform root, List<HegraCharacters.Figure> crowd, HegraAudioAssets.Set audio)
         {
             var chatter = root.gameObject.AddComponent<MarketChatter>();
-            // silent chatter: speech bubbles and gestures only, no babble voices (only the journey music is heard)
+            // silent chatter: speech bubbles and gestures only, no babble voices (the drums and music still play)
             chatter.syllables = new AudioClip[0];
             var back = HegraKit.Unlit("M_BubbleBack", new Color(0.07f, 0.08f, 0.15f));
             for (int i = 0; i < crowd.Count; i++)
@@ -330,7 +330,7 @@ namespace SecretOfHegra.EditorTools
                     });
                 }
 
-            // no crowd murmur loop (silent market apart from the journey music)
+            // no crowd murmur loop (no talking sounds in the market)
         }
     }
 }
