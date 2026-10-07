@@ -25,6 +25,8 @@ namespace SecretOfHegra.EditorTools
         public const string QuestRpPath = HegraKit.Root + "/Generated/HegraQuest_RPAsset.asset";
         public const string QuestRendererPath = HegraKit.Root + "/Generated/HegraQuest_Renderer.asset";
         public const string ApkPath = "Builds/Quest/SecretOfHegra_dev.apk";
+        /// <summary>Release build for headset play tests (no development overlay, no URP Rendering Debugger).</summary>
+        public const string ReleaseApkPath = "Builds/Quest/SecretOfHegra.apk";
 
         [MenuItem("Tools/Secret of Hegra/Configure Quest Build (switches to Android)", priority = 20)]
         public static void ConfigureQuestMenu()
@@ -187,20 +189,34 @@ namespace SecretOfHegra.EditorTools
             EditorUtility.DisplayDialog("Secret of Hegra", r, "OK");
         }
 
-        public static string BuildDevelopmentApk()
+        [MenuItem("Tools/Secret of Hegra/Build Release APK (Quest)", priority = 22)]
+        public static void BuildReleaseApkMenu()
+        {
+            var r = BuildApk(false);
+            EditorUtility.DisplayDialog("Secret of Hegra", r, "OK");
+        }
+
+        public static string BuildDevelopmentApk() => BuildApk(true);
+
+        /// <summary>
+        /// Development builds enable URP's runtime Rendering Debugger (both thumbsticks open it and it captures
+        /// controller input), so headset play tests use the release build.
+        /// </summary>
+        public static string BuildApk(bool development)
         {
             if (!ToolchainReady(out var tools))
                 return "Android toolchain incomplete — install Android Build Support with SDK/NDK and OpenJDK via Unity Hub.\n" + tools;
             ConfigureAll(true);
-            Directory.CreateDirectory(Path.GetDirectoryName(ApkPath));
+            var apkPath = development ? ApkPath : ReleaseApkPath;
+            Directory.CreateDirectory(Path.GetDirectoryName(apkPath));
             EditorUserBuildSettings.buildAppBundle = false;
             var opts = new BuildPlayerOptions
             {
                 scenes = new[] { HegraBuilder.ScenePath },
-                locationPathName = ApkPath,
+                locationPathName = apkPath,
                 target = BuildTarget.Android,
                 targetGroup = BuildTargetGroup.Android,
-                options = BuildOptions.Development
+                options = development ? BuildOptions.Development : BuildOptions.None
             };
             var report = BuildPipeline.BuildPlayer(opts);
             var s = report.summary;
@@ -209,10 +225,10 @@ namespace SecretOfHegra.EditorTools
             return msg;
         }
 
-        /// <summary>Batch-mode entry: -executeMethod SecretOfHegra.EditorTools.HegraProjectSetup.BuildApkBatch</summary>
+        /// <summary>Batch-mode entry (release APK): -executeMethod SecretOfHegra.EditorTools.HegraProjectSetup.BuildApkBatch</summary>
         public static void BuildApkBatch()
         {
-            var msg = BuildDevelopmentApk();
+            var msg = BuildApk(false);
             if (!msg.StartsWith("Build Succeeded")) EditorApplication.Exit(1);
         }
     }

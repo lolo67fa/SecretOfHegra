@@ -325,3 +325,81 @@
 - الثانية (22:43) نجحت: `Build Finished, Result: Success`، 343 ث، وأقل ذاكرة حرة 528MB (قريبة من الحد).
 - `Builds/Quest/SecretOfHegra_dev.apk` الآن 22:48 (84,221,178 بايت) **ويتضمن صخرة الفيل والموسيقى**. لا توجد عملية java متبقية.
 - **التثبيت لم يتم بعد:** النظارة (Quest 3S) يراها ويندوز عبر USB، لكن `adb devices` فارغ، أي أن وضع المطوّر أو إذن تصحيح USB غير مفعّل بعد.
+
+---
+
+## ▶ 2026-10-07 10:40–11:05 — تجهيز التجربة على Quest
+
+### فحص الحالة (من الملفات والسجلات، المحرر مغلق)
+- **الشجرة:** مطابقة لآخر commit (`caf6499`)، وفي GitHub مستودع خاص: https://github.com/lolo67fa/oilsearch
+- **السجلات والمدقق:** لا أخطاء تشغيل في سجلات أمس، والمدقق 0 مشاكل. التحذير الوحيد في البناء عن shader التضاريس (Terrain)، وهو غير مستخدم.
+- **إعدادات Android/Quest سليمة ولم تتغيّر:**
+  - Unity 6000.6.3f1، وSDK وNDK وOpenJDK 17 من داخل Unity، وaapt2 36.
+  - IL2CPP وARM64 وVulkan، وminSdk 32 وtarget 36.
+  - OpenXR (Android) مع MetaQuestFeature وOculusTouch وTouchPlus.
+  - الأجهزة المفعّلة: Quest وQuest 2 وPro وQuest 3 وQuest 3S.
+  - المشهد الوحيد في البناء هو `SecretOfHegra.unity`.
+- **Manifest الـAPK:** فيه `com.oculus.intent.category.VR`، و`supportedDevices = quest|quest2|cambria|eureka|quest3s`، و`vr.headtracking`، وfocusaware، وarm64-v8a.
+- **مسار الاختبار:** APK مستقل على النظارة. Quest Link غير ممكن: لا يوجد OpenXR runtime ولا برنامج Meta على الكمبيوتر، والذاكرة 8GB.
+
+### مشكلة حقيقية أُصلحت: الزناد لا يختار الألغاز
+- **المشكلة:** في Starter Assets يكون Select على زر الجانب (Grip)، والزناد على Activate وUI Press. كل الألغاز تستمع لـselectEntered: بوابات الماء، والنسر والنجوم، وحروف الصخرة، ورافعة إعادة إثلب، وغطاء الصندوق. لكن نصوص التحكم تقول «أشر واضغط الزناد»، فعلى النظارة كان الزناد لن يفعل شيئاً. الاختبارات الآلية لم تكشف ذلك لأنها تستدعي Select مباشرة.
+- **الإصلاح:** `Scripts/Runtime/Player/TriggerSelectBridge.cs` يُضاف تلقائياً من `PlayerRig.Awake`، فلم يحتج المشهد لإعادة بناء:
+  - ضغط الزناد والشعاع على هدف XRSimpleInteractable يعني اختياراً وإفلاتاً سريعاً، مثل نقرة Grip، فالبوابة تدور ربع دورة.
+  - الأشياء القابلة للإمساك لا تتأثر، وتبقى على Grip.
+  - تُتجاهل اليد التي تمسك شيئاً.
+- **التحقق:** تُرجم بلا أخطاء، وتأكدت من وجوده داخل الـAPK. **لم يُختبر تشغيلياً بعد:** لا في المحاكي ولا على النظارة.
+
+### البناء
+- **محاولتان متوقفتان:** اختبارات EditMode (10:48) أوقفها الحارس عند 457MB بعد 152 ث، والترجمة كانت قد نجحت قبلها. ثم البناء (10:51) أُوقف عند 488MB بعد 61 ث.
+- **السبب:** إعادة تشغيل الجهاز للتو مع تحديث ويندوز يعمل (~790MB). الذاكرة الافتراضية لم تكن ممتلئة (6.7 من 15.6 GB).
+- **بموافقة لولو:** حد 250MB لهذا البناء فقط. أُضيف `-MinRamMB` إلى `run-guarded.ps1`، والافتراضي ما زال 500، والنسخة الأصلية في `run-guarded.ps1.bak`.
+- **✅ نجح:** بدأ 10:54:03، واستغرق 353 ث، وأقل ذاكرة حرة 633MB.
+  - الملف: `D:\DUnityProjects\oilsearch\Builds\Quest\SecretOfHegra_dev.apk` (84,223,363 بايت، 2026-10-07 10:59).
+  - السجل: `D:\dev-cache\temp\apkbuild_105403.log`.
+  - الـAPK السابق محفوظ في `Backups_SecretOfHegra\SecretOfHegra_dev_20261006_2248.apk`.
+- **اختبارات EditMode لم يُعَد تشغيلها اليوم.** آخر نتيجة 39/39 أمس، والتغيير الوحيد بعدها هو الإصلاح أعلاه.
+
+### النظارة
+- **غير موصولة.** لا ويندوز يراها (لا جهاز VID_2833) ولا `adb devices`. أمس ظهرت باسم Quest 3S، وكان منفذ ADB غير ظاهر (وضع المطوّر أو الإذن غير مفعّل).
+- **لم يُثبَّت ولم يُشغَّل شيء، ولم تُجرَّب اللعبة على أي نظارة حتى الآن.**
+
+### أوامر التثبيت (تحفظ بيانات اللعبة: `-r` بدون إلغاء تثبيت)
+```
+"D:\Users\lolo6\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\platform-tools\adb.exe" devices -l
+"D:\Users\lolo6\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\platform-tools\adb.exe" install -r "D:\DUnityProjects\oilsearch\Builds\Quest\SecretOfHegra_dev.apk"
+"D:\Users\lolo6\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\platform-tools\adb.exe" shell am start -n com.lulu.secretofhegra/com.unity3d.player.UnityPlayerGameActivity
+```
+في النظارة: المكتبة ← المرشّح ← **مصادر غير معروفة (Unknown Sources)** ← Secret of Hegra.
+
+### ⏸ نقطة التوقف — 2026-10-07 11:05
+- لا محرر ولا بناء ولا Java يعمل.
+- تعديلات الكود غير المضافة إلى git: `PlayerRig.cs` و`TriggerSelectBridge.cs` (+meta).
+- **الخطوة التالية بالضبط:** وصّل النظارة (وضع المطوّر + السماح بتصحيح USB) ← `adb devices` يظهرها كـ`device` ← `adb install -r` ← تشغيل ← تجربة قائمة التحقق (التتبع، العصي، Grip والزناد، الموسيقى، صخرة الفيل، الإيقاف والاستئناف).
+
+---
+
+## ✦ 2026-10-07 12:00 — إصلاحات تجربة النظارة (لوحة التصحيح، الصوت، التجمّد)
+
+**الفحص:** HegraWatch (`Scripts/Editor/HegraPlayModeWatch.cs`) أداة تشخيص للمحرر فقط، ولا تدخل الـAPK. لا يوجد في اللعبة `Time.timeScale` ولا `AudioListener.pause`.
+
+**ما تغيّر:**
+- **لوحة URP Rendering Debugger:**
+  - السبب: الـAPK كان يُبنى بـ`BuildOptions.Development`. الضغط على العصاتين يفتح اللوحة، واللعبة تستخدم ضغط العصا للركض.
+  - الإصلاح: البناء الافتراضي (`BuildApkBatch` وقائمة «Build Release APK») صار Release في `Builds/Quest/SecretOfHegra.apk`. بناء التطوير ما زال متاحاً في `SecretOfHegra_dev.apk`.
+  - الجديد `Scripts/Runtime/Core/HegraBootstrap.cs` يجعل `DebugManager.instance.enableRuntimeUI = false` في أي بناء للاعب.
+- **الإيقاف عند فقد التركيز** (`GameManager.cs`):
+  - لا يتوقف إلا بعد غياب ثانية كاملة، ويعود فوراً.
+  - «غير موجود» من حساس النظارة لا يُعتمد إلا بعد أن أبلغ «موجود» مرة واحدة على الأقل، فلا يعلق متوقفاً للأبد.
+  - الحفظ مرة واحدة عند الإيقاف الحقيقي بدل كل ومضة.
+  - **مختبَر في Play Mode:** ومضة 0.2 ث لم توقف شيئاً. غياب 1.6 ث أوقف اللعبة والموسيقى. العودة أعادتهما خلال 0.15 ث.
+- **الصوت:**
+  - كل المقاطع الـ25 كانت `preloadAudioData = 0`، أي تُحمَّل عند أول تشغيل على الخيط الرئيسي (تقطيع أو تأخير). صارت كلها preload.
+  - الموسيقى والأجواء (8) صارت Streaming، والمؤثرات والأصوات (17) Decompress On Load.
+  - `AudioManager`: معدل العينة 48000، وDSP buffer بقي 1024 بقرار لولو.
+  - `HegraAudioAssets.cs` يولّد بنفس الإعدادات مستقبلاً.
+- **اختبارات EditMode:** 39/39.
+
+**ملفات تغيّرت دون أن ألمسها:** `Fonts/TMP_Amiri.asset` و`TMP_HegraNabataean.asset` (حروف أضيفت ديناميكياً للأطلس أثناء Play Mode)، و`Materials/M_NightSky.mat` (يغيّرها MoonController). تُركت كما هي.
+
+**لم يُختبر على النظارة بعد.** الخطوة التالية: أغلق المحرر وEdge ← ابنِ نسخة Release عبر `run-guarded.ps1` و`BuildApkBatch`، فتخرج إلى `Builds\Quest\SecretOfHegra.apk` ← ثبّت بـ`adb install -r` (يحفظ البيانات) ← جرّب: لوحة التصحيح لا تظهر، والصوت بلا تقطيع، وخلع النظارة ولبسها يستأنف.

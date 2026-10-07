@@ -80,6 +80,12 @@ namespace SecretOfHegra
             }
         }
 
+        void Awake()
+        {
+            // point + trigger selects puzzle targets (the Starter Assets put select on grip only)
+            if (!GetComponent<TriggerSelectBridge>()) gameObject.AddComponent<TriggerSelectBridge>();
+        }
+
         void OnEnable()
         {
             if (m_Teleport) m_Teleport.locomotionEnded += OnTeleportEnded;

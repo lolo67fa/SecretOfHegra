@@ -75,7 +75,9 @@ namespace SecretOfHegra.EditorTools
                     var imp = (AudioImporter)AssetImporter.GetAtPath(path);
                     imp.forceToMono = true;
                     var s = imp.defaultSampleSettings;
-                    s.loadType = g.loop ? AudioClipLoadType.CompressedInMemory : AudioClipLoadType.DecompressOnLoad;
+                    // loops (music/ambience) stream; short one-shots decompress up front; all preload (no first-play hitch)
+                    s.loadType = g.loop ? AudioClipLoadType.Streaming : AudioClipLoadType.DecompressOnLoad;
+                    s.preloadAudioData = true;
                     s.compressionFormat = AudioCompressionFormat.Vorbis;
                     s.quality = 0.45f;
                     imp.defaultSampleSettings = s;

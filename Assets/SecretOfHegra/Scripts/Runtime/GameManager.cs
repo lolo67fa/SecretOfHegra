@@ -85,6 +85,13 @@ namespace SecretOfHegra
         float m_SaveTimer;
         bool m_AssistRunning;
 
+        // VR focus/presence: raw values from the callbacks and the presence sensor; the public flags change only
+        // after the player has been away for PauseDebounceSeconds (Guardian, system overlay and sensor blips are
+        // ignored) and recover immediately on return, so the game never stays paused after resuming.
+        const float PauseDebounceSeconds = 1f;
+        bool m_RawFocus = true, m_RawPresent = true, m_SeenPresent;
+        float m_AwaySince = -1f;
+
         void Awake()
         {
             Instance = this;
@@ -434,6 +441,7 @@ namespace SecretOfHegra
         void Update()
         {
             PollHeadset();
+            UpdatePresence();
 
             if (Input.menu.WasPressedThisFrame() && m_Menus) m_Menus.TogglePause();
             if (Input.advance.WasPressedThisFrame() && m_Dialogue) m_Dialogue.Advance();
@@ -484,9 +492,31 @@ namespace SecretOfHegra
             m_PresenceTimer = 0.5f;
             var head = InputDevices.GetDeviceAtXRNode(XRNode.Head);
             if (head.isValid && head.TryGetFeatureValue(CommonUsages.userPresence, out bool present))
-                HeadsetPresent = present;
+            {
+                // trust "not present" only once the sensor has reported "present" at least once: a runtime that
+                // always reports false must not hold the game paused forever
+                if (present) m_SeenPresent = true;
+                m_RawPresent = present || !m_SeenPresent;
+            }
             else
-                HeadsetPresent = true; // simulator / no presence sensor
+                m_RawPresent = true; // simulator / no presence sensor
+        }
+
+        void UpdatePresence()
+        {
+            if (m_RawFocus && m_RawPresent)
+            {
+                m_AwaySince = -1f;
+                AppFocused = true;
+                HeadsetPresent = true;
+                return;
+            }
+            if (m_AwaySince < 0f) m_AwaySince = Time.unscaledTime;
+            if (Time.unscaledTime - m_AwaySince < PauseDebounceSeconds) return;
+            bool wasActive = AppFocused && HeadsetPresent;
+            AppFocused = m_RawFocus;
+            HeadsetPresent = m_RawPresent;
+            if (wasActive) SaveNow(); // once per real pause, not on every blip
         }
 
         void OnApplicationFocus(bool focus)
@@ -496,14 +526,19 @@ namespace SecretOfHegra
             // pausing there froze dialogue during desktop tests. On device, focus loss (system menu) still pauses.
             focus = true;
 #endif
-            AppFocused = focus;
-            if (!focus) SaveNow();
+            m_RawFocus = focus;
         }
 
         void OnApplicationPause(bool paused)
         {
-            AppFocused = !paused;
-            if (paused) SaveNow();
+            // the app is suspended (no frames run): pause and save right away; resuming recovers on the next frame
+            m_RawFocus = !paused;
+            if (paused)
+            {
+                AppFocused = false;
+                SaveNow();
+            }
+            else m_AwaySince = -1f;
         }
 
         void OnApplicationQuit() => SaveNow();
