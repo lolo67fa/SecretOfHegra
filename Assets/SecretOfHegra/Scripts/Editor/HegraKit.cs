@@ -77,6 +77,17 @@ namespace SecretOfHegra.EditorTools
             return m;
         }
 
+        /// <summary>Additive glow for particle systems (tinted/faded by the particle colour).</summary>
+        public static Material GlowParticle(string name, Color color, float intensity = 1f, float falloff = 2f)
+        {
+            var m = GetOrCreateMat(name, Shader.Find("SecretOfHegra/GlowParticle"));
+            m.SetColor("_Color", color);
+            m.SetFloat("_Intensity", intensity);
+            m.SetFloat("_Falloff", falloff);
+            EditorUtility.SetDirty(m);
+            return m;
+        }
+
         public static Material Glow(string name, Color color, float intensity = 1f, float falloff = 2f)
         {
             var m = GetOrCreateMat(name, Shader.Find("SecretOfHegra/Glow"));

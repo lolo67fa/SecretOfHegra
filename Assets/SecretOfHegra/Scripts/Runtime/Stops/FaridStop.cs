@@ -36,6 +36,10 @@ namespace SecretOfHegra
         [Tooltip("Warm light over the gold: off while the lid is closed, rises as it opens.")]
         public Light treasureLight;
         public float treasureLightIntensity = 1.6f;
+        [Tooltip("Golden dust that bursts out as the lid opens.")]
+        public ParticleSystem treasureBurst;
+        [Tooltip("Slow twinkles over the gold while the chest stands open.")]
+        public ParticleSystem treasureSparkle;
 
         [Header("Name wall")]
         public TextMeshPro wallNabataean;
@@ -87,6 +91,7 @@ namespace SecretOfHegra
             if (chestLid) chestLid.localRotation = chest ? m_LidClosed * Quaternion.Euler(lidOpenEuler) : m_LidClosed;
             if (treasure) treasure.SetActive(true);
             if (treasureLight) { treasureLight.intensity = chest ? treasureLightIntensity : 0f; treasureLight.enabled = chest; }
+            if (treasureSparkle) { if (chest) treasureSparkle.Play(); else treasureSparkle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); }
             WriteNameOnWall(s.playerName);
             SetWallReveal(s.step >= QuestStep.Complete ? 1f : 0f);
             // the shard stays in the niche once inserted
@@ -260,6 +265,7 @@ namespace SecretOfHegra
         {
             if (!IsCurrent(QuestStep.FaridOpenChest) || Game.State.chestOpened) return;
             Game.State.chestOpened = true;
+            Haptics.Both(0.7f, 0.4f);
             StartCoroutine(LiftLid());
             Game.Dialogue.Play("farid_chest");
             Game.NotifyStateChanged(); // advances to FaridFinale
@@ -270,6 +276,8 @@ namespace SecretOfHegra
             HegraAudio.PlayAt(Sfx.Chest, chestLid ? chestLid.position : transform.position, 1f);
             var open = m_LidClosed * Quaternion.Euler(lidOpenEuler);
             if (treasureLight) treasureLight.enabled = true;
+            if (treasureBurst) treasureBurst.Play();
+            if (treasureSparkle) treasureSparkle.Play();
             for (float t = 0; t < 1.4f; t += Time.deltaTime)
             {
                 float k = Mathf.SmoothStep(0, 1, t / 1.4f);

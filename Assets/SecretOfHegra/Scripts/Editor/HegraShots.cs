@@ -41,6 +41,8 @@ namespace SecretOfHegra.EditorTools
             {
                 stop.chestLid.localRotation = open ? closed * Quaternion.Euler(stop.lidOpenEuler) : closed;
                 if (stop.treasureLight) { stop.treasureLight.enabled = open; stop.treasureLight.intensity = stop.treasureLightIntensity; }
+                if (open && stop.treasureBurst) stop.treasureBurst.Simulate(0.7f, true, true);
+                if (open && stop.treasureSparkle) stop.treasureSparkle.Simulate(2f, true, true);
                 foreach (var (name, eye) in views)
                     Debug.Log("[Hegra] " + Render($"chest_{name}_{(open ? "open" : "closed")}", eye, look, 1280, 720));
             }

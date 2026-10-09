@@ -218,6 +218,8 @@ namespace SecretOfHegra.EditorTools
             carry.belt = belt;
             carry.leftHand = rig.LeftController;
             carry.rightHand = rig.RightController;
+            rig.gameObject.AddComponent<InteractionHaptics>();
+            AirMotes(rig.transform);
 
             var gmGo = new GameObject("GameManager");
             gmGo.transform.SetParent(systems, false);

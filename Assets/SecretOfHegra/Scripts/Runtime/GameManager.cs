@@ -126,6 +126,7 @@ namespace SecretOfHegra
             var cam = m_Rig ? m_Rig.Camera : Camera.main;
             Subtitles = SubtitleDisplay.Create(m_Rig.Head, cam);
             Objective = ObjectivePanel.Create(m_Rig.Head, cam);
+            if (m_Rig && !m_Rig.GetComponent<InteractionHaptics>()) m_Rig.gameObject.AddComponent<InteractionHaptics>();
 
             m_Dialogue.Database = DialogueDatabase.FromJson(m_Dialogue_Text());
             m_Dialogue.Subtitles = Subtitles;
@@ -324,6 +325,7 @@ namespace SecretOfHegra
         {
             if (State == null || !State.GrantSign(id)) return false;
             HegraAudio.Play2D(Sfx.SignChime);
+            Haptics.Both(0.6f, 0.25f);
             SignGranted?.Invoke(id);
             m_Menus?.ShowToast("sign.granted." + id.ToString().ToLowerInvariant());
             NotifyStateChanged();
@@ -336,6 +338,9 @@ namespace SecretOfHegra
             ObjectiveBeacon.Current = null;
             var stop = GetStop(QuestFlow.StopOf(step));
             if (m_ActiveStop && m_ActiveStop != stop) m_ActiveStop.OnStepExited(step);
+            // arriving at a new place: its name appears once, like a chapter title
+            if (stop && stop != m_ActiveStop && step != QuestStep.Complete && Loc.Has("stop." + stop.stopId.ToString().ToLowerInvariant()))
+                m_Menus?.ShowToast("stop." + stop.stopId.ToString().ToLowerInvariant(), 3f);
             m_ActiveStop = stop;
 
             string objKey = "obj." + step;

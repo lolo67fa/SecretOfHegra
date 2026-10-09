@@ -274,6 +274,11 @@ namespace SecretOfHegra.EditorTools
             light.shadows = LightShadows.None;
             stop.treasureLight = light;
 
+            // golden dust puffs out as the lid opens; small glints keep twinkling over the gold afterwards
+            var sparkMat = HegraKit.GlowParticle("M_TreasureSparkle", new Color(1f, 0.85f, 0.5f), 1.6f, 2.5f);
+            stop.treasureBurst = TreasureBurst(chest, sparkMat, H, rx, rz);
+            stop.treasureSparkle = TreasureSparkle(chest, sparkMat, cy + ry, rx, rz);
+
             // arched, bronze-bound lid hinged at the back edge
             var lidPivot = HegraKit.Group("LidPivot", chest, new Vector3(0, H, D * 0.5f)).transform;
             HegraKit.Prim(PrimitiveType.Cube, lidPivot, "Lid", new Vector3(0, 0.03f, -D * 0.5f), new Vector3(W + 0.02f, 0.06f, D + 0.02f), M.wood);
@@ -288,6 +293,11 @@ namespace SecretOfHegra.EditorTools
             stop.chestLid = lidPivot;
             stop.lidOpenEuler = new Vector3(105f, 0, 0); // front edge swings up and back
             stop.lidHandle = handle.AddComponent<XRSimpleInteractable>();
+
+            // ~170 small pieces become one mesh per material (far fewer draw calls on the headset)
+            CombineByMaterial(treasure, "Treasure", true);
+            CombineByMaterial(chest, "ChestBody", false);
+            CombineByMaterial(lidPivot, "ChestLid", false);
         }
 
         /// <summary>Faceted cut gem (an elongated octahedron, flat-shaded) about one unit across.</summary>

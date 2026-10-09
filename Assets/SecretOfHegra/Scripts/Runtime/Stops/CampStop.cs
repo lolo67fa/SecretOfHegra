@@ -126,6 +126,7 @@ namespace SecretOfHegra
         {
             if (!State.ReceiveStartingCoins()) return false;
             HegraAudio.PlayAt(Sfx.Coin, coinPlate ? coinPlate.transform.position : transform.position);
+            Haptics.Both(0.4f, 0.12f);
             Game.Menus.ShowToast("toast.coins_received");
             if (coinPile) coinPile.SetActive(false);
             Game.SaveNow();
@@ -171,8 +172,21 @@ namespace SecretOfHegra
             Game.SkipTutorial();
         }
 
+        [Tooltip("Walking this far (m) from the camp before its lessons are done skips them, so Kamkam goes ahead to the market.")]
+        public float leaveCampDistance = 12f;
+
         void Update()
         {
+            // a player who simply walks off towards the market skips the remaining camp lessons (the farewell still
+            // hands over the coins); otherwise the quest, and Kamkam with it, would stay waiting at the camp
+            var st = Game ? Game.State : null;
+            if (st != null && Game.InGame && st.step >= QuestStep.CampWelcome && st.step < QuestStep.CampFarewell && Game.Rig && Game.Rig.Head)
+            {
+                var d = Game.Rig.Head.position - transform.position;
+                d.y = 0f;
+                if (d.sqrMagnitude > leaveCampDistance * leaveCampDistance) SkipTutorial();
+            }
+
             if (m_CoinsHint && shuayd && coinPlate)
             {
                 m_PointTimer -= Time.deltaTime;
