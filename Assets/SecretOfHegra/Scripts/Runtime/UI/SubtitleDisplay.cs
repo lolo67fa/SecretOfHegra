@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace SecretOfHegra
 {
-    /// <summary>Head-following subtitle bar (speaker + line), scaled by the subtitle-size setting.</summary>
+    /// <summary>
+    /// Subtitle bar (speaker + line), scaled by the subtitle-size setting. It is placed in front of the player when a
+    /// conversation starts and stays there until it ends (it does not chase the head).
+    /// </summary>
     public class SubtitleDisplay : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI m_Speaker;
@@ -14,14 +17,16 @@ namespace SecretOfHegra
         string m_RawLine;
         Color m_SpeakerColor = Color.white;
         float m_BaseScale = UIFactory.MetersPerPixel;
+        LazyFollow m_Follow;
 
         public static SubtitleDisplay Create(Transform head, Camera cam)
         {
             var root = new GameObject("Subtitles");
             var follow = root.AddComponent<LazyFollow>();
             follow.target = head;
-            follow.distance = 1.5f;
-            follow.heightOffset = -0.38f;
+            follow.distance = 1.9f;
+            follow.heightOffset = -0.45f;
+            follow.stayPut = true;
             follow.yawThreshold = 25f;
 
             var canvas = UIFactory.CreateCanvas("SubtitleCanvas", root.transform, new Vector2(1100, 230), cam, 10);
@@ -46,6 +51,7 @@ namespace SecretOfHegra
             display.m_Speaker = speaker;
             display.m_Line = line;
             display.m_Group = group;
+            display.m_Follow = follow;
             display.m_BaseScale = UIFactory.MetersPerPixel;
             group.alpha = 0f;
             return display;
@@ -64,6 +70,8 @@ namespace SecretOfHegra
             m_RawSpeaker = speakerName;
             m_RawLine = line;
             m_SpeakerColor = speakerColor;
+            bool starting = !m_Group || m_Group.alpha < 0.01f;
+            if (starting && m_Follow) m_Follow.SnapNow();
             Refresh();
             if (m_Group) m_Group.alpha = 1f;
         }

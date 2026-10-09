@@ -31,6 +31,11 @@
       "en": "Continue the journey"
     },
     {
+      "key": "menu.language_switch",
+      "ar": "English",
+      "en": "العربية"
+    },
+    {
       "key": "menu.settings",
       "ar": "الإعدادات",
       "en": "Settings"
@@ -429,6 +434,11 @@
       "key": "toast.souvenir_saved",
       "ar": "حُفظت صورة التذكار: {0}",
       "en": "Souvenir saved: {0}"
+    },
+    {
+      "key": "toast.souvenir_saved_gallery",
+      "ar": "حُفظت صورة التذكار في مجلد الصور: Pictures/Secret of Hegra ({0})",
+      "en": "Souvenir saved to Pictures/Secret of Hegra ({0})"
     },
     {
       "key": "toast.souvenir_failed",

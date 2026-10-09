@@ -7,7 +7,8 @@ using UnityEngine.UI;
 namespace SecretOfHegra
 {
     /// <summary>
-    /// Compact objective card that follows the head lazily (low and slightly to the side). Shows the
+    /// Compact objective card, placed once in front of the player (a little to the left and a bit further away) when a
+    /// new objective starts, then left in the world so it never chases the player around. Shows the
     /// current objective, the controller hint for it, the current progressive hint, and up to three
     /// accessible action buttons (skip, "do it for me", etc.).
     /// </summary>
@@ -27,19 +28,21 @@ namespace SecretOfHegra
         Vector3 m_CanvasPos;
         Quaternion m_CanvasRot;
         Transform m_WorldAnchor;
+        string m_ObjectiveKey;
 
         public static ObjectivePanel Create(Transform head, Camera cam)
         {
             var root = new GameObject("ObjectivePanel");
             var follow = root.AddComponent<LazyFollow>();
             follow.target = head;
-            follow.distance = 1.2f;
+            follow.distance = 1.7f;
             follow.heightOffset = -0.12f;
+            follow.stayPut = true;
             follow.yawThreshold = 40f;
             follow.followSpeed = 2f;
 
             var canvas = UIFactory.CreateCanvas("ObjectiveCanvas", root.transform, new Vector2(640, 330), cam, 5);
-            canvas.transform.localPosition = new Vector3(-0.62f, 0f, 0f);
+            canvas.transform.localPosition = new Vector3(-0.8f, 0f, 0f);
             canvas.transform.localRotation = Quaternion.Euler(0f, -28f, 0f);
             var rt = (RectTransform)canvas.transform;
             var group = canvas.gameObject.AddComponent<CanvasGroup>();
@@ -74,6 +77,9 @@ namespace SecretOfHegra
             ClearButtons();
             if (m_Group) { m_Group.alpha = 1f; m_Group.blocksRaycasts = true; }
             if (string.IsNullOrEmpty(objectiveKey)) { Hide(); return; }
+            // a new objective (start of a stage) is placed in front of the player once; it does not follow afterwards
+            if (objectiveKey != m_ObjectiveKey) BringIntoView();
+            m_ObjectiveKey = objectiveKey;
             m_Objective.SetKey(objectiveKey, TextAlignmentOptions.Center);
             m_ControlsKey = controlsKey;
             m_ControlsResolver = controlsResolver;
@@ -102,8 +108,15 @@ namespace SecretOfHegra
             }
         }
 
+        /// <summary>Places the card in front of the player again (new objective, or a hint the player asked for).</summary>
+        public void BringIntoView()
+        {
+            if (!m_WorldAnchor && m_Follow) m_Follow.SnapNow();
+        }
+
         public void Hide()
         {
+            m_ObjectiveKey = null;
             if (m_Group) { m_Group.alpha = 0f; m_Group.blocksRaycasts = false; }
             ClearButtons();
         }
@@ -113,6 +126,7 @@ namespace SecretOfHegra
             if (string.IsNullOrEmpty(key)) { ClearHint(); return; }
             m_Hint.gameObject.SetActive(true);
             m_Hint.SetKey(key, TextAlignmentOptions.Center);
+            BringIntoView();   // hints are only shown when the player asks for one
         }
 
         public void ClearHint()

@@ -218,7 +218,38 @@ namespace SecretOfHegra.EditorTools
                 targetGroup = BuildTargetGroup.Android,
                 options = development ? BuildOptions.Development : BuildOptions.None
             };
-            var report = BuildPipeline.BuildPlayer(opts);
+            // Optional release signing with the developer's own key, kept outside the repository and passed in via
+            // environment variables (HEGRA_KEYSTORE, HEGRA_KEYSTORE_PASS, HEGRA_KEY_ALIAS). Applied only for this build
+            // and reverted afterwards, so no path or password is ever saved into ProjectSettings.
+            var keystore = System.Environment.GetEnvironmentVariable("HEGRA_KEYSTORE");
+            var keyPass = System.Environment.GetEnvironmentVariable("HEGRA_KEYSTORE_PASS");
+            var keyAlias = System.Environment.GetEnvironmentVariable("HEGRA_KEY_ALIAS");
+            bool sign = !development && !string.IsNullOrEmpty(keystore) && File.Exists(keystore) && !string.IsNullOrEmpty(keyPass) && !string.IsNullOrEmpty(keyAlias);
+            bool prevCustom = PlayerSettings.Android.useCustomKeystore;
+            string prevKeystore = PlayerSettings.Android.keystoreName, prevAlias = PlayerSettings.Android.keyaliasName;
+            if (sign)
+            {
+                PlayerSettings.Android.useCustomKeystore = true;
+                PlayerSettings.Android.keystoreName = keystore;
+                PlayerSettings.Android.keystorePass = keyPass;
+                PlayerSettings.Android.keyaliasName = keyAlias;
+                PlayerSettings.Android.keyaliasPass = keyPass;
+                Debug.Log("[Hegra] Signing the release APK with the developer key (alias " + keyAlias + ").");
+            }
+            BuildReport report;
+            try { report = BuildPipeline.BuildPlayer(opts); }
+            finally
+            {
+                if (sign)
+                {
+                    PlayerSettings.Android.useCustomKeystore = prevCustom;
+                    PlayerSettings.Android.keystoreName = prevKeystore;
+                    PlayerSettings.Android.keyaliasName = prevAlias;
+                    PlayerSettings.Android.keystorePass = "";
+                    PlayerSettings.Android.keyaliasPass = "";
+                    AssetDatabase.SaveAssets();
+                }
+            }
             var s = report.summary;
             var msg = $"Build {s.result}: {s.outputPath}\nSize: {s.totalSize / (1024f * 1024f):0.0} MB, errors: {s.totalErrors}, time: {s.totalTime}";
             Debug.Log("[Hegra] " + msg);

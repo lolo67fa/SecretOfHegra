@@ -33,6 +33,9 @@ namespace SecretOfHegra
         public Vector3 lidOpenEuler = new Vector3(105f, 0, 0);
         public XRSimpleInteractable lidHandle;
         public GameObject treasure;
+        [Tooltip("Warm light over the gold: off while the lid is closed, rises as it opens.")]
+        public Light treasureLight;
+        public float treasureLightIntensity = 1.6f;
 
         [Header("Name wall")]
         public TextMeshPro wallNabataean;
@@ -83,6 +86,7 @@ namespace SecretOfHegra
             bool chest = s.chestOpened || s.step > QuestStep.FaridOpenChest;
             if (chestLid) chestLid.localRotation = chest ? m_LidClosed * Quaternion.Euler(lidOpenEuler) : m_LidClosed;
             if (treasure) treasure.SetActive(true);
+            if (treasureLight) { treasureLight.intensity = chest ? treasureLightIntensity : 0f; treasureLight.enabled = chest; }
             WriteNameOnWall(s.playerName);
             SetWallReveal(s.step >= QuestStep.Complete ? 1f : 0f);
             // the shard stays in the niche once inserted
@@ -265,12 +269,16 @@ namespace SecretOfHegra
         {
             HegraAudio.PlayAt(Sfx.Chest, chestLid ? chestLid.position : transform.position, 1f);
             var open = m_LidClosed * Quaternion.Euler(lidOpenEuler);
+            if (treasureLight) treasureLight.enabled = true;
             for (float t = 0; t < 1.4f; t += Time.deltaTime)
             {
-                if (chestLid) chestLid.localRotation = Quaternion.Slerp(m_LidClosed, open, Mathf.SmoothStep(0, 1, t / 1.4f));
+                float k = Mathf.SmoothStep(0, 1, t / 1.4f);
+                if (chestLid) chestLid.localRotation = Quaternion.Slerp(m_LidClosed, open, k);
+                if (treasureLight) treasureLight.intensity = k * treasureLightIntensity;
                 yield return null;
             }
             if (chestLid) chestLid.localRotation = open;
+            if (treasureLight) treasureLight.intensity = treasureLightIntensity;
         }
 
         // ───────── finale: the name appears on the wall ─────────
@@ -316,7 +324,16 @@ namespace SecretOfHegra
 
         // ───────── souvenir ─────────
 
-        /// <summary>Renders the name wall to a PNG under persistentDataPath/Souvenirs and returns the path.</summary>
+        /// <summary>Folder (under Pictures) where a copy appears in the headset's Files/gallery apps.</summary>
+        public const string GalleryFolder = "Secret of Hegra";
+
+        /// <summary>True when the last souvenir was also copied to the device's public Pictures folder.</summary>
+        public bool LastSouvenirInGallery { get; private set; }
+
+        /// <summary>
+        /// Renders the name wall to a PNG under persistentDataPath/Souvenirs and returns the path. On Android (Quest)
+        /// a copy also goes to Pictures/Secret of Hegra through MediaStore, so players can find and share it.
+        /// </summary>
         public string RenderSouvenir()
         {
             if (!souvenirCamera) return null;
@@ -337,9 +354,54 @@ namespace SecretOfHegra
             var safeName = string.IsNullOrEmpty(Game.State.playerName) ? "traveler" : Game.State.playerName;
             foreach (var c in Path.GetInvalidFileNameChars()) safeName = safeName.Replace(c, '_');
             var path = Path.Combine(dir, $"Hegra_{safeName}_{DateTime.Now:yyyyMMdd_HHmmss}.png");
-            File.WriteAllBytes(path, tex.EncodeToPNG());
+            var png = tex.EncodeToPNG();
+            File.WriteAllBytes(path, png);
             Destroy(tex);
+            LastSouvenirInGallery = SaveToDeviceGallery(png, Path.GetFileName(path));
             return path;
+        }
+
+        /// <summary>
+        /// Android 10+: inserts the PNG into MediaStore under Pictures/Secret of Hegra (no storage permission is
+        /// needed for the app's own images). Elsewhere (Editor, desktop) it does nothing. Never throws.
+        /// </summary>
+        static bool SaveToDeviceGallery(byte[] png, string fileName)
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            try
+            {
+                using (var player = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                using (var activity = player.GetStatic<AndroidJavaObject>("currentActivity"))
+                using (var resolver = activity.Call<AndroidJavaObject>("getContentResolver"))
+                using (var values = new AndroidJavaObject("android.content.ContentValues"))
+                using (var media = new AndroidJavaClass("android.provider.MediaStore$Images$Media"))
+                {
+                    values.Call("put", "_display_name", fileName);
+                    values.Call("put", "mime_type", "image/png");
+                    values.Call("put", "relative_path", "Pictures/" + GalleryFolder);
+                    using (var collection = media.GetStatic<AndroidJavaObject>("EXTERNAL_CONTENT_URI"))
+                    using (var uri = resolver.Call<AndroidJavaObject>("insert", collection, values))
+                    {
+                        if (uri == null) return false;
+                        using (var stream = resolver.Call<AndroidJavaObject>("openOutputStream", uri))
+                        {
+                            if (stream == null) return false;
+                            stream.Call("write", (sbyte[])(Array)png);
+                            stream.Call("flush");
+                            stream.Call("close");
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[Hegra] Could not copy the souvenir to the gallery: " + e.Message);
+                return false;
+            }
+#else
+            return false;
+#endif
         }
 
         void SaveSouvenir()
@@ -350,7 +412,8 @@ namespace SecretOfHegra
                 if (string.IsNullOrEmpty(LastSouvenirPath)) throw new Exception("no souvenir camera");
                 Game.State.souvenirSaved = true;
                 Game.SaveNow();
-                Game.Menus.ShowToastRaw(string.Format(Loc.Get("toast.souvenir_saved"), Path.GetFileName(LastSouvenirPath)), 6f);
+                var key = LastSouvenirInGallery ? "toast.souvenir_saved_gallery" : "toast.souvenir_saved";
+                Game.Menus.ShowToastRaw(string.Format(Loc.Get(key), Path.GetFileName(LastSouvenirPath)), 6f);
             }
             catch (Exception e)
             {

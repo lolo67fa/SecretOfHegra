@@ -51,6 +51,14 @@ namespace SecretOfHegra.EditorTools
             if (ok) Debug.Log("[Hegra] " + report);
         }
 
+        /// <summary>Batch-mode entry: -executeMethod SecretOfHegra.EditorTools.HegraBuilder.BuildOrRepairBatch</summary>
+        public static void BuildOrRepairBatch()
+        {
+            var ok = BuildOrRepair(out var report);
+            Debug.Log("[Hegra] " + report);
+            if (!ok) EditorApplication.Exit(1);
+        }
+
         /// <summary>Entry point also usable from automation (returns false if a prerequisite import is pending).</summary>
         public static bool BuildOrRepair(out string report)
         {

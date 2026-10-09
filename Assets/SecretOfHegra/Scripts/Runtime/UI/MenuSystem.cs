@@ -149,14 +149,22 @@ namespace SecretOfHegra
 
         void BuildMain()
         {
-            m_Main = NewPanel("MainMenu", new Vector2(640, 470), "game.title", out var c);
+            m_Main = NewPanel("MainMenu", new Vector2(640, 560), "game.title", out var c);
             var sub = UIFactory.LayoutText(c, "Subtitle", 600, 50, 24, TextAlignmentOptions.Center);
             sub.gameObject.AddComponent<LocalizedText>().SetKey("game.subtitle", TextAlignmentOptions.Center);
             AddButton(c, "menu.new", () => m_Game.RequestNewGame());
             m_ContinueButton = AddButton(c, "menu.continue", () => m_Game.RequestContinue());
-            // the main menu is intentionally minimal: title, subtitle, new journey, continue, exit. Language, museum
-            // mode and the other settings keep their saved/default values (Arabic) and stay reachable in-game from
+            // the main menu is intentionally minimal: title, subtitle, new journey, continue, language, exit. Museum
+            // mode and the other settings keep their saved/default values and stay reachable in-game from
             // the pause menu's settings.
+            // language switch: the label is the *other* language's name, so a player who cannot read the current one
+            // still recognises it ("English" on the Arabic menu, "العربية" on the English one)
+            AddButton(c, "menu.language_switch", () =>
+            {
+                var s = m_Game.Settings;
+                s.language = s.language == Language.Arabic ? Language.English : Language.Arabic;
+                m_Game.ApplySettings(s);
+            });
             AddButton(c, "menu.quit", Application.Quit);
             m_Refreshers.Add(() => { if (m_ContinueButton) m_ContinueButton.interactable = m_Game.Saves.HasProgress(); });
         }
@@ -312,8 +320,9 @@ namespace SecretOfHegra
             m_ToastRoot.transform.SetParent(transform, false);
             var follow = m_ToastRoot.AddComponent<LazyFollow>();
             follow.target = m_Head;
-            follow.distance = 1.3f;
-            follow.heightOffset = 0.18f;
+            follow.distance = 1.7f;
+            follow.heightOffset = 0.2f;
+            follow.stayPut = true;   // shown once where the player is looking, then fades; never chases the head
             follow.yawThreshold = 20f;
             var canvas = UIFactory.CreateCanvas("ToastCanvas", m_ToastRoot.transform, new Vector2(760, 110), m_Cam, 30);
             var rt = (RectTransform)canvas.transform;

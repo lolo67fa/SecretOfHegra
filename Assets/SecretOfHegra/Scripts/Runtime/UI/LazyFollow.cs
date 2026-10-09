@@ -14,6 +14,8 @@ namespace SecretOfHegra
         public float heightOffset = -0.25f;
         public float yawThreshold = 30f;
         public float followSpeed = 3f;
+        [Tooltip("Placed in front of the head only when SnapNow is called (e.g. once per objective), then stays put in the world.")]
+        public bool stayPut;
 
         Vector3 m_GoalPos;
         Quaternion m_GoalRot;
@@ -33,7 +35,7 @@ namespace SecretOfHegra
 
         void LateUpdate()
         {
-            if (!target) return;
+            if (!target || stayPut) return;
             float yaw = target.eulerAngles.y;
             if (!m_HasGoal || Mathf.Abs(Mathf.DeltaAngle(yaw, m_AnchorYaw)) > yawThreshold)
                 m_AnchorYaw = yaw;

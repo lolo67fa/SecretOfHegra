@@ -475,3 +475,49 @@
 - **ملاحظة:** `SecretOfHegra_dev.apk` (10:59) نسخة تطوير قديمة، **ليست** هذا البناء.
 - **غير مثبّت وغير مجرَّب على نظارة:** وضع المطوّر غير متاح (حساب المالكة)، وQuest Link لا يعمل على Intel Iris Xe.
 - **الخطوة التالية:** تفعيل وضع المطوّر من حساب مالكة النظارة، ثم `adb install -r "D:\DUnityProjects\oilsearch\Builds\Quest\SecretOfHegra.apk"`.
+
+---
+
+## ✦ 2026-10-08 00:11 — إعادة بناء APK (Release) لـQuest 3
+
+- **قبل البناء:** المحرر كان مفتوحاً وجاهزاً، والمشهد غير معدّل. حُفظت الأصول (`SaveAssets`) ثم أُغلق المحرر بشكل طبيعي، بلا إغلاق قسري ولا ملف قفل متبقٍّ.
+- **الإعدادات** (تحقّق، بلا تغيير):
+  - Android، وAPK وليس AAB، وARM64 وIL2CPP.
+  - المعرّف `com.lulu.secretofhegra` والإصدار 0.1.0 (1)، والتوقيع الافتراضي (Debug keystore).
+  - OpenXR مع MetaQuestFeature، والمشهد المفعّل الوحيد `SecretOfHegra.unity`.
+- **الطريقة:** `run-guarded.ps1` ثم `BuildApkBatch`، مع Gradle والمؤقتات على D:. حد الذاكرة 150MB، وحد الصمت 600 ث.
+- **✅ نجح:**
+  - `Build Finished, Result: Success`، من 00:08:14 حتى نحو 00:11:28 (194 ث)، وأقل ذاكرة حرة 254MB.
+  - **الملف:** `D:\DUnityProjects\oilsearch\Builds\Quest\SecretOfHegra_Quest3_Release_20261008_0011.apk`، وهو نسخة مطابقة من `SecretOfHegra.apk` (نفس SHA-256). الحجم 51,757,351 بايت (≈49.4MB)، الوقت 2026-10-08 00:11:14.
+  - **السجل:** `D:\dev-cache\temp\apkbuild_release_20261008_000814.log`
+- **تحقق aapt:**
+  - غير قابل للتصحيح، وarm64-v8a فقط، وminSdk 32.
+  - `supportedDevices` تشمل eureka (Quest 3).
+- **غير مثبّت:** `adb devices` لم يجد أي جهاز. لم يُختبر داخل النظارة.
+
+---
+
+## ✦ 2026-10-08 02:50 — رفع اللعبة على itch.io (صفحة مقيّدة)
+
+- **مفتاح توقيع خاص:** `D:\SecretOfHegra-signing\secretofhegra-release.keystore`، والاسم المستعار `secretofhegra`. كلمة السر في `README-signing.txt` بنفس المجلد.
+  - المجلد **خارج المستودع**، ويجب الاحتفاظ بنسخة احتياطية منه.
+  - البصمة SHA-256: `a4a6468855bec073…532d96`.
+- **`HegraProjectSetup.BuildApk`:** يوقّع نسخة Release بهذا المفتاح إذا مُرّرت `HEGRA_KEYSTORE` و`HEGRA_KEYSTORE_PASS` و`HEGRA_KEY_ALIAS` كمتغيرات بيئة. الإعدادات تُعاد بعد البناء، فلا يُحفظ مسار ولا كلمة سر في ProjectSettings.
+- **البناء الموقّع:** 02:42 ← 02:46 (241 ث)، وأقل ذاكرة 595MB، بحد 150MB لهذا البناء فقط بموافقة لولو.
+  - الملف: `Builds/Quest/SecretOfHegra.apk` (51,757,355 بايت)، والتوقيع مؤكد `CN=Secret of Hegra, O=lolo67fa`.
+  - السجل: `D:\dev-cache\temp\apkbuild_signed_20261008_024225.log`
+- **الرفع:** أداة `butler` v15.32 (موقّعة من itch corp.) في `D:\dev-cache\tools\butler`، وتسجيل الدخول باسم lolo67fa.
+  - الوجهة: `lolo67fa/secretofhegra:android`، الإصدار 0.1.0.
+  - Upload #19626688 / Build #2084899 ✓ (49.36 MiB).
+  - الصفحة: https://lolo67fa.itch.io/secretofhegra (مقيّدة / مسودة).
+- **لم يُجرَّب بعد على نظارة.**
+- **التحديث القادم:** ارفع `bundleVersionCode` (Version Code)، ثم ابنِ بنفس المفتاح، ثم `butler push … :android --userversion <الجديد>`.
+
+## 2026-10-09 — رسائل ثابتة، زر اللغة، وكنز حقيقي
+
+- **الرسائل ما تلحق اللاعب:** لوحة المهمة تنحط مرة وحدة قدام اللاعب (يسار شوي، ~1.7م) عند بداية كل مرحلة وتثبت مكانها؛ الترجمة تثبت طول المحادثة؛ الإشعارات تطلع مرة وتختفي. طلب تلميح من القائمة يرجّع اللوحة قدامه. (`LazyFollow.stayPut`)
+- **عربي/إنجليزي:** زر «English / العربية» في الشاشة الرئيسية (كل النصوص كانت مترجمة مسبقاً).
+- **الكنز:** صندوق جديد في القصر الفريد: غطاء مقوّس، أحزمة برونز، قفل ذهبي، مليان ذهب + كأسين + جواهر + عقد لؤلؤ + عملات متناثرة، وضوء ذهبي يطلع لما ينفتح. صور: `Screenshots/chest_*.png`.
+- إعادة بناء المشهد عبر `HegraBuilder.BuildOrRepairBatch` (جديد) — التحقق بدون مشاكل؛ اختبارات 43/43.
+- الإصدار مرفوع إلى 0.1.1 (code 2) ومعه حفظ صور التذكار في `Pictures/Secret of Hegra`. **لم يُبنَ APK بعد.**
+- لم يُجرَّب سلوك الرسائل الجديد في Play Mode ولا على النظارة بعد.
