@@ -30,6 +30,9 @@ namespace SecretOfHegra
         Transform m_WorldAnchor;
         string m_ObjectiveKey;
 
+        /// <summary>Raised whenever the action buttons change (null when cleared); the speech bubble mirrors them.</summary>
+        public static event Action<(string key, Action action)[]> ActionsChanged;
+
         public static ObjectivePanel Create(Transform head, Camera cam)
         {
             var root = new GameObject("ObjectivePanel");
@@ -150,6 +153,7 @@ namespace SecretOfHegra
         {
             ClearButtons();
             if (actions == null) return;
+            ActionsChanged?.Invoke(actions);
             foreach (var a in actions)
             {
                 if (a.action == null) continue;
@@ -160,8 +164,10 @@ namespace SecretOfHegra
 
         public void ClearButtons()
         {
+            bool had = m_Buttons.Count > 0;
             foreach (var b in m_Buttons) if (b) Destroy(b);
             m_Buttons.Clear();
+            if (had) ActionsChanged?.Invoke(null);
         }
     }
 }

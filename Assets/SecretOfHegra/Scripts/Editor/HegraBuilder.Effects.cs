@@ -114,6 +114,28 @@ namespace SecretOfHegra.EditorTools
             noise.frequency = 0.25f;
         }
 
+        // ───────────── speaking characters ─────────────
+
+        /// <summary>
+        /// Adds the speech-bubble anchor (just above the head) and the soft glow shown above the head while the
+        /// character speaks.
+        /// </summary>
+        static void SpeakerExtras(NpcFigure npc)
+        {
+            if (!npc || !npc.head) return;
+            var root = npc.transform;
+            var headLocal = root.InverseTransformPoint(npc.head.position);
+            var anchor = new GameObject("DialogueAnchor").transform;
+            anchor.SetParent(root, false);
+            anchor.localPosition = headLocal + Vector3.up * 0.16f;
+            npc.dialogueAnchor = anchor;
+
+            var glow = HegraKit.Prim(PrimitiveType.Quad, root, "SpeakGlow", headLocal + Vector3.up * 0.36f, Vector3.zero, M.glowWarm);
+            var r = glow.GetComponent<Renderer>();
+            r.enabled = false;
+            npc.speakGlow = r;
+        }
+
         // ───────────── draw-call savers ─────────────
 
         /// <summary>

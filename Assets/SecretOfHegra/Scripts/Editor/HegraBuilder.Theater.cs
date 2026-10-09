@@ -110,6 +110,7 @@ namespace SecretOfHegra.EditorTools
             HegraCharacters.Headband(mf, M.stripeBlue);
             HegraCharacters.Lyre(mf, M.wood, M.bronze);
             mf.npc.speakerId = "maliku";
+            SpeakerExtras(mf.npc);
             stop.maliku = mf.npc;
 
             // the play's props

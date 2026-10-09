@@ -229,6 +229,7 @@ namespace SecretOfHegra.EditorTools
             HegraCharacters.Spear(f, M.wood, M.bronze);
             HegraCharacters.Shield(f, M.leather, M.bronze);
             f.npc.speakerId = "shuayd";
+            SpeakerExtras(f.npc);
             stop.shuayd = f.npc;
 
             var camel = HegraCharacters.Camel(root, new Vector3(5f, 0, -1.5f), 200f, M);
@@ -325,6 +326,7 @@ namespace SecretOfHegra.EditorTools
             HegraCharacters.Jewelry(f, M.bronze);
             HegraCharacters.Belt(f, M.bronze, 1.0f);
             f.npc.speakerId = "kamkam";
+            SpeakerExtras(f.npc);
             var guide = f.root.AddComponent<KamkamGuide>();
             guide.figure = f.npc;
             return guide;

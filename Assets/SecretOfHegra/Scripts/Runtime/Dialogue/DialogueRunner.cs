@@ -36,6 +36,10 @@ namespace SecretOfHegra
         public string CurrentSpeaker { get; private set; }
 
         public SubtitleDisplay Subtitles { get => m_Subtitles; set => m_Subtitles = value; }
+        /// <summary>Speech bubble beside the speaking character; the subtitle bar is only the fallback.</summary>
+        public SpeechBubble Bubble { get; set; }
+        /// <summary>Speakers farther than this from the player use the subtitle bar instead of a bubble.</summary>
+        public float bubbleRange = 18f;
         public AudioSource VoiceSource { get => m_VoiceSource; set => m_VoiceSource = value; }
         public VoiceoverBank Voiceover { get => m_Voiceover; set => m_Voiceover = value; }
 
@@ -61,9 +65,15 @@ namespace SecretOfHegra
             CurrentSequence = null;
             if (m_VoiceSource) m_VoiceSource.Stop();
             if (m_Subtitles) m_Subtitles.Hide();
+            if (Bubble) Bubble.EndDialogue();
         }
 
-        public void Advance() => m_AdvanceRequested = true;
+        /// <summary>Trigger: the first press finishes the typing line, the next one continues.</summary>
+        public void Advance()
+        {
+            if (Bubble && Bubble.IsTyping) { Bubble.CompleteTyping(); return; }
+            m_AdvanceRequested = true;
+        }
 
         /// <summary>Finishes the current sequence immediately (its completion callback still runs).</summary>
         public void SkipSequence() => m_SkipSequenceRequested = true;
@@ -84,6 +94,7 @@ namespace SecretOfHegra
                 if (m_VoiceSource) m_VoiceSource.Stop();
                 if (m_Subtitles) m_Subtitles.Hide();
                 CurrentSequence = null;
+                if (Bubble) Bubble.EndDialogue();
                 CurrentSpeaker = null;
                 SequenceFinished?.Invoke();
                 try { req.onComplete?.Invoke(); }
@@ -104,10 +115,22 @@ namespace SecretOfHegra
             if (speaker != null && !string.IsNullOrEmpty(speaker.color))
                 ColorUtility.TryParseHtmlString(speaker.color, out nameColor);
 
-            if (m_Subtitles) m_Subtitles.Show(speakerName, text, nameColor);
+            var npc = Bubble ? NpcFigure.FindSpeaker(line.speaker) : null;
+            bool inBubble = npc && InBubbleRange(npc);
+            if (inBubble)
+            {
+                if (m_Subtitles) m_Subtitles.Hide();
+                Bubble.ShowLine(npc, speakerName, text, nameColor);
+            }
+            else
+            {
+                if (Bubble && Bubble.IsVisible) Bubble.Close();
+                if (m_Subtitles) m_Subtitles.Show(speakerName, text, nameColor);
+            }
 
             AudioClip clip = m_Voiceover ? m_Voiceover.Get(line.key, Loc.Current) : null;
             float duration = clip ? clip.length + 0.35f : DialogueDatabase.EstimateDuration(text, line.duration);
+            if (inBubble) duration = Mathf.Max(duration, Bubble.TypingSeconds + 1.8f);
             if (clip && m_VoiceSource)
             {
                 m_VoiceSource.clip = clip;
@@ -134,6 +157,14 @@ namespace SecretOfHegra
                 yield return null;
             }
             if (m_VoiceSource && m_VoiceSource.isPlaying) m_VoiceSource.Stop();
+        }
+
+        bool InBubbleRange(NpcFigure npc)
+        {
+            var gm = GameManager.Instance;
+            if (!gm || !gm.Rig) return false;
+            var d = npc.transform.position - gm.Rig.Head.position; d.y = 0f;
+            return d.magnitude <= bubbleRange;
         }
     }
 }

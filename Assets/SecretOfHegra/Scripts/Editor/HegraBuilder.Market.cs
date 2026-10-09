@@ -150,6 +150,7 @@ namespace SecretOfHegra.EditorTools
             HegraCharacters.Headband(wf, M.clothRed);
             HegraCharacters.Belt(wf, M.leather);
             wf.npc.speakerId = "wahballahi";
+            SpeakerExtras(wf.npc);
             wf.npc.idleGesture = NpcGesture.Carve;
             stop.wahballahi = wf.npc;
 

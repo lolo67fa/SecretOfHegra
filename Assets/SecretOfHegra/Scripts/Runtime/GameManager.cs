@@ -56,6 +56,7 @@ namespace SecretOfHegra
         public MenuSystem Menus => m_Menus;
         public ObjectivePanel Objective { get; private set; }
         public SubtitleDisplay Subtitles { get; private set; }
+        public SpeechBubble Bubble { get; private set; }
         public NabataeanConverter Nabataean { get; private set; }
         public TMP_FontAsset NabataeanFont => m_NabataeanFont;
         public TMP_FontAsset Font => m_Font;
@@ -127,6 +128,8 @@ namespace SecretOfHegra
             Subtitles = SubtitleDisplay.Create(m_Rig.Head, cam);
             Objective = ObjectivePanel.Create(m_Rig.Head, cam);
             if (m_Rig && !m_Rig.GetComponent<InteractionHaptics>()) m_Rig.gameObject.AddComponent<InteractionHaptics>();
+            Bubble = SpeechBubble.Create(cam);
+            m_Dialogue.Bubble = Bubble;
 
             m_Dialogue.Database = DialogueDatabase.FromJson(m_Dialogue_Text());
             m_Dialogue.Subtitles = Subtitles;
@@ -457,6 +460,7 @@ namespace SecretOfHegra
             if (m_LampCarry && m_LampCarry.IsCarrying) m_LampCarry.Carry(s.handedness);   // follow the new dominant hand
             if (m_Audio) m_Audio.ApplySettings(s);
             if (Subtitles) Subtitles.SetScale(s.subtitleScale);
+            if (Bubble) Bubble.SetScale(s.subtitleScale);
             EduCard.SetVisible(s.educationalCards && (State != null ? State.museumMode : s.museumMode));
             SettingsChanged?.Invoke(s);
             if (save) Saves.SaveSettings(s);

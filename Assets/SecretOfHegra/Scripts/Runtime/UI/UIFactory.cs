@@ -100,6 +100,7 @@ namespace SecretOfHegra
                 btn.onClick.AddListener(() =>
                 {
                     HegraAudio.PlayUiClick();
+                    Haptics.Both(0.25f, 0.05f);
                     onClick();
                 });
 
