@@ -81,6 +81,10 @@ namespace SecretOfHegra.EditorTools
             m.fade = HegraKit.Custom("M_Fade", "SecretOfHegra/Fade");
             m.fade.SetColor("_Color", HegraPalette.Night);
             m.sky = HegraKit.Custom("M_NightSky", "SecretOfHegra/NightSky");
+            // the Milky Way crosses high over the valley
+            m.sky.SetColor("_BandColor", new Color(0.55f, 0.6f, 0.78f));
+            m.sky.SetFloat("_BandIntensity", 0.4f);
+            m.sky.SetVector("_BandNormal", new Vector4(0.78f, 0.2f, -0.59f, 0f));
             return m;
         }
     }

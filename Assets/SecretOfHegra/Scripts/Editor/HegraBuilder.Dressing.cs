@@ -45,6 +45,9 @@ namespace SecretOfHegra.EditorTools
             RouteMargins(root);
             Horizon(root);
             AmbienceSources(root, audio);
+            Fireflies(root, new Vector3(10f, 0, 10f), 4.5f);     // the oasis
+            Fireflies(root, new Vector3(-15f, 0, 28f), 4f);      // market palms, west
+            Fireflies(root, new Vector3(15f, 0, 28f), 4f);       // market palms, east
         }
 
         // ───────────── keep-clear rules ─────────────

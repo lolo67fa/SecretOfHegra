@@ -222,6 +222,8 @@ namespace SecretOfHegra.EditorTools
             rig.gameObject.AddComponent<InteractionHaptics>();
             AirMotes(rig.transform);
 
+            BuildGuideMarker(systems);
+
             var gmGo = new GameObject("GameManager");
             gmGo.transform.SetParent(systems, false);
             var gm = gmGo.AddComponent<GameManager>();

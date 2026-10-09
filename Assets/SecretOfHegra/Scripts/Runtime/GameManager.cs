@@ -57,6 +57,11 @@ namespace SecretOfHegra
         public ObjectivePanel Objective { get; private set; }
         public SubtitleDisplay Subtitles { get; private set; }
         public SpeechBubble Bubble { get; private set; }
+        public TitleCard Title { get; private set; }
+        static bool s_OpeningShown;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetOpening() => s_OpeningShown = false;
         public NabataeanConverter Nabataean { get; private set; }
         public TMP_FontAsset NabataeanFont => m_NabataeanFont;
         public TMP_FontAsset Font => m_Font;
@@ -130,6 +135,7 @@ namespace SecretOfHegra
             if (m_Rig && !m_Rig.GetComponent<InteractionHaptics>()) m_Rig.gameObject.AddComponent<InteractionHaptics>();
             if (m_Rig && !m_Rig.GetComponent<FootstepPlayer>()) m_Rig.gameObject.AddComponent<FootstepPlayer>();
             Bubble = SpeechBubble.Create(cam);
+            Title = TitleCard.Create(cam);
             m_Dialogue.Bubble = Bubble;
 
             m_Dialogue.Database = DialogueDatabase.FromJson(m_Dialogue_Text());
@@ -182,8 +188,16 @@ namespace SecretOfHegra
             if (camp && camp.spawnPoint) m_Rig.PlaceAt(camp.spawnPoint);
             CarryLampInHand();
             yield return null;
+            if (!s_OpeningShown && Title)
+            {
+                // the opening: the title rises out of the dark before the night appears (trigger skips it)
+                s_OpeningShown = true;
+                m_Rig.Fader.SetAlpha(1f);
+                Title.Show(Loc.Get("game.title"), Loc.Get("game.subtitle"), 2.8f, 3f, 1.1f);
+                while (Title.IsShowing && !Input.advance.WasPressedThisFrame()) yield return null;
+            }
             m_Menus.ShowMain();
-            yield return m_Rig.Fader.FadeTo(0f, 1.2f);
+            yield return m_Rig.Fader.FadeTo(0f, 1.6f);
         }
 
         /// <summary>Main-menu entry points. Starting from a fresh load avoids leftover world state.</summary>
@@ -345,7 +359,11 @@ namespace SecretOfHegra
             if (m_ActiveStop && m_ActiveStop != stop) m_ActiveStop.OnStepExited(step);
             // arriving at a new place: its name appears once, like a chapter title
             if (stop && stop != m_ActiveStop && step != QuestStep.Complete && Loc.Has("stop." + stop.stopId.ToString().ToLowerInvariant()))
-                m_Menus?.ShowToast("stop." + stop.stopId.ToString().ToLowerInvariant(), 3f);
+            {
+                var name = Loc.Get("stop." + stop.stopId.ToString().ToLowerInvariant());
+                if (Title) Title.Show(name, null, 2.2f, 3.2f, 0.8f);
+                else m_Menus?.ShowToast("stop." + stop.stopId.ToString().ToLowerInvariant(), 3f);
+            }
             m_ActiveStop = stop;
 
             string objKey = "obj." + step;

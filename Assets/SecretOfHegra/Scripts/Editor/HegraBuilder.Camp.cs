@@ -46,19 +46,27 @@ namespace SecretOfHegra.EditorTools
             psGo.transform.localPosition = new Vector3(0, 0.3f, 0);
             var ps = psGo.AddComponent<ParticleSystem>();
             var main = ps.main;
-            main.startLifetime = 1.6f;
-            main.startSpeed = 0.6f;
-            main.startSize = 0.025f;
-            main.maxParticles = 24;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(1.4f, 2.6f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.4f, 0.9f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.02f, 0.045f);
+            main.maxParticles = 30;
             main.startColor = new Color(1f, 0.6f, 0.25f);
             main.gravityModifier = -0.05f;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
             var em = ps.emission;
-            em.rateOverTime = 8f;
+            em.rateOverTime = 10f;
+            // rising embers: they flicker, drift on the heat and fade out as they cool
+            var col = ps.colorOverLifetime; col.enabled = true;
+            var grad = new Gradient();
+            grad.SetKeys(new[] { new GradientColorKey(new Color(1f, 0.85f, 0.5f), 0f), new GradientColorKey(new Color(1f, 0.35f, 0.1f), 1f) },
+                new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.8f, 0.5f), new GradientAlphaKey(0f, 1f) });
+            col.color = grad;
+            var noise = ps.noise; noise.enabled = true; noise.strength = 0.3f; noise.frequency = 0.8f;
             var shape = ps.shape;
             shape.shapeType = ParticleSystemShapeType.Cone;
             shape.radius = 0.15f;
             shape.angle = 12f;
-            psGo.GetComponent<ParticleSystemRenderer>().sharedMaterial = M.glowFire;
+            psGo.GetComponent<ParticleSystemRenderer>().sharedMaterial = HegraKit.GlowParticle("M_Ember", new Color(1f, 0.6f, 0.25f), 1.8f, 2.2f);
 
             if (audio != null) Loop3D(g, "FireSound", audio.Get("amb_fire"), audio.ambienceGroup, 0.8f, 10f);
         }

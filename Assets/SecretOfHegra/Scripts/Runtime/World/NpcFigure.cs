@@ -71,6 +71,8 @@ namespace SecretOfHegra
         }
 
         float m_Glow;
+        /// <summary>Set while the player points at this character (a softer glow than speaking).</summary>
+        public bool Highlighted { get; set; }
         Quaternion m_BodyRot = Quaternion.identity;
 
         NpcGesture m_Gesture;
@@ -201,7 +203,7 @@ namespace SecretOfHegra
         void UpdateGlow(bool speaking)
         {
             if (!speakGlow) return;
-            m_Glow = Mathf.MoveTowards(m_Glow, speaking ? 1f : 0f, Time.deltaTime * 3f);
+            m_Glow = Mathf.MoveTowards(m_Glow, speaking ? 1f : Highlighted ? 0.65f : 0f, Time.deltaTime * 3f);
             bool on = m_Glow > 0.01f;
             if (speakGlow.enabled != on) speakGlow.enabled = on;
             if (!on) return;

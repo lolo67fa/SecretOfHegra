@@ -114,6 +114,47 @@ namespace SecretOfHegra.EditorTools
             noise.frequency = 0.25f;
         }
 
+        // ───────────── guidance ─────────────
+
+        /// <summary>The floating golden diamond over the next person to talk to (see GuideMarker).</summary>
+        static void BuildGuideMarker(Transform parent)
+        {
+            var root = new GameObject("GuideMarker");
+            root.transform.SetParent(parent, false);
+            var gold = HegraKit.Lit("M_GuideGold", new Color(1f, 0.82f, 0.4f), null, 0.9f, new Color(0.9f, 0.6f, 0.2f));
+            var d = HegraKit.MeshObject("Diamond", root.transform, GemMesh("GuideGem"), gold, Vector3.zero, null, new Vector3(0.11f, 0.16f, 0.11f));
+            var halo = HegraKit.Prim(PrimitiveType.Quad, root.transform, "Halo", Vector3.zero, Vector3.one * 0.55f, M.glowWarm);
+            var r = halo.GetComponent<Renderer>();
+            r.enabled = false;
+            d.SetActive(false);
+            var gmk = root.AddComponent<GuideMarker>();
+            gmk.diamond = d.transform;
+            gmk.halo = r;
+        }
+
+        /// <summary>Fireflies drifting and blinking around palms (a handful of soft green-gold sparks).</summary>
+        static void Fireflies(Transform parent, Vector3 pos, float radius)
+        {
+            var mat = HegraKit.GlowParticle("M_Firefly", new Color(0.85f, 1f, 0.45f), 1.4f, 2.6f);
+            var ps = NewParticles("Fireflies", parent, pos + Vector3.up * 1.4f, mat, 24);
+            var main = ps.main;
+            main.playOnAwake = true; main.loop = true; main.prewarm = true;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(4f, 7f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.05f, 0.2f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.035f, 0.06f);
+            var em = ps.emission; em.rateOverTime = 3.5f;
+            var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Sphere; sh.radius = radius;
+            sh.scale = new Vector3(1f, 0.45f, 1f);
+            var col = ps.colorOverLifetime; col.enabled = true;
+            var g = new Gradient();
+            // blinking: several soft pulses over a life
+            g.SetKeys(new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
+                new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(1f, 0.12f), new GradientAlphaKey(0.1f, 0.3f), new GradientAlphaKey(1f, 0.45f),
+                        new GradientAlphaKey(0.05f, 0.62f), new GradientAlphaKey(1f, 0.78f), new GradientAlphaKey(0f, 1f) });
+            col.color = g;
+            var noise = ps.noise; noise.enabled = true; noise.strength = 0.35f; noise.frequency = 0.35f;
+        }
+
         // ───────────── speaking characters ─────────────
 
         /// <summary>
