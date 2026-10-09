@@ -120,6 +120,7 @@ namespace SecretOfHegra
         public void ShowLine(NpcFigure npc, string speakerName, string line, Color nameColor)
         {
             bool wasVisible = m_Visible && m_Npc == npc;
+            if (!m_Visible) HegraAudio.Play2D(Sfx.UiOpen, 0.35f);   // a conversation opens
             m_Npc = npc;
             m_RawName = speakerName;
             m_RawLine = line;
@@ -225,7 +226,7 @@ namespace SecretOfHegra
             {
                 if (a.action == null) continue;
                 var act = a.action;
-                var b = UIFactory.Button(m_Choices, "Choice_" + a.key, a.key, act, w, ChoiceH - 6f, 24);
+                var b = UIFactory.Button(m_Choices, "Choice_" + a.key, a.key, () => { HegraAudio.Play2D(Sfx.UiConfirm, 0.5f); act(); }, w, ChoiceH - 6f, 24);
                 m_Buttons.Add(b.gameObject);
             }
             m_Group.blocksRaycasts = m_Buttons.Count > 0;

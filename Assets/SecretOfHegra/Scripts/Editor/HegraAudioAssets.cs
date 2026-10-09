@@ -85,6 +85,28 @@ namespace SecretOfHegra.EditorTools
                 }
                 set.clips[g.name] = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
             }
+            // made by Tools/Audio/hegra_audio.py (numpy/scipy synthesis); loaded when present
+            foreach (var (name, music) in new[] { ("amb_crickets", false), ("amb_cloth", false), ("mus_hijaz", true), ("mus_legend", true),
+                         ("sting_legend", false), ("sting_reveal", false), ("ui_open", false), ("ui_confirm", false) })
+            {
+                var path = $"{AudioDir}/{name}.wav";
+                if (!File.Exists(path)) continue;
+                AssetDatabase.ImportAsset(path);
+                var imp = (AudioImporter)AssetImporter.GetAtPath(path);
+                bool loop = name.StartsWith("amb_") || music;
+                var s = imp.defaultSampleSettings;
+                if (imp.forceToMono == music || s.loadType != (loop ? AudioClipLoadType.Streaming : AudioClipLoadType.DecompressOnLoad))
+                {
+                    imp.forceToMono = !music;   // music keeps its stereo width
+                    s.loadType = loop ? AudioClipLoadType.Streaming : AudioClipLoadType.DecompressOnLoad;
+                    s.preloadAudioData = true;
+                    s.compressionFormat = AudioCompressionFormat.Vorbis;
+                    s.quality = music ? 0.5f : 0.45f;
+                    imp.defaultSampleSettings = s;
+                    imp.SaveAndReimport();
+                }
+                set.clips[name] = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            }
             EnsureMixer(set);
             return set;
         }
@@ -164,7 +186,9 @@ namespace SecretOfHegra.EditorTools
             AssetDatabase.SaveAssets();
         }
 
-        public const string JourneyMusicClip = "mus_lyre";
+        // the Hijaz oud piece plays for the whole journey; the lyre theme stays in the project as an alternative
+        public const string JourneyMusicClip = "mus_hijaz";
+        public const string LegendMusicClip = "mus_legend";
 
         public static void Configure(AudioDirector director, Set set)
         {
@@ -176,13 +200,15 @@ namespace SecretOfHegra.EditorTools
             so.FindProperty("m_DialogueGroup").objectReferenceValue = set.dialogueGroup;
             so.FindProperty("m_WindLoop").objectReferenceValue = set.Get("amb_wind");
             // the lyre theme (formerly the Theater / Qasr al-Bint zone music) now plays for the whole journey
-            so.FindProperty("m_JourneyMusic").objectReferenceValue = set.Get(JourneyMusicClip);
+            so.FindProperty("m_JourneyMusic").objectReferenceValue = set.Get(JourneyMusicClip) ?? set.Get("mus_lyre");
+            so.FindProperty("m_LegendMusic").objectReferenceValue = set.Get(LegendMusicClip);
             var list = so.FindProperty("m_Sfx");
             var map = new (Sfx id, string clip)[]
             {
                 (Sfx.UiClick, "sfx_click"), (Sfx.SignChime, "sfx_chime"), (Sfx.Coin, "sfx_coin"), (Sfx.Carve, "sfx_carve"),
                 (Sfx.StoneDoor, "sfx_door"), (Sfx.Footstep, "sfx_footstep"), (Sfx.Camel, "sfx_camel"), (Sfx.Grab, "sfx_grab"),
                 (Sfx.KohlApply, "sfx_kohl"), (Sfx.WaterGate, "sfx_gate"), (Sfx.Chest, "sfx_chest"), (Sfx.Fail, "sfx_fail"),
+                (Sfx.LegendSting, "sting_legend"), (Sfx.RevealSting, "sting_reveal"), (Sfx.UiOpen, "ui_open"), (Sfx.UiConfirm, "ui_confirm"),
             };
             list.arraySize = map.Length;
             for (int i = 0; i < map.Length; i++)

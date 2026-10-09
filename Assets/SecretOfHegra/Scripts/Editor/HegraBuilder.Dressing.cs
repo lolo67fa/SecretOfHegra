@@ -44,6 +44,7 @@ namespace SecretOfHegra.EditorTools
             MarketOutskirts(root, life);
             RouteMargins(root);
             Horizon(root);
+            AmbienceSources(root, audio);
         }
 
         // ───────────── keep-clear rules ─────────────
@@ -250,6 +251,30 @@ namespace SecretOfHegra.EditorTools
                 HegraKit.MeshObject("Dune", g, s_LowSphere, M.sand, p, new Vector3(0, yaw, 0), new Vector3(Rf(40f, 70f), Rf(7f, 13f), Rf(18f, 28f)));
             }
             HegraKit.MarkStatic(g.gameObject);
+        }
+
+        // ───────────── 3D ambience ─────────────
+
+        /// <summary>Crickets in the bushes and palms around camp and along the road; cloth flapping at the tents.</summary>
+        static void AmbienceSources(Transform root, HegraAudioAssets.Set audio)
+        {
+            if (audio == null) return;
+            var g = HegraKit.Group("AmbienceSources", root, Vector3.zero).transform;
+            var crickets = audio.Get("amb_crickets");
+            var cloth = audio.Get("amb_cloth");
+            if (crickets)
+            {
+                var spots = new[] { new Vector3(10f, 0.3f, 10f), new Vector3(-13f, 0.3f, 2f), new Vector3(4f, 0.3f, -14f), new Vector3(-12f, 0.3f, 24f),
+                    new Vector3(13f, 0.3f, 38f), new Vector3(14f, 0.3f, 52f), new Vector3(38f, 0.3f, 62f), new Vector3(66f, 0.3f, 58f), new Vector3(92f, 0.3f, 32f) };
+                for (int i = 0; i < spots.Length; i++)
+                {
+                    var src = Loop3D(g, "Crickets", crickets, audio.ambienceGroup, 0.35f, 14f);
+                    src.transform.position = spots[i];
+                }
+            }
+            if (cloth)
+                foreach (var p in new[] { new Vector3(-11f, 2f, 6f), new Vector3(9f, 2f, -8f), new Vector3(-5.5f, 2f, 3f), new Vector3(-11f, 2f, 26.5f), new Vector3(11.3f, 2f, 28.5f) })
+                    Loop3D(g, "ClothFlap", cloth, audio.ambienceGroup, 0.3f, 9f).transform.position = p;
         }
 
         // ───────────── props ─────────────

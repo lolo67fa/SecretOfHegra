@@ -128,6 +128,7 @@ namespace SecretOfHegra
             Subtitles = SubtitleDisplay.Create(m_Rig.Head, cam);
             Objective = ObjectivePanel.Create(m_Rig.Head, cam);
             if (m_Rig && !m_Rig.GetComponent<InteractionHaptics>()) m_Rig.gameObject.AddComponent<InteractionHaptics>();
+            if (m_Rig && !m_Rig.GetComponent<FootstepPlayer>()) m_Rig.gameObject.AddComponent<FootstepPlayer>();
             Bubble = SpeechBubble.Create(cam);
             m_Dialogue.Bubble = Bubble;
 
@@ -329,6 +330,7 @@ namespace SecretOfHegra
             if (State == null || !State.GrantSign(id)) return false;
             HegraAudio.Play2D(Sfx.SignChime);
             Haptics.Both(0.6f, 0.25f);
+            if (HegraAudio.Director) HegraAudio.Director.Swell(4f);
             SignGranted?.Invoke(id);
             m_Menus?.ShowToast("sign.granted." + id.ToString().ToLowerInvariant());
             NotifyStateChanged();
@@ -351,6 +353,9 @@ namespace SecretOfHegra
             else Objective.Hide();
 
             StepEntered?.Invoke(step);
+            // key reveals: the sealed door opens, the treasure is found, the name appears on the wall
+            if (step == QuestStep.FaridDoorOpening || step == QuestStep.FaridFinale || step == QuestStep.Complete)
+                HegraAudio.Reveal();
             if (step == QuestStep.Complete)
             {
                 Objective.Hide();

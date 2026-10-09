@@ -6,7 +6,9 @@ namespace SecretOfHegra
 {
     public enum Sfx
     {
-        UiClick, SignChime, Coin, Carve, StoneDoor, Footstep, Camel, Grab, KohlApply, WaterGate, Chest, Fail
+        UiClick, SignChime, Coin, Carve, StoneDoor, Footstep, Camel, Grab, KohlApply, WaterGate, Chest, Fail,
+        // appended (serialized by index): story stingers and UI
+        LegendSting, RevealSting, UiOpen, UiConfirm
     }
 
     /// <summary>Static entry point so any component can play a sound without scene lookups.</summary>
@@ -17,6 +19,8 @@ namespace SecretOfHegra
         public static void PlayUiClick() { if (Director) Director.Play2D(Sfx.UiClick, 0.6f); }
         public static void Play2D(Sfx s, float volume = 1f) { if (Director) Director.Play2D(s, volume); }
         public static void PlayAt(Sfx s, Vector3 pos, float volume = 1f) { if (Director) Director.PlayAt(s, pos, volume); }
+        /// <summary>A key story moment: the dramatic hit plus a short swell of the music.</summary>
+        public static void Reveal() { if (Director) { Director.Play2D(Sfx.RevealSting, 0.9f); Director.Swell(6f); } }
     }
 
     /// <summary>
@@ -46,6 +50,9 @@ namespace SecretOfHegra
         [SerializeField, Range(0f, 1f)] float m_JourneyVolume = 0.3f;
         [SerializeField, Range(0f, 1f)] float m_DuckFactor = 0.45f;
         [SerializeField] float m_DuckSeconds = 0.6f;
+        [Tooltip("Darker variation that takes over while a legend is being told.")]
+        [SerializeField] AudioClip m_LegendMusic;
+        [SerializeField] float m_SwellBoost = 1.6f;
 
         public AudioMixerGroup DialogueGroup => m_DialogueGroup;
         public AudioMixerGroup SfxGroup => m_SfxGroup;
@@ -58,6 +65,10 @@ namespace SecretOfHegra
         /// <summary>Playback position carried over a scene reload so the track continues instead of restarting.</summary>
         static float s_JourneyTime = -1f;
         AudioSource m_Journey;
+        AudioSource m_Legend;
+        float m_LegendMix;       // 0 = journey track, 1 = legend track
+        float m_SwellUntil;
+        string m_LastSequence;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetStatics() => s_JourneyTime = -1f; // play mode may run without a domain reload
@@ -92,6 +103,12 @@ namespace SecretOfHegra
                 m_Journey.ignoreListenerPause = false;
                 if (s_JourneyTime > 0f) m_Journey.time = s_JourneyTime % m_JourneyMusic.length;
                 m_Journey.Play();
+                if (m_LegendMusic)
+                {
+                    m_Legend = MakeLoop("LegendMusic", m_MusicGroup);
+                    m_Legend.clip = m_LegendMusic;
+                    m_Legend.priority = 0;
+                }
             }
             m_Wind = MakeLoop("Wind", m_AmbienceGroup);
             if (m_WindLoop)
@@ -129,11 +146,35 @@ namespace SecretOfHegra
             else if (!hold && !m_Journey.isPlaying) m_Journey.UnPause();
             if (!m_Journey.isPlaying && !hold) m_Journey.Play();
             bool narrating = gm && gm.Dialogue && gm.Dialogue.IsPlaying;
-            float target = m_JourneyVolume * (narrating ? m_DuckFactor : 1f);
-            m_Journey.volume = Mathf.MoveTowards(m_Journey.volume, target, Time.unscaledDeltaTime / Mathf.Max(0.05f, m_DuckSeconds) * m_JourneyVolume);
+
+            // a legend starts: mysterious stinger, and the darker variation fades in under the storyteller
+            var seq = gm && gm.Dialogue ? gm.Dialogue.CurrentSequence : null;
+            bool legend = !string.IsNullOrEmpty(seq) && seq.Contains("legend");
+            if (seq != m_LastSequence)
+            {
+                if (legend) { Play2D(Sfx.LegendSting, 0.8f); Swell(4f); }
+                m_LastSequence = seq;
+            }
+            m_LegendMix = Mathf.MoveTowards(m_LegendMix, legend && m_Legend ? 1f : 0f, Time.unscaledDeltaTime / 2.5f);
+
+            float swell = Time.unscaledTime < m_SwellUntil ? m_SwellBoost : 1f;
+            float target = m_JourneyVolume * (narrating ? m_DuckFactor : 1f) * swell;
+            float rate = Time.unscaledDeltaTime / Mathf.Max(0.05f, m_DuckSeconds) * m_JourneyVolume;
+            m_Journey.volume = Mathf.MoveTowards(m_Journey.volume, target * (1f - m_LegendMix), rate);
+            if (m_Legend)
+            {
+                float lt = target * 1.1f * m_LegendMix;
+                if (lt > 0.001f && !m_Legend.isPlaying && !hold) m_Legend.Play();
+                if (hold && m_Legend.isPlaying) m_Legend.Pause();
+                m_Legend.volume = Mathf.MoveTowards(m_Legend.volume, lt, rate);
+                if (m_LegendMix <= 0f && m_Legend.volume <= 0.001f && m_Legend.isPlaying) m_Legend.Stop();
+            }
             // remembered every frame: during a scene unload the source already reports time 0
             if (m_Journey.isPlaying) s_JourneyTime = m_Journey.time;
         }
+
+        /// <summary>Lifts the music for a few seconds at an important story moment.</summary>
+        public void Swell(float seconds) => m_SwellUntil = Mathf.Max(m_SwellUntil, Time.unscaledTime + seconds);
 
         AudioSource MakeLoop(string name, AudioMixerGroup group)
         {
@@ -190,7 +231,8 @@ namespace SecretOfHegra
             if (!src || !m_SfxLookup.TryGetValue(id, out var clip)) return;
             src.transform.position = position;
             src.spatialBlend = 1f;
-            src.pitch = Random.Range(0.94f, 1.06f);
+            // footsteps vary more so a walk never sounds like one sample repeated
+            src.pitch = id == Sfx.Footstep ? Random.Range(0.82f, 1.18f) : Random.Range(0.94f, 1.06f);
             src.PlayOneShot(clip, volume);
         }
 
