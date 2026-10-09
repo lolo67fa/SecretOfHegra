@@ -27,7 +27,7 @@ namespace SecretOfHegra.EditorTools
             AssetDatabase.CreateFolder(parent, Path.GetFileName(path));
         }
 
-        public static void ResetCache() => s_Mats.Clear();
+        public static void ResetCache() { s_Mats.Clear(); s_PrimSphere = null; s_PrimCapsule = null; }
 
         // ───────────── materials ─────────────
 
@@ -152,6 +152,113 @@ namespace SecretOfHegra.EditorTools
 
         // ───────────── primitives ─────────────
 
+        // Unity's sphere (768 triangles) and capsule (832) are far heavier than needed on a headset; the builder
+        // swaps them for smooth low-poly versions (320 / 160 triangles) that look the same at VR distances.
+        static Mesh s_PrimSphere, s_PrimCapsule;
+
+        static Mesh PrimSphereMesh()
+        {
+            if (s_PrimSphere) return s_PrimSphere;
+            s_PrimSphere = AssetDatabase.LoadAssetAtPath<Mesh>($"{MeshDir}/PrimSphere320.asset") ?? SaveMesh(IcoSphere(2), "PrimSphere320");
+            return s_PrimSphere;
+        }
+
+        static Mesh PrimCapsuleMesh()
+        {
+            if (s_PrimCapsule) return s_PrimCapsule;
+            s_PrimCapsule = AssetDatabase.LoadAssetAtPath<Mesh>($"{MeshDir}/PrimCapsule160.asset") ?? SaveMesh(LowCapsule(10, 4), "PrimCapsule160");
+            return s_PrimCapsule;
+        }
+
+        /// <summary>Icosphere of radius 0.5 (like Unity's sphere), outward-facing, with spherical UVs.</summary>
+        public static Mesh IcoSphere(int subdivisions)
+        {
+            float t = (1f + Mathf.Sqrt(5f)) / 2f;
+            var v = new List<Vector3>
+            {
+                new Vector3(-1, t, 0), new Vector3(1, t, 0), new Vector3(-1, -t, 0), new Vector3(1, -t, 0),
+                new Vector3(0, -1, t), new Vector3(0, 1, t), new Vector3(0, -1, -t), new Vector3(0, 1, -t),
+                new Vector3(t, 0, -1), new Vector3(t, 0, 1), new Vector3(-t, 0, -1), new Vector3(-t, 0, 1)
+            };
+            for (int i = 0; i < v.Count; i++) v[i] = v[i].normalized * 0.5f;
+            var f = new List<int>
+            {
+                0,11,5, 0,5,1, 0,1,7, 0,7,10, 0,10,11, 1,5,9, 5,11,4, 11,10,2, 10,7,6, 7,1,8,
+                3,9,4, 3,4,2, 3,2,6, 3,6,8, 3,8,9, 4,9,5, 2,4,11, 6,2,10, 8,6,7, 9,8,1
+            };
+            for (int s = 0; s < subdivisions; s++)
+            {
+                var mid = new Dictionary<long, int>();
+                int Mid(int a, int b)
+                {
+                    long key = a < b ? ((long)a << 32) | (uint)b : ((long)b << 32) | (uint)a;
+                    if (mid.TryGetValue(key, out var i)) return i;
+                    v.Add(((v[a] + v[b]) * 0.5f).normalized * 0.5f);
+                    mid[key] = v.Count - 1;
+                    return v.Count - 1;
+                }
+                var next = new List<int>();
+                for (int i = 0; i < f.Count; i += 3)
+                {
+                    int a = f[i], b = f[i + 1], c = f[i + 2];
+                    int ab = Mid(a, b), bc = Mid(b, c), ca = Mid(c, a);
+                    next.AddRange(new[] { a, ab, ca, b, bc, ab, c, ca, bc, ab, bc, ca });
+                }
+                f = next;
+            }
+            var m = new Mesh();
+            m.SetVertices(v);
+            m.SetTriangles(f, 0);
+            var uv = new Vector2[v.Count];
+            for (int i = 0; i < v.Count; i++)
+                uv[i] = new Vector2(Mathf.Atan2(v[i].z, v[i].x) / (2f * Mathf.PI) + 0.5f, v[i].y + 0.5f);
+            m.uv = uv;
+            m.RecalculateNormals();
+            m.RecalculateBounds();
+            return m;
+        }
+
+        /// <summary>Capsule like Unity's (radius 0.5, height 2 along Y) with `sides` around and `rings` per cap.</summary>
+        public static Mesh LowCapsule(int sides, int rings)
+        {
+            var v = new List<Vector3>();
+            var t = new List<int>();
+            // latitude rows from the top pole to the bottom pole; the cylinder section joins the two equators
+            var rows = new List<(float y, float r)>();
+            for (int i = 0; i <= rings; i++)
+            {
+                float a = Mathf.PI * 0.5f * i / rings;            // 0 at the pole
+                rows.Add((0.5f + Mathf.Cos(a) * 0.5f, Mathf.Sin(a) * 0.5f));
+            }
+            for (int i = rings; i >= 0; i--)
+            {
+                float a = Mathf.PI * 0.5f * i / rings;
+                rows.Add((-0.5f - Mathf.Cos(a) * 0.5f, Mathf.Sin(a) * 0.5f));
+            }
+            foreach (var (y, r) in rows)
+                for (int s = 0; s <= sides; s++)
+                {
+                    float a = s * Mathf.PI * 2f / sides;
+                    v.Add(new Vector3(Mathf.Cos(a) * r, y, Mathf.Sin(a) * r));
+                }
+            int w = sides + 1;
+            for (int row = 0; row < rows.Count - 1; row++)
+                for (int s = 0; s < sides; s++)
+                {
+                    int a = row * w + s, b = a + 1, c = a + w, d = c + 1;
+                    t.AddRange(new[] { a, b, d, a, d, c });
+                }
+            var m = new Mesh();
+            m.SetVertices(v);
+            m.SetTriangles(t, 0);
+            var uv = new Vector2[v.Count];
+            for (int i = 0; i < v.Count; i++) uv[i] = new Vector2((i % w) / (float)sides, v[i].y * 0.5f + 0.5f);
+            m.uv = uv;
+            m.RecalculateNormals();
+            m.RecalculateBounds();
+            return m;
+        }
+
         public static GameObject Prim(PrimitiveType type, Transform parent, string name, Vector3 localPos, Vector3 scale, Material mat, Vector3? euler = null, bool collider = false)
         {
             var go = GameObject.CreatePrimitive(type);
@@ -160,6 +267,8 @@ namespace SecretOfHegra.EditorTools
             go.transform.localPosition = localPos;
             go.transform.localEulerAngles = euler ?? Vector3.zero;
             go.transform.localScale = scale;
+            if (type == PrimitiveType.Sphere) go.GetComponent<MeshFilter>().sharedMesh = PrimSphereMesh();
+            else if (type == PrimitiveType.Capsule) go.GetComponent<MeshFilter>().sharedMesh = PrimCapsuleMesh();
             if (mat) go.GetComponent<Renderer>().sharedMaterial = mat;
             var r = go.GetComponent<Renderer>();
             r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;

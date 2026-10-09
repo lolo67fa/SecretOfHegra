@@ -183,7 +183,7 @@ namespace SecretOfHegra.EditorTools
         /// Merges the plain mesh pieces under root into one mesh per material (saved as assets). Pieces with a collider
         /// or any behaviour (handles, interactables) are left alone. recursive=false only looks at direct children.
         /// </summary>
-        static void CombineByMaterial(Transform root, string name, bool recursive)
+        static void CombineByMaterial(Transform root, string name, bool recursive, HashSet<GameObject> keep = null, bool insideCharacter = false)
         {
             var groups = new Dictionary<Material, List<CombineInstance>>();
             var merged = new List<GameObject>();
@@ -193,8 +193,11 @@ namespace SecretOfHegra.EditorTools
                 var mr = mf.GetComponent<MeshRenderer>();
                 if (!mr || !mf.sharedMesh || !mr.sharedMaterial) continue;
                 if (mf.GetComponent<Collider>() || mf.GetComponent<MonoBehaviour>() || mf.transform.childCount > 0) continue;
-                // animated characters and LOD groups keep their own pieces
-                if (mf.GetComponentInParent<NpcFigure>() || mf.GetComponentInParent<LODGroup>() || mf.GetComponentInParent<NpcWalker>()) continue;
+                if (keep != null && keep.Contains(mf.gameObject)) continue;
+                // animated characters and LOD groups keep their own pieces (characters are merged part by part instead)
+                if (mf.GetComponentInParent<LODGroup>()) continue;
+                if (!insideCharacter && (mf.GetComponentInParent<NpcFigure>() || mf.GetComponentInParent<NpcWalker>())) continue;
+                if (keep != null && !StaticPath(mf.transform.parent, root, keep)) continue;
                 if (!groups.TryGetValue(mr.sharedMaterial, out var list)) groups[mr.sharedMaterial] = list = new List<CombineInstance>();
                 list.Add(new CombineInstance { mesh = mf.sharedMesh, transform = root.worldToLocalMatrix * mf.transform.localToWorldMatrix });
                 merged.Add(mf.gameObject);
@@ -208,16 +211,90 @@ namespace SecretOfHegra.EditorTools
                 var saved = HegraKit.SaveMesh(mesh, $"{name}_{kv.Key.name}");
                 HegraKit.MeshObject($"{name}_{kv.Key.name}", root, saved, kv.Key, Vector3.zero);
             }
-            foreach (var g in merged) if (g) Object.DestroyImmediate(g);
-            // groups emptied by the merge (e.g. goblets) go too
-            if (recursive)
+            // only containers emptied by this merge go (e.g. goblets); empty marker points (spawn/guide points)
+            // and anything a script references always stay
+            var emptied = new HashSet<Transform>();
+            foreach (var g in merged)
             {
-                var all = root.GetComponentsInChildren<Transform>(true);
-                for (int i = all.Length - 1; i >= 0; i--)   // children before parents
+                if (!g) continue;
+                var parent = g.transform.parent;
+                Object.DestroyImmediate(g);
+                if (parent && parent != root) emptied.Add(parent);
+            }
+            var queue = new List<Transform>(emptied);
+            while (queue.Count > 0)
+            {
+                var t = queue[queue.Count - 1];
+                queue.RemoveAt(queue.Count - 1);
+                if (!t || t == root || t.childCount > 0 || t.GetComponents<Component>().Length > 1) continue;
+                if (keep != null && keep.Contains(t.gameObject)) continue;
+                var up = t.parent;
+                Object.DestroyImmediate(t.gameObject);
+                if (up && up != root) queue.Add(up);
+            }
+        }
+
+        /// <summary>
+        /// Every character is built from ~20 small pieces. Merge the pieces that move together (body, head, each arm)
+        /// into one mesh per material, keeping the moving transforms, so gestures still work with far fewer draws.
+        /// Anything a script points at (e.g. a speech-bubble background) is left untouched.
+        /// </summary>
+        static void OptimizeCharacters()
+        {
+            var keep = new HashSet<GameObject>();
+            foreach (var mb in Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include))
+            {
+                if (!mb) continue;
+                var so = new SerializedObject(mb);
+                var it = so.GetIterator();
+                while (it.NextVisible(true))
                 {
-                    var t = all[i];
-                    if (t && t != root && t.childCount == 0 && t.GetComponents<Component>().Length == 1) Object.DestroyImmediate(t.gameObject);
+                    if (it.propertyType != SerializedPropertyType.ObjectReference || !it.objectReferenceValue) continue;
+                    if (it.objectReferenceValue is GameObject g) keep.Add(g);
+                    else if (it.objectReferenceValue is Component c) keep.Add(c.gameObject);
                 }
+            }
+            MergeStaticWorld(keep);
+            int i = 0;
+            foreach (var npc in Object.FindObjectsByType<NpcFigure>(FindObjectsInactive.Include))
+            {
+                var parts = new HashSet<Transform> { npc.transform, npc.body, npc.head, npc.leftArm, npc.rightArm };
+                int k = 0;
+                foreach (var p in parts)
+                    if (p) CombineByMaterial(p, $"Npc{i:00}_{k++}", false, keep, true);
+                i++;
+            }
+        }
+
+        /// <summary>
+        /// True when nothing between a piece and the merge root can move or be switched on its own: no ancestor is
+        /// referenced by a script (doors, lids, puzzle parts…) or carries a behaviour / physics / XR component.
+        /// </summary>
+        static bool StaticPath(Transform t, Transform root, HashSet<GameObject> keep)
+        {
+            for (; t && t != root; t = t.parent)
+            {
+                if (keep.Contains(t.gameObject)) return false;
+                if (t.GetComponent<MonoBehaviour>() || t.GetComponent<Rigidbody>() || t.GetComponent<Animator>() || t.GetComponent<LODGroup>()) return false;
+            }
+            return true;
+        }
+
+        /// <summary>Merges the never-moving pieces of each stop, the route lanterns and the horizon.</summary>
+        static void MergeStaticWorld(HashSet<GameObject> keep)
+        {
+            var world = GameObject.Find("World");
+            if (!world) return;
+            foreach (Transform child in world.transform)
+            {
+                if (child.name == "Dressing")
+                {
+                    var horizon = child.Find("Horizon");
+                    if (horizon) CombineByMaterial(horizon, "Static_Horizon", true, keep);
+                    continue;   // the rest of the dressing is merged as it is built
+                }
+                if (child.GetComponent<MonoBehaviour>() && !child.GetComponent<StopBase>()) continue;
+                CombineByMaterial(child, "Static_" + child.name, true, keep);
             }
         }
 

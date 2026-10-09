@@ -258,6 +258,7 @@ namespace SecretOfHegra.EditorTools
             gm.ConfigureSystems(rig, dialogue, director, menus, moon, body, belt, satchel, lamp, stops);
             EditorUtility.SetDirty(gm);
 
+            OptimizeCharacters();   // last: every script reference is wired by now
             EditorSceneManager.SaveScene(scene, ScenePath);
         }
 
