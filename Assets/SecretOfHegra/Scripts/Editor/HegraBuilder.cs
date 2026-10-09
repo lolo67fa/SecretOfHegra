@@ -209,6 +209,7 @@ namespace SecretOfHegra.EditorTools
             stops.Add(BuildBint(world, audio));
             stops.Add(BuildFarid(world, audio));
             BuildStopPlaceholders(world, audio, stops);
+            BuildDressing(world, audio);
 
             var lamp = BuildLamp(camp.transform.Find("LampSpot"), belt);
 

@@ -152,6 +152,8 @@ namespace SecretOfHegra.EditorTools
                 var mr = mf.GetComponent<MeshRenderer>();
                 if (!mr || !mf.sharedMesh || !mr.sharedMaterial) continue;
                 if (mf.GetComponent<Collider>() || mf.GetComponent<MonoBehaviour>() || mf.transform.childCount > 0) continue;
+                // animated characters and LOD groups keep their own pieces
+                if (mf.GetComponentInParent<NpcFigure>() || mf.GetComponentInParent<LODGroup>() || mf.GetComponentInParent<NpcWalker>()) continue;
                 if (!groups.TryGetValue(mr.sharedMaterial, out var list)) groups[mr.sharedMaterial] = list = new List<CombineInstance>();
                 list.Add(new CombineInstance { mesh = mf.sharedMesh, transform = root.worldToLocalMatrix * mf.transform.localToWorldMatrix });
                 merged.Add(mf.gameObject);
